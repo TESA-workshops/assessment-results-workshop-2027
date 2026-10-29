@@ -7,7 +7,7 @@ Repository to support the planning, organisation and delivery of the 2027 TESA w
 
 **Where:** [Bedford Institue of Oceanography](https://www.dfo-mpo.gc.ca/index-eng.html), [1 Challenger Dr, Dartmouth, NS]([https://goo.gl/maps/b8MkB6J9Ydot5snE9](https://maps.app.goo.gl/jzNx4yYy9gChJYJi7))
 
-**Format:** Hybrid, in-person workshop with possibility to join via MS Teams
+**Format:** Hybrid, in-person workshop with possibility to join via MS Teams (selected talks)
 
 ## Organisers
 
