@@ -44,7 +44,7 @@ Repository to support the planning, organisation and delivery of the 2027 TESA w
 
 There are not group booking for this workshop. But here are a few recommendations based on what we have heard from participants:
 
-**Downtown Halifax** (and carpool/rideshare to BIOS):
+**Downtown Halifax** (and carpool/rideshare to BIO):
 Some Pacific Region Participants are staying at [Cambridge Suites](https://www.cambridgesuiteshalifax.com/) and we plan to coordinate ride shares.
 
 **Dartmouth Crossing** 
