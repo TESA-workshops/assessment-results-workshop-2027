@@ -48,7 +48,7 @@ There are no group bookings for this workshop. But here are a few recommendation
 Some Pacific Region Participants are staying at [Cambridge Suites](https://www.cambridgesuiteshalifax.com/) and we plan to coordinate ride shares.
 
 **Dartmouth Crossing** 
-The [Hampton Inn](https://www.hilton.com/en/hotels/yhzdthx-hampton-suites-halifax-dartmouth/?SEO_id=GMB-AMER-HX-YHZDTHX) is considerably closer to BIOS and has free parking. But it also not close to many restaurants/eating options.
+The [Hampton Inn](https://www.hilton.com/en/hotels/yhzdthx-hampton-suites-halifax-dartmouth/?SEO_id=GMB-AMER-HX-YHZDTHX) is considerably closer to BIO and has free parking. But it also not close to many restaurants/eating options or to downtown Halifax.
 
 ### Flights
 
