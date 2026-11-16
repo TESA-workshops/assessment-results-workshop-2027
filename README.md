@@ -1,11 +1,14 @@
-# assessment-results-workshop-2027
+# 2027 TESA workshop 
+
 Repository to support the planning, organisation and delivery of the 2027 TESA workshop “Developing an open database of Canadian fisheries stock assessment outputs” .
+
+## Terms of Reference
 
 ## Logistics
 
 **When:** Tuesday January 12 to Thursday January 14 2027
 
-**Where:** [Bedford Institue of Oceanography](https://www.dfo-mpo.gc.ca/index-eng.html), [1 Challenger Dr, Dartmouth, NS]([https://goo.gl/maps/b8MkB6J9Ydot5snE9](https://maps.app.goo.gl/jzNx4yYy9gChJYJi7))
+**Where:** [Bedford Institue of Oceanography](https://www.dfo-mpo.gc.ca/index-eng.html), [1 Challenger Dr, Dartmouth, NS](%5Bhttps://goo.gl/maps/b8MkB6J9Ydot5snE9%5D%28https://maps.app.goo.gl/jzNx4yYy9gChJYJi7%29)
 
 **Format:** Hybrid, in-person workshop with possibility to join via MS Teams (selected talks)
 
@@ -15,29 +18,35 @@ Repository to support the planning, organisation and delivery of the 2027 TESA w
 
 ## External expert (attending in person)
 
-| Name | Institution | Expertise |
-| ------ | -----| -----|
-| Carlos Pinto	| ICES |  |
+|Name|Institution|Expertise|
+|-|-|-|
+|Carlos Pinto|ICES|Development of data systems to support scientific advice|
 
 ## Schedule
 
 ### Tuesday January 12 2027
-| Time |  |
-|  ---- |  - |
+
+|Time||
+|-|-|
 
 ### Wednesday January 13 2027
-| Time |  |
-|  ---- |  - |
+
+|Time||
+|-|-|
+
 
 
 ### Thursday January 14 2027
-| Time |  |
-|  ---- |  - |
+
+|Time||
+|-|-|
+
 
 
 ### Workshop dinner
 
 ## Travels
+
 
 
 ### Accommodation and parking
@@ -47,7 +56,7 @@ There are no group bookings for this workshop. But here are a few recommendation
 **Downtown Halifax** (and carpool/rideshare to BIO):
 Some Pacific Region Participants are staying at [Cambridge Suites](https://www.cambridgesuiteshalifax.com/) and we plan to coordinate ride shares.
 
-**Dartmouth Crossing** 
+**Dartmouth Crossing**
 The [Hampton Inn](https://www.hilton.com/en/hotels/yhzdthx-hampton-suites-halifax-dartmouth/?SEO_id=GMB-AMER-HX-YHZDTHX) is considerably closer to BIO and has free parking. But it also not close to many restaurants/eating options or to downtown Halifax.
 
 ### Flights
@@ -56,13 +65,17 @@ Most participants are planning to travel on the 11th and 15th of January to allo
 
 ## Participants
 
-|	Number	|	Region	|	Name	|	In person or virtual	|
-|	---	|	---	|	---	|	---	|
-|	1	|	GULF	|	Jacob Burbank	|	In person	|
-|	2	|	PACIFIC	|	Catarina Wor	|	In person	|
-|	3	|	PACIFIC	|	Robyn Forrest	|	In person	|
-|	4	|	PACIFIC	|	Sean Anderson	|	In person	|
-|	5	|	PACIFIC	|	Dylan Glaser	|	In person	|
-|	6	|	PACIFIC	|	Meghan Burton	|	In person	|
-|	7	|	PACIFIC	|	Nick Fisch	|	In person	|
-|	8	|	PACIFIC	|	Zhipeng Wu	|	In person	|
+|Number|Region|Name|In person or virtual|
+|-|-|-|-|
+|1|GULF|Jacob Burbank|In person|
+|2|PACIFIC|Catarina Wor|In person|
+|3|PACIFIC|Robyn Forrest|In person|
+|4|PACIFIC|Sean Anderson|In person|
+|5|PACIFIC|Dylan Glaser|In person|
+|6|PACIFIC|Meghan Burton|In person|
+|7|PACIFIC|Nick Fisch|In person|
+|8|PACIFIC|Zhipeng Wu|In person|
+|9|GULF|Daniel Ricard|In person|
+
+
+
