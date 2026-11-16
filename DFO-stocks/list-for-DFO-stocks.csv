@@ -1,0 +1,88 @@
+area_name,species_name,stock_name_en,stock_name_fr,managing_dfo_region,fsp_list,in_sustainabilty_survey,assessed
+NAFO 4TVn,Gadus morhua,Atlantic cod NAFO 4TVn,Morue franche OPANO 4TVn,Gulf,batch1,yes,yes
+NAFO 4T,Urophycis tenuis,White Hake NAFO 4T,Merluche Blanche OPANO 4T,Gulf,batch1,yes,yes
+NAFO 4T,Hippoglossoides platessoides,American Plaice NAFO 4T,Plie Canadienne OPANO 4T,Gulf,batch1,yes,yes
+NAFO 4T,Limanda ferruginea,Yellowtail Flounder NAFO 4T,Limande à Queue Jaune OPANO 4T,Gulf,batch2,yes,yes
+NAFO 4T,Pseudopleuronectes americanus,Winter Flounder NAFO 4T,Plie Rouge OPANO 4T,Gulf,batch1,yes,yes
+NAFO 4RST,Glyptocephalus cynoglossus,Witch Flounder NAFO 4RST,Plie Grise OPANO 4RST,Gulf,batch1,yes,yes
+NAFO 4T,Clupea harengus,Atlantic Herring NAFO 4T (Spring Spawner),Hareng de printemps OPANO 4T,Gulf,batch1,yes,yes
+NAFO 4T,Clupea harengus,Atlantic Herring NAFO 4T (Fall Spawner),Hareng – division 4T de l’OPANO (reproducteurs d’automne),Gulf,batch2,yes,yes
+"Southern Gulf (LFA 23, 24, 25, 26A, 26B)",Homarus americanus,Atlantic Lobster Southern Gulf of St. Lawrence ,Homard sud du Golfe du Saint-Laurent,Gulf,batch2,yes,yes
+"Southern Gulf (SCA 12, 12E, 12F, 19)",Chionoecetes opilio,Snow Crab Southern Gulf of St. Lawrence ,Crabe des Neiges sud du Golfe du Saint-Laurent,Gulf,batch1,yes,yes
+Area,Sebastes fasciatus,Acadian redfish Units 1 and 2,French,Quebec,batch1,yes,yes
+Area,Sebastes fasciatus,Acadian redfish Unit 3,French,Maritimes,batch1,yes,yes
+Area,Salvelinus alpinus,Arctic char Cambridge Bay Halokvik River,French,Arctic,batch1,yes,yes
+Area,Salvelinus alpinus,Arctic char Cambridge Bay Jayko River,French,Arctic,batch1,yes,yes
+Area,Salvelinus alpinus,Arctic char Cumberland Sound Ijaruvung Lake,French,Arctic,batch1,yes,yes
+Area,Salvelinus alpinus,Arctic char Cumberland Sound Iqalugaarjuit Fjord,French,Arctic,batch1,yes,yes
+Area,Salvelinus alpinus,Arctic char Cumberland Sound Irvine Inlet,French,Arctic,batch1,yes,yes
+Area,Mactromeris polynyma,Arctic surfclam Banquereau,French,National,batch1,yes,yes
+Area,Mactromeris polynyma,Arctic surfclam Grand Bank,French,National,batch1,yes,yes
+Area,Gadus morhua,Atlantic cod NAFO 2J3KL,French,Newfoundland & Labrador,batch1,yes,yes
+Area,Gadus morhua,Atlantic cod NAFO 3Pn4RS,French,National,batch1,yes,yes
+Area,Gadus morhua,Atlantic cod NAFO 3Ps,French,National,batch1,yes,yes
+Area,Gadus morhua,"Atlantic cod, NAFO 4X5Y",French,Maritimes,batch1,yes,yes
+Area,Hippoglossus hippoglossus,Atlantic halibut NAFO 3NOPs4VWX5Z,French,National,batch1,yes,yes
+Area,Hippoglossus hippoglossus,Atlantic halibut NAFO 4RST,French,Quebec,batch1,yes,yes
+Area,Scomber scombrus,Atlantic mackerel,French,Quebec,batch1,yes,yes
+Area,Sebastes paucispinis,Bocaccio rockfish,French,Pacific,batch1,yes,yes
+Area,Sebastes pinniger,Canary rockfish,French,Pacific,batch1,yes,yes
+Area,Mallotus villosus,Capelin NAFO 2J3KL,French,Newfoundland & Labrador,batch1,yes,yes
+Area,Oncorhynchus tshawytscha,Chinook salmon Okanagan,French,Pacific,batch1,yes,yes
+Area,Oncorhynchus tshawytscha,Chinook salmon West Coast of Vancouver Island,French,Pacific,batch1,yes,yes
+Area,Oncorhynchus tshawytscha,Chinook salmon Yukon,French,Pacific,batch1,yes,yes
+Area,Oncorhynchus kisutch,"Coho salmon, Interior Fraser",French,Pacific,batch1,yes,yes
+Area,Sebastes mentella,Deepwater redfish Units 1 and 2,French,Quebec,batch1,yes,yes
+Area,Panopea generosa,Geoduck,French,Pacific,batch1,yes,yes
+Area,Apostichopus californicus,Giant red sea cucumber,French,Pacific,batch1,yes,yes
+Area,Strongylocentrotus droebachiensis,Green sea urchin,French,Pacific,batch1,yes,yes
+Area,Reinhardtius hippoglossoides,Greenland halibut NAFO 4RST,French,Quebec,batch1,yes,yes
+Area,Melanogrammus aeglefinus,Haddock NAFO 4X5Y,French,Maritimes,batch1,yes,yes
+Area,Chlamys islandica,Iceland scallop Scallop Fishing Area 16E,French,National,batch1,yes,yes
+Area,Chlamys islandica,Iceland scallop Scallop Fishing Area 16F,French,National,batch1,yes,yes
+Area,Homarus americanus,Lobster LFA 19 to 21,French,National,batch1,yes,yes
+Area,Homarus americanus,Lobster LFA 22,French,National,batch1,yes,yes
+Area,Homarus americanus,Lobster LFA 23 to 26,French,National,batch1,yes,yes
+Area,Homarus americanus,Lobster LFA 27,French,National,batch1,yes,yes
+Area,Homarus americanus,LobsterLFA 29,French,National,batch1,yes,yes
+Area,Homarus americanus,Lobster LFA 30,French,National,batch1,yes,yes
+Area,Homarus americanus,Lobster LFA 31A,French,National,batch1,yes,yes
+Area,Homarus americanus,Lobster LFA 31B,French,National,batch1,yes,yes
+Area,Homarus americanus,Lobster LFA 32,French,National,batch1,yes,yes
+Area,Homarus americanus,Lobster LFA 33,French,National,batch1,yes,yes
+Area,Homarus americanus,Lobster LFA 34,French,National,batch1,yes,yes
+Area,Homarus americanus,Lobster LFA 41,French,National,batch1,yes,yes
+Area,Pandalus borealis,Northern shrimp Shrimp Fishing Area 8,French,National,batch1,yes,yes
+Area,Pandalus borealis,Northern shrimp Shrimp Fishing Area 9,French,National,batch1,yes,yes
+Area,Pandalus borealis,Northern shrimp Shrimp Fishing Area 10,French,National,batch1,yes,yes
+Area,Pandalus borealis,Northern shrimp Shrimp Fishing Area 12,French,National,batch1,yes,yes
+Area,Pandalus borealis,Northern shrimp Shrimp Fishing Areas 13 to 15,French,National,batch1,yes,yes
+Area,Merluccius productus,Pacific hake Offshore,French,Pacific,batch1,yes,yes
+Area,Hippoglossus stenolepis,Pacific halibut,French,Pacific,batch1,yes,yes
+Area,Clupea pallasii,Pacific herring Central Coast,French,Pacific,batch1,yes,yes
+Area,Clupea pallasii,Pacific herring Haida Gwaii,French,Pacific,batch1,yes,yes
+Area,Clupea pallasii,Pacific herring Prince Rupert District,French,Pacific,batch1,yes,yes
+Area,Clupea pallasii,Pacific herring Strait of Georgia,French,Pacific,batch1,yes,yes
+Area,Clupea pallasii,Pacific herring West Coast of Vancouver Island,French,Pacific,batch1,yes,yes
+Area,Sebastes alutus,Pacific ocean perch North and West Coasts of Haida Gwaii,French,Pacific,batch1,yes,yes
+Area,Sebastes alutus,Pacific ocean perch Queen Charlotte Sound,French,Pacific,batch1,yes,yes
+Area,Sebastes alutus,Pacific ocean perch West Coast of Vancouver Island,French,Pacific,batch1,yes,yes
+Area,Oncorhynchus gorbuscha,Pink salmon Fraser,French,Pacific,batch1,yes,yes
+Area,Pollachius virens,Pollock NAFO 4X5 Western Component,French,National,batch1,yes,yes
+Area,Sebastes maliger,Quillback rockfish Inside Waters,French,Pacific,batch1,yes,yes
+Area,Sebastes maliger,Quillback rockfish Outside Waters,French,Pacific,batch1,yes,yes
+Area,Strongylocentrotus franciscanus,Red sea urchin,French,Pacific,batch1,yes,yes
+Area,Anoplopoma fimbria,Sablefish,French,Pacific,batch1,yes,yes
+Area,Placopecten magellanicus,Sea scallop Scallop Fishing Area 20,French,National,batch1,yes,yes
+Area,Merluccius bilinearis,Silver hake NAFO 4VWX,French,Maritimes,batch1,yes,yes
+Area,Chionoecetes opilio,Snow crab CBA 12A,French,National,batch1,yes,yes
+Area,Chionoecetes opilio,Snow crab CBA 12B,French,National,batch1,yes,yes
+Area,Chionoecetes opilio,Snow crab North-Eastern Nova Scotia (N-ENS),French,National,batch1,yes,yes
+Area,Chionoecetes opilio,Snow crab South-Eastern Nova Scotia (S-ENS),French,National,batch1,yes,yes
+Area,Oncorhynchus nerka,Sockeye salmon Fraser (Early Stuart),French,Pacific,batch1,yes,yes
+Area,Oncorhynchus nerka,Sockeye salmon Somass (Barkley Sound),French,Pacific,batch1,yes,yes
+Area,Oncorhynchus nerka,Sockeye salmon Stikine,French,Pacific,batch1,yes,yes
+Area,Pandalus platyceros,Spot prawn,French,Pacific,batch1,yes,yes
+Area,Sebastes ruberrimus,Yelloweye rockfish Inside Waters,French,Pacific,batch1,yes,yes
+Area,Sebastes ruberrimus,Yelloweye rockfish Outside Waters,French,Pacific,batch1,yes,yes
+Area,Sebastes reedi,Yellowmouth rockfish,French,Pacific,batch1,yes,yes
