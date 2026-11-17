@@ -1,0 +1,3 @@
+dataset_id,table_id,file_name,table_label,description,source,primary_key
+assess_inventory,sub_population,data/sub_population.csv,sub_population,sub population stock records for multi-population major stocks.,,ASSESSMENT_ID|YEAR
+assess_inventory,major_stock,data/major_stock.csv,major_stock,"Annual Major stock records with fishing mortality, total catch, total spawners, total abundance, recruitment, lower and upper reference points, removal reference, and confidence intervals for all variables",,ASSESSMENT_ID|YEAR

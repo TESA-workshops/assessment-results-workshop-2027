@@ -1,0 +1,115 @@
+dataset_id,table_id,column_name,column_label,column_description,source,column_role,value_type,required,source_column_names,table_ids
+assess_inventory,major_stock,assessment_id,assessment_id,Stable assessment ID-scoped assessment version identifier that links each data-level row to metadata/assessments.csv.,"Linked major stock-scoped assessment metadata lives in metadata/assessments.csv; in that file's source field, prefer DOI URLs first, then stable archive URLs, then formal citations.",identifier,string,TRUE,,"('major_stock','sub_population')"
+assess_inventory,major_stock,major_stock_id,Major Stock Identifier,"Identifier assigned to a major stock in assess exports, defined in stock_species_region_list.csv table",,identifier,string,TRUE,major_stock_id,"('major_stock',)"
+assess_inventory,major_stock,major_stock_name,Major Stock Name,"Name of Major Stock, all major stocks housed in stock_species_region_list.csv table",,attribute,string,TRUE,major_stock_name,"('major_stock',)"
+assess_inventory,major_stock,species_common_name,Species Common Name,Common name of species assessed,,identifier,string,TRUE,species_common_name,"('major_stock',)"
+assess_inventory,major_stock,species_scientific_name,Species Scientific Name,Scientific name of species assessed,,identifier,string,TRUE,species_scientific_name,"('major_stock',)"
+assess_inventory,major_stock,dfo_region,DFO Region,DFO region responsible for the stock,,identifier,string,TRUE,dfo_region,"('major_stock',)"
+assess_inventory,major_stock,assessment_year,Assessment Year,Year the stock assessment took place,,temporal,integer,TRUE,assessment_year,"('major_stock',)"
+assess_inventory,major_stock,year,Year,Reported year for the record; year the estimates correspond to in the time series,,temporal,integer,TRUE,year,"('major_stock','sub_population')"
+assess_inventory,major_stock,fishing_pressure_rate,Fishing Pressure Rate,Estimated fishing pressure rate for the stock in year y,,measurement,numeric,FALSE,fishing_pressure_rate,"('major_stock',)"
+assess_inventory,major_stock,fishing_pressure_rate_type,Fishing Pressure Rate Units,Type of estimate for fishing pressure rate for the stock in year y (e.g. Exploitation rate of fishing mortality rate),,identifier,string,FALSE,fishing_pressure_rate_units,"('major_stock',)"
+assess_inventory,major_stock,fishing_pressure_rate_uncertainty_upper,Fishing Pressure Rate Uncertainty Upper,Value of upper confidence/credible interval in fishing pressure rate,,measurement,numeric,FALSE,fishing_pressure_rate_uncertainty_upper,"('major_stock',)"
+assess_inventory,major_stock,fishing_pressure_rate_uncertainty_lower,Fishing Pressure Rate Uncertainty Lower,Value of lower confidence/credible interval in fishing pressure rate,,measurement,numeric,FALSE,fishing_pressure_rate_uncertainty_lower,"('major_stock',)"
+assess_inventory,major_stock,fishing_pressure_rate_uncertainty_value,Fishing Pressure Rate Uncertainty Value,Value of uncertainty in fishing pressure rate if not expressed as condifidence/credible interval,,measurement,integer,FALSE,fishing_pressure_rate_uncertainty_value,"('major_stock',)"
+assess_inventory,major_stock,fishing_pressure_rate_uncertainty_interval_level,Fishing Pressure Rate Uncertainty Interval Level,"Confidencer/credible interval level for fishing pressure rate (e.g. 95%, 80%, ect.)",,measurement,integer,FALSE,fishing_pressure_rate_uncertainty_interval_level,"('major_stock',)"
+assess_inventory,major_stock,fishing_pressure_rate_uncertainty_interval_type,Fishing Pressure Rate Uncertainty Interval Type,"Type of uncertainty interval for fishing pressure rate (i.e. confidence interval, credible interval)",,measurement,string,FALSE,fishing_pressure_rate_uncertainty_interval_type,"('major_stock',)"
+assess_inventory,major_stock,fishing_pressure_rate_uncertainty_value_type,Fishing Pressure Rate Uncertainty Value Type,"Type of uncertainty value  for fishing mortality rate ( standard error, standard deviation)",,measurement,string,FALSE,fishing_pressure_rate_uncertainty_value_type,"('major_stock',)"
+assess_inventory,major_stock,total_catch,Total Catch,Total catch in each year,,measurement,integer,FALSE,total_catch,"('major_stock',)"
+assess_inventory,major_stock,total_catch_units,Total Catch Units,"Units that total catch is reported in (e.g. kg, tons, ect.)",,measurement,string,FALSE,total_catch_units,"('major_stock',)"
+assess_inventory,major_stock,total_catch_uncertainty_upper,Total Catch Uncertainty Upper,Value of upper confidence/credible interval in total catch if available ,,measurement,integer,FALSE,total_catch_uncertainty_upper,"('major_stock',)"
+assess_inventory,major_stock,total_catch_uncertainty_lower,Total Catch Uncertainty Lower,Value of lower confidence/credible interval in total catch if available ,,measurement,integer,FALSE,total_catch_uncertainty_lower,"('major_stock',)"
+assess_inventory,major_stock,total_catch_uncertainty_value,Total Catch Uncertainty Value,Value of uncertainty in total catch if not expressed as condifidence/credible interval,,measurement,integer,FALSE,total_catch_uncertainty_value,"('major_stock',)"
+assess_inventory,major_stock,total_catch_uncertainty_interval_level,Total Catch Uncertainty Interval Level,"Confidencer/credible interval level for total catch (e.g. 95%, 80%, ect.)",,measurement,integer,FALSE,total_catch_uncertainty_interval_level,"('major_stock',)"
+assess_inventory,major_stock,total_catch_uncertainty_interval_type,Total Catch Uncertainty Interval Type,"Type of uncertainty interval for total catch (e.g. confidence interval, credible interval, ect.)",,measurement,string,FALSE,total_catch_uncertainty_interval_type,"('major_stock',)"
+assess_inventory,major_stock,total_catch_uncertainty_value_type,Total Catch Uncertainty Value Type,"Type of uncertainty value for total catch (e.g. standard error, standard deviation, ect.)",,measurement,string,FALSE,total_catch_uncertainty_interval_type,"('major_stock',)"
+assess_inventory,major_stock,abundance,yearly Abundance indicator,"Total abundance of Spawners in the stock (Can be as numbers of individuals or Biomass). Report using the metric used for management of the stock. For instance, if both abundance (numbers of individuals) and Spawning Stock Biomass (SSB) are estimated in the assessment, but reference points and management is based on SSB, report SSB here.  If reference points and management are based on an abundance or survey index, report that here. ",,measurement,numeric,FALSE,total_spawning_abundance,"('major_stock',)"
+assess_inventory,major_stock,abundance_type,type Abundance indicator,"type of abundance indicator (e.g. spawning abundance, female spawning abundance, total abundance , index). Report using the metric used for management of the stock. For instance, if both abundance (numbers of individuals) and Spawning Stock Biomass (SSB) are estimated in the assessment, but reference points and management is based on SSB, report SSB here.  If reference points and management are based on an abundance or survey index, report that here. ",,measurement,string,FALSE,total_spawning_abundance,"('major_stock',)"
+assess_inventory,major_stock,abundance_units,Abundance Units,"Units that abundance is reported in (e.g. number of fish, kg, kg/tow, tons, spawning biomass, female spawning biomass) for management purposes and comparasions with reference points.",,measurement,string,FALSE,total_spawning_abundance_units,"('major_stock',)"
+assess_inventory,major_stock,abundance_uncertainty_upper,Abundance Uncertainty Upper,Value of upper confidence/credible interval in total spawning abundance if available ,,measurement,numeric,FALSE,total_spawning_abundance_uncertainty_upper,"('major_stock',)"
+assess_inventory,major_stock,abundance_uncertainty_lower, Abundance Uncertainty Lower,Value of lower confidence/credible interval in total spawning abundance if available ,,measurement,numeric,FALSE,total_spawning_abundance_uncertainty_lower,"('major_stock',)"
+assess_inventory,major_stock,abundance_uncertainty_value,Abundance Uncertainty Value,Value of uncertainty in total spawning abundance if not expressed as condifidence/credible interval,,measurement,numeric,FALSE,total_spawning_abundance_uncertainty_value,"('major_stock',)"
+assess_inventory,major_stock,abundance_uncertainty_interval_level,Abundance Uncertainty Interval Level,"Confidencer/credible interval level for total spawning abundance (e.g. 95%, 80%, ect.)",,measurement,integer,FALSE,total_spawning_abundance_uncertainty_interval_level,"('major_stock',)"
+assess_inventory,major_stock,abundance_uncertainty_interval_type,Abundance Uncertainty Interval Type,"Type of uncertainty interval for total spawning abundance (e.g. confidence interval, credible interval, ect.)",,measurement,string,FALSE,total_spawning_abundance_uncertainty_interval_type,"('major_stock',)"
+assess_inventory,major_stock,abundance_uncertainty_value_type,Abundance Uncertainty Value Type,"Type of uncertainty value for total spawning abundance (e.g. standard error, standard deviation, ect.)",,measurement,string,FALSE,total_spawning_abundance_uncertainty_value_type,"('major_stock',)"
+assess_inventory,major_stock,total_recruits,Total Recruits,Total recruitment (i.e. recruits in year y) estimated by the stock assessment. ,,measurement,numeric,FALSE,total_recruits,"('major_stock',)"
+assess_inventory,major_stock,total_recruits_units,Total Recruits Units,"Units that total recruitment is reported in (e.g. number of age 1, number of age 2, kg of age 1, ect.)",,measurement,string,FALSE,total_recruits_units,"('major_stock',)"
+assess_inventory,major_stock,total_recruits_uncertainty_upper,Total Recruits Uncertainty Upper,Value of upper confidence/credible interval in total recruitment if available ,,measurement,numeric,FALSE,total_recruits_uncertainty_upper,"('major_stock',)"
+assess_inventory,major_stock,total_recruits_uncertainty_lower,Total Recruits Uncertainty Lower,Value of lower confidence/credible interval in total recruitment if available ,,measurement,numeric,FALSE,total_recruits_uncertainty_lower,"('major_stock',)"
+assess_inventory,major_stock,total_recruits_uncertainty_value,Total Recruits Uncertainty Value,Value of uncertainty in total recruitment if not expressed as condifidence/credible interval,,measurement,numeric,FALSE,total_recruits_uncertainty_value,"('major_stock',)"
+assess_inventory,major_stock,total_recruits_uncertainty_interval_level,Total Recruits Uncertainty Interval Level,"Confidencer/credible interval level for total recruitment (e.g. 95%, 80%, ect.)",,measurement,integer,FALSE,total_recruits_uncertainty_interval_level,"('major_stock',)"
+assess_inventory,major_stock,total_recruits_uncertainty_interval_type,Total Recruits Uncertainty Interval Type,"Type of uncertainty interval for total recruitment estimates (e.g. confidence interval, credible interval, ect.)",,measurement,string,FALSE,total_recruits_uncertainty_interval_type,"('major_stock',)"
+assess_inventory,major_stock,total_recruits_uncertainty_value_type,Total Recruits Uncertainty Value Type,"Type of uncertainty value for total recruitment estimates (e.g. standard error, standard deviation, ect.)",,measurement,string,FALSE,total_recruits_uncertainty_value_type,"('major_stock',)"
+assess_inventory,major_stock,lrp,LRP,Limit Reference Point value as defined in the stock assessment,,measurement,numeric,FALSE,lrp,"('major_stock',)"
+assess_inventory,major_stock,lrp_units,LRP Units,"Units that Limit Reference Point is reported in (e.g. tons, number of fish, kg/tow, ect.)",,measurement,string,FALSE,lrp_units,"('major_stock',)"
+assess_inventory,major_stock,lrp_uncertainty_upper,LRP Uncertainty Upper,Value of upper confidence/credible interval for Limit Reference Point if available ,,measurement,numeric,FALSE,lrp_uncertainty_upper,"('major_stock',)"
+assess_inventory,major_stock,lrp_uncertainty_lower,LRP Uncertainty Lower,Value of lower confidence/credible interval for Limit Reference Point if available ,,measurement,numeric,FALSE,lrp_uncertainty_lower,"('major_stock',)"
+assess_inventory,major_stock,lrp_uncertainty_value,LRP Uncertainty Value,Value of uncertainty of Limit Reference Point if not expressed as condifidence/credible interval,,measurement,numeric,FALSE,lrp_uncertainty_value,"('major_stock',)"
+assess_inventory,major_stock,lrp_uncertainty_interval_level,LRP Uncertainty Interval Level,"Confidencer/credible interval level for Limit Reference Point (e.g. 95%, 80%, ect.)",,measurement,integer,FALSE,lrp_uncertainty_interval_level,"('major_stock',)"
+assess_inventory,major_stock,lrp_uncertainty_interval_type,LRP Uncertainty Interval Type,"Type of uncertainty interval for Limit Reference Point (e.g. confidence interval, credible interval, ect.)",,measurement,string,FALSE,lrp_uncertainty_interval_type,"('major_stock',)"
+assess_inventory,major_stock,lrp_uncertainty_value_type,LRP Uncertainty Value Type,"Type of uncertainty value for Limit Reference Point (e.g. standard error, standard deviation, ect.)",,measurement,string,FALSE,lrp_uncertainty_value_type,"('major_stock',)"
+assess_inventory,major_stock,trp,TRP,Target Reference Point value as defined in the stock assessment- if no TRP defined but the Upper Stock Reference is defined it can be entered with a clear note,,measurement,numeric,FALSE,trp,"('major_stock',)"
+assess_inventory,major_stock,trp_units,TRP Units,"Units that Target Reference Point is reported in (e.g. tons, number of fish, kg/tow, ect.)",,measurement,string,FALSE,trp_units,"('major_stock',)"
+assess_inventory,major_stock,trp_uncertainty_upper,TRP Uncertainty Upper,Value of upper confidence/credible interval for Target Reference Point if available ,,measurement,numeric,FALSE,trp_uncertainty_upper,"('major_stock',)"
+assess_inventory,major_stock,trp_uncertainty_lower,TRP Uncertainty Lower,Value of lower confidence/credible interval for Target Reference Point if available ,,measurement,numeric,FALSE,trp_uncertainty_lower,"('major_stock',)"
+assess_inventory,major_stock,trp_uncertainty_value,TRP Uncertainty Value,Value of uncertainty of Target Reference Point if not expressed as condifidence/credible interval,,measurement,numeric,FALSE,trp_uncertainty_value,"('major_stock',)"
+assess_inventory,major_stock,trp_uncertainty_interval_level,TRP Uncertainty Interval Level,"Confidencer/credible interval level for Target Reference Point (e.g. 95%, 80%, ect.)",,measurement,integer,FALSE,trp_uncertainty_interval_level,"('major_stock',)"
+assess_inventory,major_stock,trp_uncertainty_interval_type,TRP Uncertainty Interval Type,"Type of uncertainty interval for Target Reference Point (e.g. confidence interval, credible interval, ect.)",,measurement,string,FALSE,trp_uncertainty_interval_type,"('major_stock',)"
+assess_inventory,major_stock,trp_uncertainty_value_type,TRP Uncertainty Value Type,"Type of uncertainty value for Target Reference Point (e.g. standard error, standard deviation, ect.)",,measurement,string,FALSE,trp_uncertainty_value_type,"('major_stock',)"
+assess_inventory,major_stock,rr,RR,Removal Reference value as defined in the stock assessment,,measurement,numeric,FALSE,rr,"('major_stock',)"
+assess_inventory,major_stock,rr_units,RR Units,"Units that Removal Reference is reported in (e.g. tons, number of fish, kg/tow, ect.)",,measurement,string,FALSE,rr_units,"('major_stock',)"
+assess_inventory,major_stock,rr_uncertainty_upper,RR Uncertainty Upper,Value of upper confidence/credible interval for Removal Reference if available ,,measurement,numeric,FALSE,rr_uncertainty_upper,"('major_stock',)"
+assess_inventory,major_stock,rr_uncertainty_lower,RR Uncertainty Lower,Value of lower confidence/credible interval for Removal Reference if available ,,measurement,numeric,FALSE,rr_uncertainty_lower,"('major_stock',)"
+assess_inventory,major_stock,rr_uncertainty_value,RR Uncertainty Value,Value of uncertainty of Removal Reference if not expressed as condifidence/credible interval,,measurement,numeric,FALSE,rr_uncertainty_value,"('major_stock',)"
+assess_inventory,major_stock,rr_uncertainty_interval_level,RR Uncertainty Interval Level,"Confidencer/credible interval level for Removal Reference (e.g. 95%, 80%, ect.)",,measurement,integer,FALSE,rr_uncertainty_interval_level,"('major_stock',)"
+assess_inventory,major_stock,rr_uncertainty_interval_type,RR Uncertainty Interval Type,"Type of uncertainty interval for Removal Reference (e.g. confidence interval, credible interval, ect.)",,measurement,string,FALSE,rr_uncertainty_interval_type,"('major_stock',)"
+assess_inventory,major_stock,rr_uncertainty_value_type,RR Uncertainty Value Type,"Type of uncertainty value for Removal Reference (e.g. standard error, standard deviation, ect.)",,measurement,string,FALSE,rr_uncertainty_value_type,"('major_stock',)"
+assess_inventory,major_stock,reference,Reference,Plain-text reference or citation supplied with the source metadata.,,administrative,string,FALSE,,"('major_stock',)"
+assess_inventory,major_stock,contact,Contact,Name and email contact for a data steward or expert who provided the data.,,administrative,string,TRUE,,"('major_stock',)"
+assess_inventory,major_stock,comments,Comments,Additional comments about the time series from data providers or stewards.,,administrative,string,FALSE,,"('major_stock',)"
+assess_inventory,sub_population,subpop_id,Sub Population Identifier,Identifier assigned to a majorsub population in assess exports,,identifier,string,TRUE,subpop_id,'sub_population'
+assess_inventory,sub_population,subpop_name,Sub Population Name,Name of Sub Population,,attribute,string,TRUE,subpop_id,'sub_population'
+assess_inventory,sub_population,total_spawning_abundance,,,,,,,,
+assess_inventory,sub_population,total_spawning_abundance_uncertainty_upper,,,,,,,,
+assess_inventory,sub_population,total_spawning_abundance_uncertainty_lower,,,,,,,,
+assess_inventory,sub_population,total_spawning_abundance_uncertainty_value,,,,,,,,
+assess_inventory,sub_population,total_spawning_abundance_uncertainty_interval_level,,,,,,,,
+assess_inventory,sub_population,total_spawning_abundance_uncertainty_interval_type,,,,,,,,
+assess_inventory,sub_population,total_spawning_abundance_uncertainty_value_type,,,,,,,,
+assess_inventory,sub_population,total_exploitation_rate,,,,,,,,
+assess_inventory,sub_population,fishing_mortality_rate,Fishing Mortality Rate,Estimated fishing mortality rate for the stock in year y,,measurement,numeric,FALSE,fishing_mortality_rate,
+assess_inventory,sub_population,fishing_mortality_rate_uncertainty_upper,Fishing Mortality Rate Uncertainty Upper,Value of upper confidence/credible interval in fishing mortality rate,,measurement,numeric,FALSE,fishing_mortality_rate_uncertainty_upper,
+assess_inventory,sub_population,fishing_mortality_rate_uncertainty_lower,Fishing Mortality Rate Uncertainty Lower,Value of lower confidence/credible interval in fishing mortality rate,,measurement,numeric,FALSE,fishing_mortality_rate_uncertainty_lower,
+assess_inventory,sub_population,fishing_mortality_rate_uncertainty_value,Fishing Mortality Rate Uncertainty Value,Value of uncertainty in fishing mortality rate if not expressed as condifidence/credible interval,,measurement,integer,FALSE,fishing_mortality_rate_uncertainty_value,
+assess_inventory,sub_population,fishing_mortality_rate_uncertainty_interval_level,Fishing Mortality Rate Uncertainty Interval Level,"Confidencer/credible interval level for fishing mortality rate (e.g. 95%, 80%, ect.)",,measurement,integer,FALSE,fishing_mortality_rate_uncertainty_interval_level,
+assess_inventory,sub_population,fishing_mortality_rate_uncertainty_interval_type,Fishing Mortality Rate Uncertainty Interval Type,"Type of uncertainty interval for fishing mortality rate (e.g. confidence interval, credible interval, ect.)",,measurement,string,FALSE,fishing_mortality_rate_uncertainty_interval_type,
+assess_inventory,sub_population,fishing_mortality_rate_uncertainty_value_type,Fishing Mortality Rate Uncertainty Value Type,"Type of uncertainty value  for fishing mortality rate (e.g. standard error, standard deviation, ect.)",,measurement,string,FALSE,fishing_mortality_rate_uncertainty_value_type,
+assess_inventory,sub_population,total_catch_uncertainty_upper,,,,,,,,
+assess_inventory,sub_population,total_catch_uncertainty_lower,,,,,,,,
+assess_inventory,sub_population,total_catch_uncertainty_value,,,,,,,,
+assess_inventory,sub_population,total_catch_uncertainty_interval_level,,,,,,,,
+assess_inventory,sub_population,total_catch_uncertainty_interval_type,,,,,,,,
+assess_inventory,sub_population,total_catch_uncertainty_value_type,,,,,,,,
+assess_inventory,sub_population,total_recruits,,,,,,,,
+assess_inventory,sub_population,total_recruits_uncertainty_upper,,,,,,,,
+assess_inventory,sub_population,total_recruits_uncertainty_lower,,,,,,,,
+assess_inventory,sub_population,total_recruits_uncertainty_value,,,,,,,,
+assess_inventory,sub_population,total_recruits_uncertainty_interval_level,,,,,,,,
+assess_inventory,sub_population,total_recruits_uncertainty_interval_type,,,,,,,,
+assess_inventory,sub_population,total_recruits_uncertainty_value_type,,,,,,,,
+assess_inventory,sub_population,limit_population_size,,,,,,,,
+assess_inventory,sub_population,limit_population_size_units,,,,,,,,
+assess_inventory,sub_population,limit_population_size_uncertainty_upper,,,,,,,,
+assess_inventory,sub_population,limit_population_size_uncertainty_lower,,,,,,,,
+assess_inventory,sub_population,limit_population_size_uncertainty_value,,,,,,,,
+assess_inventory,sub_population,limit_population_size_uncertainty_interval_level,,,,,,,,
+assess_inventory,sub_population,limit_population_size_uncertainty_interval_type,,,,,,,,
+assess_inventory,sub_population,limit_population_size_uncertainty_value_type,,,,,,,,
+assess_inventory,sub_population,upper_population_benchmark,,,,,,,,
+assess_inventory,sub_population,limit_population_size_units,,,,,,,,
+assess_inventory,sub_population,limit_population_size_uncertainty_upper,,,,,,,,
+assess_inventory,sub_population,limit_population_size_uncertainty_lower,,,,,,,,
+assess_inventory,sub_population,limit_population_size_uncertainty_value,,,,,,,,
+assess_inventory,sub_population,limit_population_size_uncertainty_interval_level,,,,,,,,
+assess_inventory,sub_population,limit_population_size_uncertainty_interval_type,,,,,,,,
+assess_inventory,sub_population,limit_population_size_uncertainty_value_type,,,,,,,,
