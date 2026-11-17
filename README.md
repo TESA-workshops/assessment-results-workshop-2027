@@ -4,6 +4,8 @@ Repository to support the planning, organisation and delivery of the 2027 TESA w
 
 ## Terms of Reference
 
+[see here](https://github.com/TESA-workshops/assessment-results-workshop-2027/blob/main/TOR_agenda/terms_of_reference_ASSESS%20Workshop.md)
+
 ## Logistics
 
 **When:** Tuesday January 12 to Thursday January 14 2027
