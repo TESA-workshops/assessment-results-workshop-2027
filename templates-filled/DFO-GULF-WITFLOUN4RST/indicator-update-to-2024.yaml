@@ -1,0 +1,41 @@
+stock:
+  name:
+    en: Witch Flounder NAFO 4RST
+    fr: Plie Grise OPANO 4RST
+  species: 
+    en: Witch Flounder
+    aphiaID: 127136
+  area:
+    type: polygon
+    name:
+      en: NAFO 4RST
+      fr: OPANO 4RST
+  assessed: yes
+  fish_stock_provisions: batch1
+  in_sustainability_survey: yes
+  RAMLegacy_name: DFO-GULF-WITFLOUN4RST
+
+assessment_year: 2017
+
+publication:
+  meeting:
+    URL: https://csas-scas.dfo-mpo.gc.ca/meetings/5e2b78a8-41f6-41c5-a09d-cfc24f33e966
+    csas-sccs: https://dmapps/en/csas-sccs/processes/745/view/
+  - series: sr
+    number: 2025/010
+    year: 2025
+    URL: https://csas-scas.dfo-mpo.gc.ca/publications/a7d280cf-3927-4fd7-bda7-ae032ecf29ab
+
+assessment_type: Indicator update
+
+assessment_method:
+  category: Survey index
+  method: Survey index
+  software: custom
+  timespan:
+    first_year: 1971
+    last_year: 2024
+
+managing_body:
+  management: DFO
+  assessor_region: Gulf
