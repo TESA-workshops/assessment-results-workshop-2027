@@ -10,12 +10,12 @@
 
 | Time | Activity |
 |------|----------|
-| 09:00 | Roundtable: Participant Introductions |
-| 09:30 | Motivation and Scope of Workshop (Catarina Wor and Jacob Burbank) |
-| 10:00 | SPRS Database Show and Tell |
-| 10:30 | Break |
-| 10:45 | ICES AdviceXplorer Database Concept and Show and Tell (Carlos Pinto) |
-| 12:00 | Head count for Wednesday dinner, then lunch break |
+| 09:30 | Roundtable: Participant Introductions |
+| 10:30 | Motivation and Scope of Workshop (Catarina Wor and Jacob Burbank) |
+| 10:30 | SPRS Database Show and Tell |
+| 11:00 | Break |
+| 11:15 | ICES AdviceXplorer Database Concept and Show and Tell (Carlos Pinto) |
+| 12:15 | Head count for Wednesday dinner, then lunch break |
 | 13:00 | ** ** |
 | 13:45 | **Talk by DFO Expert (25-30 min):** |
 | 14:30 | Break |
