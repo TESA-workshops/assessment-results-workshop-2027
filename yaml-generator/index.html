@@ -112,13 +112,18 @@ pre.code { background: var(--chip); border-radius: 8px; padding: 10px 12px; over
   .row.author, .row.comp { grid-template-columns: 1fr; }
   .mbody { padding-left: 14px; }
 }
+aside .box.bad { border-color: var(--bad); }
+aside .box.bad h3 { color: var(--bad); }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
 </head>
 <body>
 <header>
   <h1>FSAR assessment.yaml</h1>
   <span class="spacer"></span>
   <span class="saved" id="saved"></span>
+  <button class="btn small ghost" data-act="load" id="btn-load"></button>
+  <input type="file" id="file" accept=".yaml,.yml" hidden>
   <button class="btn small ghost" data-act="example" id="btn-example"></button>
   <button class="btn small ghost" data-act="reset" id="btn-reset"></button>
   <div class="seg" role="group" aria-label="Language / Langue">
@@ -232,6 +237,7 @@ const FL = f => L(...FIELD_LABEL[f]);
 const DEFAULT_UNITS = { catch: "t", spawning_stock: "t", total_stock: "t", exploitable_stock: "t",
   index: "kg/tow", fishing_pressure: "1/yr", natural_mortality: "1/yr", recruitment: "millions" };
 const NUM_FIELDS = ["multiplier","min_age","max_age","age","percentile","spr"];
+const LEVELS = [50, 55, 60, 65, 70, 75, 80, 85, 90, 95].map(p => String(p / 100)); // interval.level choices
 
 // ---------------------------------------------------------------------------
 // State
@@ -484,7 +490,7 @@ function renderForm() {
     <div class="hint">${L("If any do, say yes. Stock size, fishing pressure, recruitment and ratio columns then get <code>_lower</code> / <code>_upper</code>; for catch and reference points you choose below.",
       "Si c'est le cas, répondez oui. Les colonnes de taille du stock, de pression de pêche, de recrutement et de rapports ont alors <code>_lower</code> / <code>_upper</code>; pour les prises et les points de référence, vous choisissez plus bas.")}</div>
     ${S.hasBounds === "yes" ? `<div class="sub"><div class="grid">
-      ${input("interval.level", L("Interval level", "Niveau de l'intervalle"), { req: true, options: [50, 55, 60, 65, 70, 75, 80, 85, 90, 95].map(p => [String(p / 100), L(`${p}%`, `${p} %`)]) })}
+      ${input("interval.level", L("Interval level", "Niveau de l'intervalle"), { req: true, options: LEVELS.map(v => [v, L(`${Math.round(v * 100)}%`, `${Math.round(v * 100)} %`)]) })}
       ${input("interval.type", L("Interval type", "Type d'intervalle"), { req: true, options: opts(V.interval) })}
     </div></div>` : ""}`;
   for (const [panel, en, fr] of PANELS) {
@@ -721,6 +727,10 @@ function yaml() {
     const fs = S.metrics[m.id].f;
     for (const f of Object.keys(MF[m.id])) {
       if (!shown(m.id, f)) continue;
+      if (f === "notes") { // the CSV columns it has, just before the free text
+        if (hasCI(m.id)) L.push("    bounds: true");
+        if (ratios(m.id).length) L.push(`    ratios: [${ratios(m.id).join(", ")}]`);
+      }
       if (f === "period") { if (fs.period_from && fs.period_to) L.push(`    period: [${num(fs.period_from)}, ${num(fs.period_to)}]`); continue; }
       const v = fs[f];
       if (blankish(v)) continue;
@@ -753,7 +763,14 @@ function renderSide() {
   const is = issues();
   const id = assessmentId() || "assessment";
   const cols = csvColumns();
-  $("#side").innerHTML = `
+  $("#side").innerHTML = (loadErrors ? `
+    <div class="box bad">
+      <h3>${L(`Couldn't load ${esc(loadErrors.name)}`, `Impossible de charger ${esc(loadErrors.name)}`)}</h3>
+      <div class="hint">${L("Nothing in the form was changed. Fix these in the file and load it again:",
+        "Rien n'a été modifié dans le formulaire. Corrigez ces points dans le fichier et chargez-le de nouveau :")}</div>
+      <ul class="todo">${loadErrors.list.map(msg => `<li>${esc(msg)}</li>`).join("")}</ul>
+      <div class="actions"><button class="btn small" data-act="dismiss-load">${L("Dismiss", "Fermer")}</button></div>
+    </div>` : "") + `
     <div class="box">
       <h3>${esc(id)}</h3>
       ${is.length
@@ -793,6 +810,7 @@ function renderSide() {
 function renderChrome() {
   document.documentElement.lang = LANG;
   document.querySelectorAll("[data-lang]").forEach(b => b.classList.toggle("on", b.dataset.lang === LANG));
+  $("#btn-load").textContent = L("Load existing YAML file", "Charger un fichier YAML existant");
   $("#btn-example").textContent = L("Load example", "Charger l'exemple");
   $("#btn-reset").textContent = L("Start over", "Recommencer");
   $("#intro").innerHTML = L(
@@ -858,6 +876,8 @@ document.addEventListener("click", e => {
   const b = e.target.closest("[data-act]");
   if (!b) return;
   const act = b.dataset.act;
+  if (act === "load") { $("#file").click(); return; }
+  if (act === "dismiss-load") { loadErrors = null; renderSide(); return; }
   if (act === "add-pub") S.pubs.push(blankPub());
   if (act === "rm-pub") S.pubs.splice(+b.dataset.i, 1);
   if (act === "add-author") S.pubs[+b.dataset.p].authors.push(blankAuthor());
@@ -890,12 +910,13 @@ document.addEventListener("click", e => {
 
 // True if the form holds anything beyond a blank form or the example (your name,
 // email and date don't count, since they're kept on "Start over" anyway).
-function hasDraft() {
+function hasDraftOf(s) {
   const fresh = blank();
   METRICS.forEach(m => fresh.metrics[m.id] = { on: false, f: {}, ratios: {} });
-  const strip = s => JSON.stringify({ ...s, me: null });
-  return strip(S) !== strip(fresh) && strip(S) !== strip(example());
+  const strip = x => JSON.stringify({ ...x, me: null });
+  return strip(s) !== strip(fresh) && strip(s) !== strip(example());
 }
+const hasDraft = () => hasDraftOf(S);
 
 function example() {
   const s = blank();
@@ -931,6 +952,147 @@ function example() {
   turn("recruitment", { units: "millions", age: "1" }, true);
   return s;
 }
+
+// ---------------------------------------------------------------------------
+// Load an existing assessment.yaml. The file is read into the form, written out
+// again, and the two compared: a file is loaded only if the form holds all of it
+// exactly and it has nothing left to fill in. Otherwise nothing changes.
+// ---------------------------------------------------------------------------
+let loadErrors = null; // { name, list } after a rejected file
+
+// Form state from parsed YAML. Anything that doesn't fit shows up in the round trip.
+function fromYaml(y) {
+  const s = blank();
+  METRICS.forEach(m => s.metrics[m.id] = { on: false, f: {}, ratios: {} });
+  const str = v => v == null ? "" : typeof v === "object" ? JSON.stringify(v) : String(v);
+  const obj = v => v && typeof v === "object" && !Array.isArray(v) ? v : {};
+  const yn = v => v === true ? "yes" : v === false ? "no" : str(v);
+  const en_fr = v => ({ en: str(obj(v).en), fr: str(obj(v).fr) });
+  const eb = obj(y.entered_by), st = obj(y.stock), sp = obj(st.species);
+  s.me = { name: str(eb.name), email: str(eb.email), date: str(eb.date) };
+  s.year_assessed = str(y.year_assessed);
+  s.assessment_type = str(y.assessment_type);
+  s.stock = { name: en_fr(st.name), area: en_fr(st.area),
+    species: { scientific: str(sp.scientific), en: str(sp.en), fr: str(sp.fr), aphia_id: str(sp.aphia_id) },
+    region: str(st.region), management: str(st.management), ram_legacy_id: str(st.ram_legacy_id),
+    fish_stock_provisions: yn(st.fish_stock_provisions), in_sustainability_survey: yn(st.in_sustainability_survey) };
+  s.hasComp = "components" in y ? "yes" : "no";
+  s.comps = Object.entries(obj(y.components)).map(([id, c]) => ({ id, ...en_fr(obj(c).name) }));
+  const me = obj(y.method), mt = obj(y.meeting);
+  s.method = { type: str(me.type), software: str(me.software), notes: str(me.notes) };
+  s.meeting = { date: str(mt.date), url: str(mt.url), csas_process: str(mt.csas_process) };
+  s.pubs = (Array.isArray(y.publications) ? y.publications : []).map(p => {
+    p = obj(p);
+    const au = (Array.isArray(p.authors) ? p.authors : []).map(a => ({ given: str(obj(a).given), family: str(obj(a).family), orcid: str(obj(a).orcid) }));
+    return { series: str(p.series), number: str(p.number), year: str(p.year), url: str(p.url), doi: str(p.doi),
+      title: en_fr(p.title), authors: au.length ? au : [blankAuthor()] };
+  });
+  if (!s.pubs.length) s.pubs = [blankPub()];
+  s.hasBounds = "interval" in y ? "yes" : "no";
+  if (s.hasBounds === "yes") s.interval = { level: str(obj(y.interval).level), type: str(obj(y.interval).type) };
+  const unknown = [];
+  for (const [id, v] of Object.entries(obj(y.metrics))) {
+    if (!M[id]) { unknown.push(id); continue; }
+    const md = obj(v), f = {};
+    for (const [k, x] of Object.entries(md)) {
+      if (k === "bounds" || k === "ratios") continue;
+      if (k === "period" && Array.isArray(x) && x.length === 2) { f.period_from = str(x[0]); f.period_to = str(x[1]); }
+      else f[k] = str(x);
+    }
+    const r = {};
+    (Array.isArray(md.ratios) ? md.ratios : []).forEach(den => r[str(den)] = true);
+    s.metrics[id] = { on: true, f, ci: md.bounds === true, ratios: r };
+  }
+  return { s, unknown };
+}
+
+// Codes that aren't in the vocabulary (the form's dropdowns can't show them).
+function vocabErrors() {
+  const out = [];
+  const codes = k => V[k].map(([c]) => c);
+  const check = (path, v, ok) => {
+    if (!blankish(v) && !ok.includes(String(v))) out.push(L(`\`${path}: ${v}\` isn't allowed; use one of: ${ok.join(", ")}`,
+      `« ${path} : ${v} » n'est pas permis; utilisez l'un de : ${ok.join(", ")}`));
+  };
+  check("assessment_type", S.assessment_type, codes("atype"));
+  check("stock.region", S.stock.region, codes("region"));
+  check("stock.management", S.stock.management, codes("management"));
+  check("method.type", S.method.type, codes("method"));
+  check("method.software", S.method.software, codes("software"));
+  S.pubs.forEach((p, i) => check(`publications[${i + 1}].series`, p.series, codes("series")));
+  if (S.hasBounds === "yes") {
+    check("interval.level", S.interval.level, LEVELS);
+    check("interval.type", S.interval.type, codes("interval"));
+  }
+  for (const m of chosen()) {
+    const f = S.metrics[m.id].f, p = `metrics.${m.id}.`;
+    check(p + "units", f.units, UNITS.filter(u => m.dims.includes(u.dim)).map(u => u.id));
+    if (MF[m.id].basis) check(p + "basis", f.basis, m.panel === "fishing_pressure" ? REMOVAL_BASIS : STOCK_BASIS);
+    if (MF[m.id].type) check(p + "type", f.type, codes("type"));
+  }
+  return out;
+}
+
+// Differences between the uploaded YAML (a) and the form's YAML (b), as messages.
+function roundTrip(a, b, path = "", out = []) {
+  const isObj = v => v !== null && typeof v === "object";
+  if (isObj(a) && isObj(b) && Array.isArray(a) === Array.isArray(b)) {
+    if (/(^|\.)ratios$/.test(path)) { a = a.map(String).sort(); b = b.map(String).sort(); } // order doesn't matter
+    for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) {
+      const p = Array.isArray(a) ? `${path}[${+k + 1}]` : path ? `${path}.${k}` : k;
+      if (!(k in b)) { if (a[k] != null) out.push(L(`\`${p}\`: the form can't hold this`, `« ${p} » : le formulaire ne peut pas le contenir`)); }
+      else if (!(k in a) || a[k] == null) {
+        out.push(/\.bounds$/.test(p)
+          ? L(`\`${p}\` is missing: with \`interval:\` set, the form gives every stock size, fishing pressure and recruitment series (and msy) bounds`,
+              `« ${p} » manque : avec « interval: », le formulaire donne des bornes à chaque série de taille du stock, de pression de pêche et de recrutement (et au RMD)`)
+          : L(`\`${p}\` is missing (the form would write ${JSON.stringify(b[k])})`, `« ${p} » manque (le formulaire écrirait ${JSON.stringify(b[k])})`));
+      } else roundTrip(a[k], b[k], p, out);
+    }
+  } else if (isObj(a) || isObj(b) || String(a).trim() !== String(b).trim()) {
+    out.push(L(`\`${path}: ${JSON.stringify(a)}\` doesn't fit the form (it would write ${JSON.stringify(b)})`,
+      `« ${path} : ${JSON.stringify(a)} » ne convient pas au formulaire (il écrirait ${JSON.stringify(b)})`));
+  }
+  return out;
+}
+
+// Returns problems with the file; if there are none, S holds the loaded file.
+function loadYaml(text) {
+  if (typeof jsyaml === "undefined") return [L("The YAML reader didn't load. Check your internet connection and reload the page.",
+    "Le lecteur YAML n'a pas été chargé. Vérifiez votre connexion Internet et rechargez la page.")];
+  let y;
+  // CORE_SCHEMA keeps dates as text (as the form has them).
+  try { y = jsyaml.load(text, { schema: jsyaml.CORE_SCHEMA }); }
+  catch (e) { return [L("It isn't valid YAML: ", "Ce n'est pas du YAML valide : ") + e.message]; }
+  if (!y || typeof y !== "object" || Array.isArray(y)) return [L("It doesn't look like an assessment.yaml.", "Cela ne ressemble pas à un assessment.yaml.")];
+  const { s, unknown } = fromYaml(y);
+  const old = S;
+  S = s;
+  const out = unknown.map(id => L(`\`metrics.${id}\` isn't a metric the form knows`, `« metrics.${id} » n'est pas une mesure connue du formulaire`));
+  out.push(...vocabErrors());
+  const known = { ...y }; // unknown metrics are reported above
+  if (unknown.length) { known.metrics = { ...y.metrics }; unknown.forEach(id => delete known.metrics[id]); }
+  out.push(...roundTrip(known, jsyaml.load(yaml(), { schema: jsyaml.CORE_SCHEMA })));
+  S.me.date = today(); // entered now
+  out.push(...issues().map(([, msg]) => msg));
+  if (out.length) S = old;
+  return [...new Set(out)];
+}
+
+async function onLoadFile(file) {
+  const old = S;
+  const problems = loadYaml(await file.text());
+  if (problems.length) loadErrors = { name: file.name, list: problems };
+  else if (hasDraftOf(old) && !confirm(L(`Replace your draft with ${file.name}? What you've entered will be lost.`,
+    `Remplacer votre brouillon par ${file.name}? Ce que vous avez saisi sera perdu.`))) S = old;
+  else { loadErrors = null; save(); }
+  render();
+  if (!problems.length && S !== old) $("#saved").textContent = L(`Loaded ${file.name}`, `${file.name} chargé`);
+}
+$("#file").addEventListener("change", e => {
+  const file = e.target.files[0];
+  e.target.value = ""; // so the same file can be picked again after fixing it
+  if (file) onLoadFile(file);
+});
 
 const params = new URLSearchParams(location.search);
 if (params.has("example")) S = example();
