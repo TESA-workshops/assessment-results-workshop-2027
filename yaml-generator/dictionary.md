@@ -8,9 +8,6 @@ This file defines the columns of the time series CSVs listed by the [YAML/CSV ge
 What each column means (units, basis, ages, survey, interval level) goes in `assessment.yaml`, not in the CSV.
 See [`fsar-data/README.md`](../fsar-data/README.md) for the full format and [`fsar-data/vocab/`](../fsar-data/vocab/) for the tables these definitions come from.
 
-Definitions are adapted from the CanSTAR template dictionaries ([`CanSTAR-template/metadata/column_dictionary_assess.csv`](../CanSTAR-template/metadata/column_dictionary_assess.csv)).
-[What changed from CanSTAR](#what-changed-from-canstar) maps the old columns to the new ones.
-
 **Contents**
 
 - [Rules for every column](#rules-for-every-column)
@@ -24,7 +21,6 @@ Definitions are adapted from the CanSTAR template dictionaries ([`CanSTAR-templa
 - [Ratio columns (`series/denominator`)](#ratio-columns-seriesdenominator)
 - [Units](#units)
 - [Column order](#column-order)
-- [What changed from CanSTAR](#what-changed-from-canstar)
 
 ## Rules for every column
 
