@@ -506,14 +506,18 @@ function renderMetric(m) {
       extras += `<div class="ticks">${tick(`metrics.${m.id}.ci`, st.ci,
         L("Has an interval", "A un intervalle") + ` <code>${m.id}_lower</code>, <code>${m.id}_upper</code>`)}</div>`;
     }
-    const dens = ratioOptions(m.id);
-    if (dens.length) {
-      extras += `<div class="ticks">${dens.map(den => tick(`metrics.${m.id}.ratios.${den}`, ratioOn(m.id, den),
-          L(`Has a ratio to ${denLabel(den)}, with its own interval`, `A un rapport à ${denLabel(den)}, avec son propre intervalle`) +
-          ` <code>${m.id}/${den}</code>`)).join("")}</div>`;
-      if (dens.length === 1) extras += `<div class="hint">${m.panel === "stock"
-        ? L("For a ratio to the LRP, USR or another reference point, tick it below.", "Pour un rapport au PRL, au PRS ou à un autre point de référence, cochez-le ci-dessous.")
-        : L("For a ratio to the removal reference, tick it below.", "Pour un rapport au taux de prélèvement de référence, cochez-le ci-dessous.")}</div>`;
+    // Ratio ticks: a reference point offers series/reference under itself; a series
+    // offers only series/B_MSY or series/F_MSY. Either way the tick is stored on the series.
+    const ratioTick = (series, den, label) => tick(`metrics.${series}.ratios.${den}`, ratioOn(series, den),
+      L(`Has a ratio to ${label}, with its own interval`, `A un rapport à ${label}, avec son propre intervalle`) + ` <code>${series}/${den}</code>`);
+    if (m.role === "series" && MSY_BASIS[m.panel]) {
+      extras += `<div class="ticks">${ratioTick(m.id, MSY_BASIS[m.panel], denLabel(MSY_BASIS[m.panel]))}</div>`;
+    }
+    if (m.role === "reference") {
+      const series = resolvedTarget(m.id);
+      extras += series
+        ? `<div class="ticks">${ratioTick(series, m.id, mlabel(m))}</div>`
+        : targets(m.id).length ? `<div class="hint">${L("Choose what it applies to, to add a ratio.", "Choisissez à quoi il s'applique pour ajouter un rapport.")}</div>` : "";
     }
     if (extras) extras = `<div class="extras">${extras}</div>`;
     body = `<div class="mbody"><div class="grid">${fields.map(f => metricField(m, f)).join("")}</div>${extras}</div>`;
