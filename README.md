@@ -1,4 +1,4 @@
-# 2027 TESA workshop 
+# 2027 TESA Assessment Database workshop 
 
 Repository to support the planning, organisation and delivery of the 2027 TESA workshop “Developing an open database of Canadian fisheries stock assessment outputs” .
 
