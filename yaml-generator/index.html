@@ -321,9 +321,9 @@ const denLabel = den => M[den] ? mlabel(M[den])
   : L(...V.basis.find(([k]) => k === den).slice(1));
 const ratioOn = (id, den) => !!S.metrics[id].ratios[den];
 const ratios = id => ratioOptions(id).filter(den => ratioOn(id, den));
-// Bounds: optional for catch and reference points (ticked), always listed for other
-// series, ratios and MSY, never for the TAC or M.
-const optionalCI = id => id === "catch" || M[id].role === "reference";
+// Bounds: optional for catch, M and reference points (ticked), always listed for other
+// series, ratios and MSY, never for the TAC.
+const optionalCI = id => id === "catch" || id === "natural_mortality" || M[id].role === "reference";
 const hasCI = id => S.hasBounds === "yes" && (optionalCI(id) ? !!S.metrics[id].ci : M[id].role === "series" || id === "msy");
 
 // The series whose units a metric should follow: a reference's series, or catch for the TAC.
@@ -487,8 +487,8 @@ function renderForm() {
       "Cochez chaque série chronologique que vous avez. Chacune est une colonne de votre CSV et demande quelques détails ici.")}</p>
     ${yesno("hasBounds", L("Do any columns have uncertainty intervals (<code>_lower</code> / <code>_upper</code>)?",
       "Des colonnes ont-elles des intervalles d'incertitude (<code>_lower</code> / <code>_upper</code>)?"))}
-    <div class="hint">${L("If any do, say yes. Stock size, fishing pressure, recruitment and ratio columns then get <code>_lower</code> / <code>_upper</code>; for catch and reference points you choose below.",
-      "Si c'est le cas, répondez oui. Les colonnes de taille du stock, de pression de pêche, de recrutement et de rapports ont alors <code>_lower</code> / <code>_upper</code>; pour les prises et les points de référence, vous choisissez plus bas.")}</div>
+    <div class="hint">${L("If any do, say yes. Stock size, fishing pressure, recruitment and ratio columns then get <code>_lower</code> / <code>_upper</code>; for catch, M and reference points you choose below.",
+      "Si c'est le cas, répondez oui. Les colonnes de taille du stock, de pression de pêche, de recrutement et de rapports ont alors <code>_lower</code> / <code>_upper</code>; pour les prises, M et les points de référence, vous choisissez plus bas.")}</div>
     ${S.hasBounds === "yes" ? `<div class="sub"><div class="grid">
       ${input("interval.level", L("Interval level", "Niveau de l'intervalle"), { req: true, options: LEVELS.map(v => [v, L(`${Math.round(v * 100)}%`, `${Math.round(v * 100)} %`)]) })}
       ${input("interval.type", L("Interval type", "Type d'intervalle"), { req: true, options: opts(V.interval) })}

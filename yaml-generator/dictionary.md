@@ -140,8 +140,8 @@ For example, `spawning_stock`, `spawning_stock_lower`, `spawning_stock_upper`.
   interval: `x * exp(±1.96 * sqrt(log(1 + CV^2)))`.
 
 In the form, stock size, fishing pressure, recruitment, ratio and `msy` columns
-get bounds whenever the assessment has intervals; for `catch` and reference
-points you tick whether they have one.
+get bounds whenever the assessment has intervals; for `catch`,
+`natural_mortality` and reference points you tick whether they have one.
 
 ## Ratio columns (`series/denominator`)
 
