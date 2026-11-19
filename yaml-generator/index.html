@@ -796,14 +796,22 @@ function renderSide() {
         "Les points de référence (et le RMD) figurent sur chaque ligne : répétez une valeur constante, ou modifiez-la les années où elle change.") : ""}
       ${S.hasBounds === "yes" ? L(`<code>_lower</code> and <code>_upper</code> columns hold the ${Math.round(S.interval.level * 100) || "…"}% interval.`,
         `Les colonnes <code>_lower</code> et <code>_upper</code> contiennent l'intervalle à ${Math.round(S.interval.level * 100) || "…"} %.`) : ""}
-      ${[...cols.stock, ...(cols.comp || [])].some(c => c.includes("/")) ? L("A column like <code>spawning_stock/limit_reference</code> is a ratio (here B/LRP).",
-        "Une colonne comme <code>spawning_stock/limit_reference</code> est un rapport (ici B/PRL).") : ""}</div>
+      ${ratioHint([...cols.stock, ...(cols.comp || [])])}</div>
       <div class="actions"><button class="btn small" data-act="csv">${cols.comp ? L("Download blank CSVs", "Télécharger les CSV vides") : L("Download blank CSV", "Télécharger le CSV vide")}</button></div>
     </div>
     <div class="box">
       <h3>${L("Preview", "Aperçu")}</h3>
       <pre class="code">${esc(yaml())}</pre>
     </div>`;
+}
+
+// Explains ratio columns using the first one this assessment actually has.
+function ratioHint(cols) {
+  const col = cols.find(c => c.includes("/") && !/_(lower|upper)$/.test(c));
+  if (!col) return "";
+  const [series, den] = col.split("/");
+  return L(`A column like <code>${col}</code> is a ratio: ${esc(mlabel(M[series]))} divided by ${esc(denLabel(den))}.`,
+    `Une colonne comme <code>${col}</code> est le rapport entre ${esc(mlabel(M[series]))} et ${esc(denLabel(den))}.`);
 }
 
 // Header and intro text, and the language buttons.
