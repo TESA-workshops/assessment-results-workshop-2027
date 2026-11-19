@@ -36,9 +36,10 @@ assessment_method:
   category: Biomass dynamics model
   method: Bayesian Surplus Production model
   software: JAGS
-  timespan:
-    first_year: 1961
-    last_year: 2021
+
+timespan:
+  first_year: 1961
+  last_year: 2021
 
 managing_body:
   management: DFO
