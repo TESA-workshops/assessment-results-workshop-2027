@@ -828,10 +828,12 @@ function renderChrome() {
   $("#btn-example").textContent = L("Load example", "Charger l'exemple");
   $("#btn-reset").textContent = L("Start over", "Recommencer");
   $("#intro").innerHTML = L(
-    `Fill this in to create the <code>assessment.yaml</code> that describes your time series. You make the CSV yourself;
-    the panel on the right lists the columns it needs. Required fields are marked <span class="req">*</span>. Your draft is saved in this browser.`,
-    `Remplissez ce formulaire pour créer le fichier <code>assessment.yaml</code> qui décrit vos séries chronologiques. Vous préparez
-    le CSV vous-même; le panneau de droite indique les colonnes nécessaires. Les champs obligatoires sont marqués <span class="req">*</span>.
+    `Fill this in to create the <code>assessment.yaml</code> that describes your time series. The panel on the right lists the columns
+    your CSV needs and lets you download a blank CSV with those columns as a starting point to fill in.
+    See the <a href="${DICTIONARY}" target="_blank" rel="noopener">column dictionary</a> for what each column means. Required fields are marked <span class="req">*</span>. Your draft is saved in this browser.`,
+    `Remplissez ce formulaire pour créer le fichier <code>assessment.yaml</code> qui décrit vos séries chronologiques. Le panneau de droite
+    indique les colonnes nécessaires à votre CSV et permet de télécharger un CSV vide avec ces colonnes comme point de départ à remplir.
+    Voir le <a href="${DICTIONARY}" target="_blank" rel="noopener">dictionnaire des colonnes</a> (en anglais) pour la signification de chaque colonne. Les champs obligatoires sont marqués <span class="req">*</span>.
     Votre brouillon est enregistré dans ce navigateur.`);
 }
 function render() { fillUnits(); renderChrome(); renderForm(); renderSide(); }
