@@ -45,7 +45,7 @@ to the new ones.
 - **One `metrics:` entry per metric column.** Every metric column in either
   CSV needs an entry in `assessment.yaml`, and every entry needs a column.
   The form writes these for you.
-- **Include only the columns you have.** All metric columns are optional,
+- **You only need to include the columns you have.** All metric columns are optional,
   but there must be at least one.
 
 ## Key columns
@@ -183,68 +183,3 @@ Units are set per metric in `assessment.yaml` (`units:`), from these codes.
 | proportion | `proportion` (unitless fraction from 0 to 1) |
 | index | `kg/tow`, `n/tow`, `kg/km2`, `n/km2`, `kg/trap`, `relative` (scaled to a reference period, e.g. mean = 1) |
 
-## Column order
-
-`year` (after `component` in the component file), then metrics in the order of
-the tables above, each followed by its `_lower` and `_upper`, then its ratios,
-each with its own bounds. For example:
-
-```
-year,catch,catch_lower,catch_upper,total_allowable_catch,spawning_stock,spawning_stock_lower,spawning_stock_upper,spawning_stock/b_msy,spawning_stock/b_msy_lower,spawning_stock/b_msy_upper,limit_reference,upper_stock_reference,fishing_pressure,fishing_pressure_lower,fishing_pressure_upper,removal_reference,recruitment,recruitment_lower,recruitment_upper
-```
-
-The form's blank CSVs use this order. The reader accepts any order.
-
-## What changed from CanSTAR
-
-### Renamed columns
-
-| CanSTAR column | New column | Notes |
-|---|---|---|
-| `year` | `year` | |
-| `subpop_id` | `component` | |
-| `total_catch` | `catch` | |
-| `abundance` | `spawning_stock`, `total_stock`, `exploitable_stock` or `index` | The column name replaces `abundance_type`. |
-| `total_spawning_abundance` (sub-population) | `spawning_stock` | |
-| `fishing_pressure_rate`, `fishing_mortality_rate`, `total_exploitation_rate` | `fishing_pressure` | Units say which: `1/yr` for F, `proportion` for a harvest rate. |
-| `total_recruits` | `recruitment` | |
-| `lrp` | `limit_reference` | |
-| `trp` | `target_reference` | |
-| — | `upper_stock_reference` | New. CanSTAR put a USR in `trp` with a note. |
-| `rr` | `removal_reference` | |
-| `limit_population_benchmark` / `limit_population_size` | `lower_threshold` | Components only. |
-| `upper_population_benchmark` | `upper_threshold` | Components only. |
-| `removal_benchmark` | `removal_threshold` | Components only. |
-| `<x>_uncertainty_lower`, `<x>_uncertainty_upper` | `<x>_lower`, `<x>_upper` | |
-
-### New columns
-
-`total_allowable_catch`, `msy`, `natural_mortality`, and the ratio columns
-(`spawning_stock/b_msy`, `fishing_pressure/f_msy`, `spawning_stock/limit_reference`, …).
-
-### Columns moved to `assessment.yaml`
-
-These were repeated on every CSV row. They are now given once.
-
-| CanSTAR column | In `assessment.yaml` |
-|---|---|
-| `assessment_id` | The folder name, formed from `stock.name.en` and `year_assessed` |
-| `major_stock_id`, `major_stock_name` | `stock.name.en`, `stock.name.fr`, `stock.ram_legacy_id` |
-| `subpop_name` | `components: <id>: name: {en, fr}` |
-| `species_common_name`, `species_scientific_name` | `stock.species.en`, `.fr`, `.scientific`, `.aphia_id` |
-| `dfo_region` | `stock.region` |
-| `assessment_year` | `year_assessed` |
-| `<x>_units` | `metrics: <x>: units` |
-| `fishing_pressure_rate_type` | `metrics: fishing_pressure: units` and `type` |
-| `abundance_type` | The column name (see above) |
-| `<x>_uncertainty_interval_level` | `interval: level` |
-| `<x>_uncertainty_interval_type` | `interval: type` |
-| `reference` | `publications:` |
-| `contact` | `entered_by:` |
-| `comments` | `metrics: <x>: notes` |
-
-### Columns dropped
-
-| CanSTAR column | Why |
-|---|---|
-| `<x>_uncertainty_value`, `<x>_uncertainty_value_type` | SEs, SDs and CVs aren't accepted; convert them to an interval (see [Interval columns](#interval-columns-_lower-_upper)). |
