@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FSAR Assessment YAML</title>
+<style>
+:root {
+  --bg: #f5f6f4; --panel: #ffffff; --ink: #1c2421; --muted: #5f6b66; --line: #dde2df;
+  --accent: #0f6e66; --accent-soft: #e2f1ee; --warn: #a8540b; --warn-soft: #fbefe2;
+  --bad: #b3261e; --ok: #2c7a3f; --chip: #eef1ef; --radius: 10px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121615; --panel: #1a201e; --ink: #e5ebe8; --muted: #9aa7a1; --line: #2c3532;
+    --accent: #4fc1b3; --accent-soft: #173431; --warn: #f0a55a; --warn-soft: #3a2a19;
+    --bad: #f08a83; --ok: #74c98a; --chip: #232b28; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121615; --panel: #1a201e; --ink: #e5ebe8; --muted: #9aa7a1; --line: #2c3532;
+  --accent: #4fc1b3; --accent-soft: #173431; --warn: #f0a55a; --warn-soft: #3a2a19;
+  --bad: #f08a83; --ok: #74c98a; --chip: #232b28; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+header { background: var(--panel); border-bottom: 1px solid var(--line); padding: 10px 20px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+header h1 { font-size: 16px; margin: 0; font-weight: 650; }
+header .spacer { flex: 1; }
+.saved { font-size: 12px; color: var(--muted); }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; background: transparent; padding: 4px 10px; color: var(--muted); cursor: pointer; font: inherit; font-size: 13px; }
+.seg button.on { background: var(--accent); color: #fff; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 24px; max-width: 1180px; margin: 0 auto; padding: 24px 20px 80px; }
+.intro { color: var(--muted); margin: 0 0 18px; max-width: 70ch; }
+.intro code, .hint code { font-size: 12.5px; }
+
+section.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 16px; }
+section.card > h2 { margin: 0 0 4px; font-size: 17px; display: flex; gap: 10px; align-items: baseline; }
+section.card > h2 .n { color: var(--muted); font-weight: 500; font-size: 14px; }
+section.card > .lede { color: var(--muted); font-size: 13.5px; margin: 0 0 14px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); gap: 12px 16px; }
+.wide { grid-column: 1 / -1; }
+.f label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.req { color: var(--bad); margin-left: 2px; }
+.hint { font-size: 12px; color: var(--muted); margin-top: 3px; }
+input[type=text], input[type=email], input[type=date], select, textarea {
+  width: 100%; padding: 7px 10px; border: 1px solid var(--line); border-radius: 7px;
+  background: var(--panel); color: var(--ink); font: inherit;
+}
+textarea { min-height: 54px; resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: var(--accent); }
+.flash { animation: flash 1.2s; }
+@keyframes flash { 0%, 40% { background: var(--warn-soft); } }
+
+.btn { border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 8px; padding: 6px 13px; font: inherit; font-size: 14px; cursor: pointer; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.ghost { border-color: transparent; color: var(--muted); }
+.btn.small { padding: 3px 10px; font-size: 13px; }
+
+.yesno { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin: 6px 0 4px; }
+.yesno .q { font-weight: 600; font-size: 14px; }
+.yesno label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; font-size: 14px; }
+.yesno input, .mhead input { accent-color: var(--accent); }
+.sub { margin: 10px 0 4px; padding: 12px 14px; border-left: 3px solid var(--accent-soft); }
+.subhead { display: flex; justify-content: space-between; align-items: center; margin: 0 0 8px; font-size: 13px; font-weight: 700; color: var(--muted); }
+
+
+.row { display: grid; gap: 10px; align-items: end; margin-bottom: 10px; }
+.row.author { grid-template-columns: 1fr 1fr 1fr auto; }
+.row.comp { grid-template-columns: 150px 1fr 1fr auto; }
+
+.panel-name { margin: 18px 0 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.panel-name:first-of-type { margin-top: 6px; }
+.metric { border: 1px solid var(--line); border-radius: 8px; margin-bottom: 6px; }
+.metric.on { border-color: var(--accent); }
+.mhead { display: flex; align-items: center; gap: 10px; padding: 8px 12px; cursor: pointer; flex-wrap: wrap; }
+.mhead input { width: 17px; height: 17px; flex: none; margin: 0; }
+.mname { font-weight: 600; }
+.mcode { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--muted); }
+.mdesc { font-size: 12.5px; color: var(--muted); flex-basis: 100%; padding-left: 27px; margin-top: -2px; }
+.mbody { border-top: 1px solid var(--line); padding: 12px 14px 14px 39px; }
+.extras { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.extras .q { font-size: 13px; font-weight: 600; }
+.ticks { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.ticks label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; font-size: 13.5px; }
+.ticks input { accent-color: var(--accent); margin: 0; }
+.ticks code { font-size: 12px; color: var(--muted); }
+
+aside { position: sticky; top: 16px; align-self: start; display: flex; flex-direction: column; gap: 14px; max-height: calc(100vh - 32px); overflow: auto; }
+aside .box { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+aside h3 { margin: 0 0 8px; font-size: 14px; }
+.status { font-weight: 600; }
+.status.ok { color: var(--ok); }
+.status.todo { color: var(--warn); }
+ul.todo { list-style: none; padding: 0; margin: 8px 0 0; font-size: 13px; max-height: 220px; overflow: auto; }
+ul.todo li { padding: 3px 0; }
+ul.todo a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--muted); cursor: pointer; }
+ul.todo a:hover { color: var(--accent); border-color: var(--accent); }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+pre.code { background: var(--chip); border-radius: 8px; padding: 10px 12px; overflow: auto; font-size: 12px; line-height: 1.45; margin: 0; max-height: 380px; }
+.cols { font-family: ui-monospace, Menlo, monospace; font-size: 12px; background: var(--chip); border-radius: 6px; padding: 8px 10px; word-break: break-all; margin: 4px 0 6px; }
+.cols-name { font-size: 13px; font-weight: 600; margin-top: 8px; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: minmax(0, 1fr); padding: 16px; }
+  aside { position: static; max-height: none; }
+  section.card { padding: 14px; }
+  .row.author, .row.comp { grid-template-columns: 1fr; }
+  .mbody { padding-left: 14px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>FSAR assessment.yaml</h1>
+  <span class="spacer"></span>
+  <span class="saved" id="saved"></span>
+  <button class="btn small ghost" data-act="example" id="btn-example"></button>
+  <button class="btn small ghost" data-act="reset" id="btn-reset"></button>
+  <div class="seg" role="group" aria-label="Language / Langue">
+    <button data-lang="en">EN</button><button data-lang="fr">FR</button>
+  </div>
+</header>
+
+<div class="layout">
+  <main>
+    <p class="intro" id="intro"></p>
+    <div id="form"></div>
+  </main>
+  <aside id="side"></aside>
+</div>
+
+<script>
+// ---------------------------------------------------------------------------
+// Vocabulary (mirrors ../vocab/*.csv)
+// ---------------------------------------------------------------------------
+const METRICS = [
+  ["catch","Catch","Prises","catch","series","both","mass|count","Total removals. Give an interval if removals are uncertain (e.g. recreational catch).","Prélèvements totaux. Donnez un intervalle si les prélèvements sont incertains (p. ex. pêche récréative)."],
+  ["total_allowable_catch","TAC","TAC","catch","context","both","mass|count","Total allowable catch.","Total autorisé des captures."],
+  ["msy","MSY","RMD","catch","context","stock","mass|count","Maximum sustainable yield, if estimated.","Rendement maximal soutenu, s'il est estimé."],
+  ["spawning_stock","Spawning stock","Stock reproducteur","stock","series","both","mass|count","SSB in mass units; spawner abundance in count units.","BSR en unités de masse; abondance des géniteurs en nombre."],
+  ["total_stock","Total stock","Stock total","stock","series","both","mass|count","Whole stock above any minimum age.","Stock entier au-dessus d'un éventuel âge minimal."],
+  ["exploitable_stock","Exploitable stock","Stock exploitable","stock","series","both","mass|count","Only if it's the main stock-size series, e.g. snow crab exploitable biomass or fishable shrimp biomass. Most stocks don't need it.",
+    "Seulement si c'est la principale série de taille du stock, p. ex. biomasse exploitable du crabe des neiges ou biomasse pêchable de la crevette. La plupart des stocks n'en ont pas besoin."],
+  ["index","Index","Indice","stock","series","both","index","Only for assessments based on an index rather than a population model (e.g. trap CPUE in kg/trap). Leave unticked if a model estimates stock size, even if it's fit to surveys.",
+    "Seulement pour les évaluations fondées sur un indice plutôt que sur un modèle de population (p. ex. CPUE au casier en kg/casier). Laissez décoché si un modèle estime la taille du stock, même s'il est ajusté à des relevés."],
+  ["limit_reference","LRP","PRL","stock","reference","stock","mass|count|index","Limit reference point.","Point de référence limite."],
+  ["upper_stock_reference","USR","PRS","stock","reference","stock","mass|count|index","Upper stock reference point.","Point de référence supérieur du stock."],
+  ["target_reference","TRP","PRC","stock","reference","stock","mass|count|index","Target reference point.","Point de référence cible."],
+  ["lower_threshold","Lower threshold","Seuil inférieur","stock","reference","component","mass|count|index","Lower threshold for components (e.g. salmon CU lower benchmark).","Seuil inférieur des composantes (p. ex. repère inférieur d'une UC de saumon)."],
+  ["upper_threshold","Upper threshold","Seuil supérieur","stock","reference","component","mass|count|index","Upper threshold for components (e.g. salmon CU upper benchmark).","Seuil supérieur des composantes (p. ex. repère supérieur d'une UC de saumon)."],
+  ["fishing_pressure","Fishing pressure","Pression de pêche","fishing_pressure","series","both","rate|proportion","F in 1/yr, or a harvest rate (catch / stock) as a proportion.","F en 1/an, ou un taux d'exploitation (prises / stock) en proportion."],
+  ["removal_reference","Removal reference","Taux de prélèvement de référence","fishing_pressure","reference","stock","rate|proportion","Removal reference (RR).","Taux de prélèvement de référence (TPR)."],
+  ["removal_threshold","Removal threshold","Seuil de prélèvement","fishing_pressure","reference","component","rate|proportion","Removal threshold for components.","Seuil de prélèvement des composantes."],
+  ["natural_mortality","M","M","fishing_pressure","context","both","rate","Instantaneous natural mortality.","Mortalité naturelle instantanée."],
+  ["recruitment","Recruitment","Recrutement","recruitment","series","both","count|mass","Recruits at a given age.","Recrues à un âge donné."],
+].map(([id,en,fr,panel,role,level,dims,desc_en,desc_fr]) => ({id,en,fr,panel,role,level,dims:dims.split("|"),desc_en,desc_fr}));
+const mlabel = m => L(m.en, m.fr);
+const M = Object.fromEntries(METRICS.map(m => [m.id, m]));
+const PANELS = [["catch","Catch","Prises"],["stock","Stock size","Taille du stock"],["fishing_pressure","Fishing pressure","Pression de pêche"],["recruitment","Recruitment","Recrutement"]];
+const STOCK_SERIES = ["spawning_stock","total_stock","exploitable_stock","index"];
+const PRESSURE_SERIES = ["fishing_pressure"];
+
+const UNITS = [
+  ["kg","mass","kg","kg"],["t","mass","t (tonnes)","t (tonnes)"],["kt","mass","kt (thousand t)","kt (milliers de t)"],
+  ["n","count","number","nombre"],["thousands","count","thousands","milliers"],["millions","count","millions","millions"],["billions","count","billions","milliards"],
+  ["1/yr","rate","1/yr","1/an"],["proportion","proportion","proportion","proportion"],
+  ["kg/tow","index","kg/tow","kg/trait"],["n/tow","index","number/tow","nombre/trait"],["kg/km2","index","kg/km²","kg/km²"],["n/km2","index","number/km²","nombre/km²"],
+  ["kg/trap","index","kg/trap","kg/casier"],["relative","index","relative","relatif"],
+].map(([id,dim,en,fr]) => ({id,dim,en,fr}));
+
+// [code, English label, French label]
+const V = {
+  basis: [["b_msy","B_MSY","B_RMD"],["b_msy_proxy","B_MSY proxy (describe in notes)","Approximation de B_RMD (décrire dans les notes)"],
+    ["b0","B0 (unfished)","B0 (non exploité)"],["b_recover","B_recover","B_rétablissement"],["s_msy","S_MSY","S_RMD"],["s_gen","S_gen","S_gen"],
+    ["mean","Mean over a period","Moyenne sur une période"],["percentile","Percentile over a period (incl. median)","Centile sur une période (y compris la médiane)"],
+    ["f_msy","F_MSY","F_RMD"],["u_msy","U_MSY","U_RMD"],["f_0.1","F_0.1","F_0.1"],["f_spr","F_SPR (e.g. F40%)","F_SPR (p. ex. F40%)"],["other","Other (explain in notes)","Autre (expliquer dans les notes)"]],
+  type: [["average","Average over ages","Moyenne sur les âges"],["apical","Apical (fully selected)","Apicale (pleinement sélectionnée)"],["aggregate","Aggregate (no age structure)","Agrégée (sans structure d'âge)"]],
+  interval: [["confidence","Confidence","Confiance"],["credible","Credible","Crédibilité"]],
+  method: [["age_structured","Age-structured","Structuré selon l'âge"],["length_structured","Length-structured","Structuré selon la longueur"],["stage_structured","Stage-structured","Structuré selon le stade"],
+    ["surplus_production","Surplus production","Production excédentaire"],["delay_difference","Delay-difference","Différence-délai"],["spawner_recruit","Spawner-recruit","Géniteurs-recrues"],
+    ["index_based","Index-based","Fondé sur un indice"],["other","Other","Autre"]],
+  software: [["ss3","Stock Synthesis (SS3)","Stock Synthesis (SS3)"],["wham","WHAM","WHAM"],["fims","FIMS","FIMS"],["sam","SAM","SAM"],["iscam","iSCAM","iSCAM"],
+    ["jags","JAGS custom model","Modèle personnalisé JAGS"],["stan","Stan custom model","Modèle personnalisé Stan"],
+    ["tmb","TMB / RTMB custom model","Modèle personnalisé TMB / RTMB"],
+    ["r","R custom model","Modèle personnalisé R"],["python","Python custom model","Modèle personnalisé Python"],["none","None (no model)","Aucun (pas de modèle)"]],
+  atype: [["full","Full assessment","Évaluation complète"],["update","Update (interim or indicator)","Mise à jour (intermédiaire ou des indicateurs)"]],
+  management: [["dfo","DFO","MPO"],["nafo","NAFO","OPANO"],["iccat","ICCAT","CICTA"],["nasco","NASCO","OCSAN"],
+    ["psc","Pacific Salmon Commission","Commission du saumon du Pacifique"],["iphc","IPHC","CIFP"],["other","Other","Autre"]],
+  region: [["newfoundland_labrador","Newfoundland and Labrador","Terre-Neuve-et-Labrador"],["maritimes","Maritimes","Maritimes"],["gulf","Gulf","Golfe"],["quebec","Quebec","Québec"],
+    ["ontario_prairie","Ontario and Prairie","Ontario et Prairies"],["arctic","Arctic","Arctique"],["pacific","Pacific","Pacifique"]],
+  series: [["fsar","Fisheries Science Advisory Report","Avis scientifique sur les pêches"],["sar","Science Advisory Report","Avis scientifique"],
+    ["resdoc","Research Document","Document de recherche"],["sr","Science Response","Réponse des Sciences"]],
+};
+const opts = list => list.map(([k, en, fr]) => [k, L(en, fr)]);
+const STOCK_BASIS = ["b_msy","b_msy_proxy","b0","b_recover","s_msy","s_gen","mean","percentile","other"];
+const REMOVAL_BASIS = ["f_msy","u_msy","f_0.1","f_spr","other"];
+// Extra fields some bases need (mirrors basis_fields in ../R/fsar-data.R).
+const BASIS_FIELDS = { mean: ["period"], percentile: ["period", "percentile"],
+  f_spr: ["spr"], b_msy_proxy: ["notes"], other: ["notes"] };
+const basisNeeds = (id, f) => (BASIS_FIELDS[S.metrics[id].f.basis] || []).includes(f);
+// metric -> fields in YAML order; "yes" required, "no" optional, "if" conditional
+const MF = {
+  catch: {units:"yes", notes:"no"},
+  total_allowable_catch: {units:"yes", notes:"no"},
+  msy: {units:"yes", notes:"no"},
+  spawning_stock: {units:"yes", min_age:"no", max_age:"no", notes:"no"},
+  total_stock: {units:"yes", min_age:"no", max_age:"no", notes:"no"},
+  exploitable_stock: {units:"yes", min_age:"no", max_age:"no", notes:"no"},
+  index: {units:"yes", survey:"yes", min_age:"no", max_age:"no", notes:"no"},
+  limit_reference: {units:"yes", applies_to:"if", basis:"yes", multiplier:"yes", period:"if", percentile:"if", notes:"no"},
+  upper_stock_reference: {units:"yes", applies_to:"if", basis:"yes", multiplier:"yes", period:"if", percentile:"if", notes:"no"},
+  target_reference: {units:"yes", applies_to:"if", basis:"yes", multiplier:"yes", period:"if", percentile:"if", notes:"no"},
+  lower_threshold: {units:"yes", applies_to:"if", basis:"yes", multiplier:"yes", period:"if", percentile:"if", notes:"no"},
+  upper_threshold: {units:"yes", applies_to:"if", basis:"yes", multiplier:"yes", period:"if", percentile:"if", notes:"no"},
+  fishing_pressure: {units:"yes", type:"if", min_age:"if", max_age:"if", applies_to:"if", notes:"no"},
+  removal_reference: {units:"yes", basis:"yes", multiplier:"yes", spr:"if", notes:"no"},
+  removal_threshold: {units:"yes", basis:"yes", multiplier:"yes", spr:"if", notes:"no"},
+  natural_mortality: {units:"yes", min_age:"no", max_age:"no", notes:"no"},
+  recruitment: {units:"yes", age:"yes", notes:"no"},
+};
+const FIELD_LABEL = { units:["Units","Unités"], basis:["Basis","Base"],
+  multiplier:["Multiplier","Multiplicateur"], period:["Period","Période"], percentile:["Percentile","Centile"], spr:["SPR (%)","SPR (%)"],
+  applies_to:["Relative to","Par rapport à"], type:["How F is summarized","Calcul de F"], min_age:["Min age","Âge min."],
+  max_age:["Max age","Âge max."], age:["Age at recruitment","Âge au recrutement"], survey:["Survey or fishery","Relevé ou pêche"], notes:["Notes","Notes"] };
+const FL = f => L(...FIELD_LABEL[f]);
+// Starting units when a metric is ticked; people change them if needed.
+const DEFAULT_UNITS = { catch: "t", spawning_stock: "t", total_stock: "t", exploitable_stock: "t",
+  index: "kg/tow", fishing_pressure: "1/yr", natural_mortality: "1/yr", recruitment: "millions" };
+const NUM_FIELDS = ["multiplier","min_age","max_age","age","percentile","spr"];
+
+// ---------------------------------------------------------------------------
+// State
+// ---------------------------------------------------------------------------
+const KEY = "fsar-yaml-draft-v2", ME_KEY = "fsar-yaml-me-v1", LANG_KEY = "fsar-yaml-lang-v1";
+let LANG = "en";
+try { LANG = localStorage.getItem(LANG_KEY) || ((navigator.language || "").startsWith("fr") ? "fr" : "en"); } catch {}
+function L(en, fr) { return LANG === "fr" ? fr : en; }
+const colon = () => L(": ", " : ");
+const today = () => new Date().toISOString().slice(0, 10);
+const blankAuthor = () => ({ given: "", family: "", orcid: "" });
+const blankPub = () => ({ series: "", number: "", year: "", url: "", doi: "", title: { en: "", fr: "" }, authors: [blankAuthor()] });
+function blank() {
+  let me = {};
+  try { me = JSON.parse(localStorage.getItem(ME_KEY)) || {}; } catch {}
+  return {
+    me: { name: me.name || "", email: me.email || "", date: today() },
+    year_assessed: "", assessment_type: "",
+    stock: { name: { en: "", fr: "" }, species: { scientific: "", en: "", fr: "", aphia_id: "" }, area: { en: "", fr: "" },
+      region: "", management: "dfo", fish_stock_provisions: "", in_sustainability_survey: "", ram_legacy_id: "" },
+    method: { type: "", software: "", notes: "" },
+    meeting: { date: "", url: "", csas_process: "" },
+    pubs: [blankPub()],
+    hasComp: "no", comps: [],
+    hasBounds: "yes", interval: { level: "0.95", type: "" },
+    metrics: {},
+  };
+}
+let S;
+try { S = JSON.parse(localStorage.getItem(KEY)); } catch {}
+if (!S || !S.me) S = blank();
+METRICS.forEach(m => S.metrics[m.id] ||= { on: false, f: {} });
+METRICS.forEach(m => S.metrics[m.id].ratios ||= {});
+
+let saveTimer;
+function save() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(S));
+      localStorage.setItem(ME_KEY, JSON.stringify({ name: S.me.name, email: S.me.email }));
+      $("#saved").textContent = L("Draft saved", "Brouillon enregistré");
+    } catch {}
+  }, 300);
+}
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const get = p => p.split(".").reduce((x, k) => x == null ? x : x[k], S);
+function set(p, v) { const ks = p.split("."); const last = ks.pop(); ks.reduce((x, k) => x[k] ??= {}, S)[last] = v; }
+const on = id => S.metrics[id].on;
+const blankish = v => v == null || String(v).trim() === "";
+const slug = s => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const autoId = () => [slug(S.stock.name.en), S.year_assessed].filter(Boolean).join("-");
+const assessmentId = autoId;
+
+// Metrics shown in the list: component-only ones need components.
+const visible = m => m.level !== "component" || S.hasComp === "yes";
+const chosen = () => METRICS.filter(m => visible(m) && on(m.id));
+// Series a reference point / harvest rate could be relative to.
+function targets(id) {
+  const m = M[id];
+  const pool = m.panel === "fishing_pressure" && m.role === "reference" ? PRESSURE_SERIES : STOCK_SERIES;
+  return pool.filter(s => on(s));
+}
+function resolvedTarget(id) {
+  const t = targets(id);
+  return t.length === 1 ? t[0] : S.metrics[id].f.applies_to || "";
+}
+// What a series can be a ratio to (mirrors ratio_denominators()): ticked reference
+// points that apply to it, then B_MSY or F_MSY. None for catch or recruitment.
+const MSY_BASIS = { stock: "b_msy", fishing_pressure: "f_msy" };
+function ratioOptions(id) {
+  const m = M[id];
+  if (m.role !== "series" || !MSY_BASIS[m.panel]) return [];
+  const refs = chosen().filter(r => r.panel === m.panel && r.role === "reference" && resolvedTarget(r.id) === id).map(r => r.id);
+  return [...refs, MSY_BASIS[m.panel]];
+}
+const denLabel = den => M[den] ? mlabel(M[den]) : L(...V.basis.find(([k]) => k === den).slice(1));
+const ratioOn = (id, den) => !!S.metrics[id].ratios[den];
+const ratios = id => ratioOptions(id).filter(den => ratioOn(id, den));
+// Bounds: optional for catch (ticked), always listed for other series, ratios and
+// MSY, never for reference points, the TAC, or M.
+const hasCI = id => S.hasBounds === "yes" && (id === "catch" ? !!S.metrics[id].ci : M[id].role === "series" || id === "msy");
+
+// The series whose units a metric should follow: a reference's series, or catch for the TAC.
+function unitSource(id) {
+  if (id === "total_allowable_catch" || id === "msy") return on("catch") ? "catch" : "";
+  if (M[id].role !== "reference") return "";
+  return resolvedTarget(id) || targets(id)[0] || "";
+}
+function defaultUnits(id) {
+  const src = unitSource(id);
+  if (src && S.metrics[src].f.units) return S.metrics[src].f.units;
+  if (DEFAULT_UNITS[id]) return DEFAULT_UNITS[id];
+  return M[id].panel === "fishing_pressure" ? "1/yr" : "t";
+}
+// Fill in units for ticked metrics that don't have any yet (series first, so references can follow them).
+function fillUnits() {
+  for (const m of chosen()) if (blankish(S.metrics[m.id].f.units)) S.metrics[m.id].f.units = defaultUnits(m.id);
+}
+// Fishing pressure in 1/yr is F (needs `type`); as a proportion it's a harvest rate (may need `applies_to`).
+const isF = id => id === "fishing_pressure" && S.metrics[id].f.units !== "proportion";
+const isHR = id => id === "fishing_pressure" && S.metrics[id].f.units === "proportion";
+function needs(id, f) {
+  const r = MF[id][f];
+  if (r === "yes") return true;
+  if (r !== "if") return false;
+  if (f === "type") return isF(id);
+  if (f === "applies_to") return targets(id).length > 1;
+  if (f === "min_age" || f === "max_age") return S.metrics[id].f.type === "average";
+  return false;
+}
+const required = (id, f) => needs(id, f) || basisNeeds(id, f);
+function shown(id, f) {
+  if (id === "fishing_pressure" && ["type", "min_age", "max_age"].includes(f)) return isF(id);
+  if (id === "fishing_pressure" && f === "applies_to") return isHR(id) && targets(id).length > 1;
+  if (f === "applies_to") return targets(id).length > 1;
+  if (["period", "percentile", "spr"].includes(f)) return basisNeeds(id, f);
+  return true;
+}
+
+// ---------------------------------------------------------------------------
+// Form
+// ---------------------------------------------------------------------------
+function input(path, label, o = {}) {
+  const v = get(path) ?? "";
+  const req = o.req ? `<span class="req">*</span>` : "";
+  let ctl;
+  if (o.options) {
+    ctl = `<select id="f-${path}" data-b="${path}" data-rr><option value="">${L("Choose…", "Choisir…")}</option>${
+      o.options.map(([k, l]) => `<option value="${esc(k)}"${String(v) === String(k) ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>`;
+  } else if (o.area) {
+    ctl = `<textarea id="f-${path}" data-b="${path}" placeholder="${esc(o.ph || "")}">${esc(v)}</textarea>`;
+  } else {
+    ctl = `<input type="${o.type || "text"}" id="f-${path}" data-b="${path}" value="${esc(v)}" placeholder="${esc(o.ph || "")}"${o.num ? ' inputmode="decimal"' : ""}>`;
+  }
+  return `<div class="f${o.wide ? " wide" : ""}"><label for="f-${path}">${label}${req}</label>${ctl}${o.hint ? `<div class="hint">${o.hint}</div>` : ""}</div>`;
+}
+function yesno(path, q, labels) {
+  const v = get(path);
+  const lab = labels || { yes: L("Yes", "Oui"), no: L("No", "Non") };
+  return `<div class="yesno"><span class="q">${q}</span>${["no", "yes"].map(x =>
+    `<label><input type="radio" name="${path}" data-b="${path}" value="${x}"${v === x ? " checked" : ""}> ${lab[x]}</label>`).join("")}</div>`;
+}
+
+function renderPub(pub, i) {
+  const p = `pubs.${i}`;
+  return `<div class="sub">
+    <div class="subhead">${L(`Publication ${i + 1}`, `Publication ${i + 1}`)}
+      ${S.pubs.length > 1 ? `<button class="btn small ghost" data-act="rm-pub" data-i="${i}" title="${L("Remove publication", "Retirer la publication")}">✕</button>` : ""}</div>
+    <div class="grid">
+      ${input(p + ".series", L("Series", "Série"), { req: true, options: opts(V.series) })}
+      ${input(p + ".number", L("Number", "Numéro"), { req: true, ph: L("e.g. 2025/001", "p. ex. 2025/001") })}
+      ${input(p + ".year", L("Year published", "Année de publication"), { req: true, num: true })}
+      ${input(p + ".title.en", L("Title (English)", "Titre (anglais)"), { req: true, wide: true })}
+      ${input(p + ".title.fr", L("Title (French)", "Titre (français)"), { req: true, wide: true })}
+      ${input(p + ".url", "URL", { ph: "https://csas-sccs.dfo-mpo.gc.ca/…" })}
+      ${input(p + ".doi", "DOI", { ph: "https://doi.org/…" })}
+    </div>
+    <div class="f" style="margin-top:12px"><label>${L("Authors", "Auteurs")}</label></div>
+    ${pub.authors.map((a, j) => `<div class="row author">
+      ${input(`${p}.authors.${j}.given`, L("Given name", "Prénom"))}
+      ${input(`${p}.authors.${j}.family`, L("Family name", "Nom de famille"))}
+      ${input(`${p}.authors.${j}.orcid`, "ORCID", { ph: "0000-0000-0000-0000" })}
+      <button class="btn small ghost" data-act="rm-author" data-p="${i}" data-i="${j}" title="${L("Remove author", "Retirer l'auteur")}">✕</button>
+    </div>`).join("")}
+    <button class="btn small" data-act="add-author" data-p="${i}">${L("+ Add author", "+ Ajouter un auteur")}</button>
+  </div>`;
+}
+
+function renderForm() {
+  let h = "";
+
+  h += `<section class="card"><h2>${L("About you", "À propos de vous")}</h2>
+    <p class="lede">${L("The person filling in this file, in case there are questions about it.", "La personne qui remplit ce fichier, au cas où il y aurait des questions.")}</p>
+    <div class="grid">
+      ${input("me.name", L("Your name", "Votre nom"), { req: true })}
+      ${input("me.email", L("Email", "Courriel"), { req: true, type: "email" })}
+      ${input("me.date", L("Date entered", "Date de saisie"), { req: true, type: "date" })}
+    </div></section>`;
+
+  h += `<section class="card"><h2>${L("Assessment", "Évaluation")}</h2><div class="grid">
+      ${input("year_assessed", L("Year assessed", "Année de l'évaluation"), { req: true, num: true, ph: L("e.g. 2024", "p. ex. 2024") })}
+      ${input("assessment_type", L("Assessment type", "Type d'évaluation"), { req: true, options: opts(V.atype) })}
+    </div></section>`;
+
+  h += `<section class="card"><h2>Stock</h2><div class="grid">
+      ${input("stock.name.en", L("Major stock name (English)", "Nom du grand stock (anglais)"), { req: true, ph: L("e.g. 4X5Y Atlantic Cod", "p. ex. 4X5Y Atlantic Cod") })}
+      ${input("stock.name.fr", L("Major stock name (French)", "Nom du grand stock (français)"), { req: true, ph: L("e.g. Morue franche de 4X5Y", "p. ex. Morue franche de 4X5Y") })}
+      ${input("stock.region", L("DFO region", "Région du MPO"), { req: true, options: opts(V.region) })}
+      ${input("stock.area.en", L("Area (English)", "Zone (anglais)"), { ph: L("e.g. NAFO 4RST", "p. ex. NAFO 4RST") })}
+      ${input("stock.area.fr", L("Area (French)", "Zone (français)"), { ph: L("e.g. OPANO 4RST", "p. ex. OPANO 4RST") })}
+      ${input("stock.management", L("Managed by", "Géré par"), { options: opts(V.management) })}
+      ${input("stock.species.scientific", L("Species (scientific name)", "Espèce (nom scientifique)"), { req: true, ph: L("e.g. Gadus morhua", "p. ex. Gadus morhua") })}
+      ${input("stock.species.en", L("Common name (English)", "Nom commun (anglais)"), { ph: L("e.g. Atlantic cod", "p. ex. Atlantic cod") })}
+      ${input("stock.species.fr", L("Common name (French)", "Nom commun (français)"), { ph: L("e.g. Morue franche", "p. ex. Morue franche") })}
+      ${input("stock.species.aphia_id", "AphiaID", { num: true, ph: L("e.g. 126436", "p. ex. 126436"),
+        hint: L(`From <a href="https://www.marinespecies.org" target="_blank" rel="noopener">WoRMS</a>`, `Tiré de <a href="https://www.marinespecies.org" target="_blank" rel="noopener">WoRMS</a>`) })}
+      ${input("stock.ram_legacy_id", L("RAM Legacy ID", "Identifiant RAM Legacy"), { ph: L("e.g. DFO-GULF-WITFLOUN4RST", "p. ex. DFO-GULF-WITFLOUN4RST") })}
+    </div>
+    ${yesno("stock.fish_stock_provisions", L("Prescribed under the Fish Stocks provisions?", "Visé par les dispositions relatives aux stocks de poissons?"))}
+    <div class="hint">${L(`Prescribed stocks are listed in Schedule IX of the <a href="https://laws-lois.justice.gc.ca/eng/regulations/SOR-93-53/" target="_blank" rel="noopener">Fishery (General) Regulations</a>. See also the <a href="https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/guidelines-lignes-directrices-eng.htm" target="_blank" rel="noopener">DFO guidelines</a>.`,
+      `Les stocks visés figurent à l'annexe IX du <a href="https://laws-lois.justice.gc.ca/fra/reglements/DORS-93-53/" target="_blank" rel="noopener">Règlement de pêche (dispositions générales)</a>.`)}</div>
+    ${yesno("stock.in_sustainability_survey", L("In the Sustainability Survey for Fisheries?", "Dans le Sondage sur la durabilité des pêches?"))}
+    <div class="hint">${L(`See the <a href="https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html" target="_blank" rel="noopener">Sustainability Survey for Fisheries</a> for the list of stocks.`,
+      `Voir le <a href="https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-fra.html" target="_blank" rel="noopener">Sondage sur la durabilité des pêches</a> pour la liste des stocks.`)}</div>
+    ${yesno("hasComp", L("Is the stock also reported by component (e.g. CUs, herring sections, fishing areas)?",
+      "Le stock est-il aussi présenté par composante (p. ex. UC, sections de hareng, zones de pêche)?"))}
+    ${S.hasComp === "yes" ? `<div class="sub">
+      ${S.comps.map((c, i) => `<div class="row comp">
+        ${input(`comps.${i}.id`, L("ID", "Identifiant"), { ph: slug(c.en).replace(/-/g, "_") || L("north", "nord") })}
+        ${input(`comps.${i}.en`, L("Name (English)", "Nom (anglais)"), { req: true })}
+        ${input(`comps.${i}.fr`, L("Name (French)", "Nom (français)"), { req: true })}
+        <button class="btn small ghost" data-act="rm-comp" data-i="${i}" title="${L("Remove component", "Retirer la composante")}">✕</button>
+      </div>`).join("")}
+      <button class="btn small" data-act="add-comp">${L("+ Add component", "+ Ajouter une composante")}</button>
+      <div class="hint" style="margin-top:6px">${L("The ID is what goes in the <code>component</code> column of <code>component_timeseries.csv</code>.",
+        "L'identifiant est ce qui va dans la colonne <code>component</code> de <code>component_timeseries.csv</code>.")}</div>
+    </div>` : ""}
+  </section>`;
+
+  h += `<section class="card"><h2>${L("Method", "Méthode")}</h2><div class="grid">
+      ${input("method.type", L("Model type", "Type de modèle"), { req: true, options: opts(V.method) })}
+      ${input("method.software", L("Software", "Logiciel"), { req: true, options: opts(V.software) })}
+      ${S.method.type === "other" ? input("method.notes", L("Describe the model type", "Décrivez le type de modèle"), { req: true, wide: true, area: true }) : ""}
+    </div></section>`;
+
+  h += `<section class="card"><h2>${L("Meeting and publications", "Réunion et publications")}</h2>
+    <p class="lede">${L("The peer-review meeting, and each document from it (e.g. the FSAR or SAR and its Research Document).",
+      "La réunion d'examen par les pairs et chaque document qui en découle (p. ex. l'ASP ou l'AS et son document de recherche).")}</p>
+    <div class="grid">
+      ${input("meeting.date", L("Meeting date", "Date de la réunion"), { type: "date" })}
+      ${input("meeting.url", L("Meeting page URL", "URL de la page de la réunion"), { ph: "https://csas-sccs.dfo-mpo.gc.ca/…" })}
+      ${input("meeting.csas_process", L("CSAS process URL (dmapps)", "URL du processus du SCCS (dmapps)"), { ph: "https://dmapps/en/csas-sccs/processes/…" })}
+    </div>
+    ${S.pubs.map(renderPub).join("")}
+    <button class="btn small" data-act="add-pub" style="margin-top:8px">${L("+ Add publication", "+ Ajouter une publication")}</button>
+  </section>`;
+
+  // Metrics
+  h += `<section class="card"><h2>${L("Columns in your CSV", "Colonnes de votre CSV")}</h2>
+    <p class="lede">${L("Tick each time series you have. Each one is a column in your CSV, and needs a few details here.",
+      "Cochez chaque série chronologique que vous avez. Chacune est une colonne de votre CSV et demande quelques détails ici.")}</p>
+    ${yesno("hasBounds", L("Do any columns have uncertainty intervals (<code>_lower</code> / <code>_upper</code>)?",
+      "Des colonnes ont-elles des intervalles d'incertitude (<code>_lower</code> / <code>_upper</code>)?"))}
+    ${S.hasBounds === "yes" ? `<div class="sub"><div class="grid">
+      ${input("interval.level", L("Interval level", "Niveau de l'intervalle"), { req: true, options: [50, 55, 60, 65, 70, 75, 80, 85, 90, 95].map(p => [String(p / 100), L(`${p}%`, `${p} %`)]) })}
+      ${input("interval.type", L("Interval type", "Type d'intervalle"), { req: true, options: opts(V.interval) })}
+    </div></div>` : ""}`;
+  for (const [panel, en, fr] of PANELS) {
+    h += `<div class="panel-name">${L(en, fr)}</div>`;
+    for (const m of METRICS.filter(m => m.panel === panel && visible(m))) h += renderMetric(m);
+  }
+  h += `</section>`;
+
+  $("#form").innerHTML = h;
+}
+
+function renderMetric(m) {
+  const st = S.metrics[m.id];
+  let body = "";
+  if (st.on) {
+    const fields = Object.keys(MF[m.id]).filter(f => shown(m.id, f));
+    const tick = (path, checked, label) =>
+      `<label><input type="checkbox" data-b="${path}"${checked ? " checked" : ""}> ${label}</label>`;
+    let extras = "";
+    if (S.hasBounds === "yes" && m.id === "catch") {
+      extras += `<div class="ticks">${tick(`metrics.${m.id}.ci`, st.ci,
+        L("Has an interval", "A un intervalle") + ` <code>${m.id}_lower</code>, <code>${m.id}_upper</code>`)}</div>`;
+    }
+    const dens = ratioOptions(m.id);
+    if (dens.length) {
+      extras += `<div class="ticks">${dens.map(den => tick(`metrics.${m.id}.ratios.${den}`, ratioOn(m.id, den),
+          L(`Has a ratio to ${denLabel(den)}, with its own interval`, `A un rapport à ${denLabel(den)}, avec son propre intervalle`) +
+          ` <code>${m.id}/${den}</code>`)).join("")}</div>`;
+    }
+    if (extras) extras = `<div class="extras">${extras}</div>`;
+    body = `<div class="mbody"><div class="grid">${fields.map(f => metricField(m, f)).join("")}</div>${extras}</div>`;
+  }
+  return `<div class="metric${st.on ? " on" : ""}">
+    <label class="mhead"><input type="checkbox" data-b="metrics.${m.id}.on"${st.on ? " checked" : ""}>
+      <span class="mname">${esc(mlabel(m))}</span><span class="mcode">${m.id}</span>
+      <span class="mdesc">${esc(L(m.desc_en, m.desc_fr))}</span></label>${body}</div>`;
+}
+
+function metricField(m, f) {
+  const path = `metrics.${m.id}.f.${f}`;
+  const o = { req: required(m.id, f) };
+  if (f === "units") {
+    o.options = UNITS.filter(u => m.dims.includes(u.dim)).map(u => [u.id, L(u.en, u.fr)]);
+    if (m.role === "reference" && resolvedTarget(m.id)) o.hint = L("Same units as", "Mêmes unités que") + ` <code>${resolvedTarget(m.id)}</code>.`;
+    if (m.id === "fishing_pressure") o.hint = L("1/yr for F; proportion for a harvest rate.", "1/an pour F; proportion pour un taux d'exploitation.");
+  }
+  if (f === "basis") o.options = opts(V.basis.filter(([k]) => (m.panel === "fishing_pressure" ? REMOVAL_BASIS : STOCK_BASIS).includes(k)));
+  if (f === "type") o.options = opts(V.type);
+  if (f === "applies_to") {
+    o.options = targets(m.id).map(t => [t, mlabel(M[t])]);
+    o.hint = m.id === "fishing_pressure" ? L("Which stock series catch is divided by.", "Série du stock par laquelle les prises sont divisées.")
+      : L("Which series this is compared to.", "Série à laquelle ceci est comparé.");
+  }
+  if (f === "multiplier") { o.num = true; o.ph = L("e.g. 0.4", "p. ex. 0.4"); o.hint = L("e.g. 0.4 for 0.4 B_MSY", "p. ex. 0.4 pour 0.4 B_RMD"); }
+  if (f === "min_age" || f === "max_age" || f === "age") o.num = true;
+  if (f === "max_age" && m.id !== "fishing_pressure") o.hint = L("Blank = plus group", "Vide = groupe plus");
+  if (f === "survey") o.ph = L("e.g. RV summer survey", "p. ex. relevé de recherche d'été");
+  if (f === "notes") {
+    o.wide = true; o.area = true;
+    if (S.metrics[m.id].f.basis === "b_msy_proxy") o.ph = L("What the proxy is, e.g. mean SSB over 1983–2018.", "Ce qu'est l'approximation, p. ex. BSR moyenne de 1983 à 2018.");
+    if (S.metrics[m.id].f.basis === "other") o.ph = L("Explain the basis.", "Expliquez la base.");
+  }
+  if (f === "percentile") { o.num = true; o.ph = L("e.g. 25", "p. ex. 25"); o.hint = L("50 for the median", "50 pour la médiane"); }
+  if (f === "spr") { o.num = true; o.ph = L("e.g. 40", "p. ex. 40"); o.hint = L("40 for F40%", "40 pour F40%"); }
+  if (f === "period") {
+    const base = `metrics.${m.id}.f.period_`;
+    return `<div class="f"><label for="f-${base}from">${L("Period (first and last year)", "Période (première et dernière année)")}<span class="req">*</span></label>
+      <div style="display:flex;gap:6px;align-items:center">
+        <input type="text" inputmode="numeric" id="f-${base}from" data-b="${base}from" value="${esc(S.metrics[m.id].f.period_from || "")}" placeholder="1985">
+        –<input type="text" inputmode="numeric" id="f-${base}to" data-b="${base}to" value="${esc(S.metrics[m.id].f.period_to || "")}" placeholder="2009">
+      </div><div class="hint">${L(`Years the ${S.metrics[m.id].f.basis} is taken over`, "Années sur lesquelles porte le calcul")}</div></div>`;
+  }
+  return input(path, FL(f), o);
+}
+
+// ---------------------------------------------------------------------------
+// Checks (a light version of validate_assessment() in ../R/fsar-data.R)
+// ---------------------------------------------------------------------------
+function issues() {
+  const out = [];
+  const need = (path, what) => { if (blankish(get(path))) out.push([path, what]); };
+  const isNum = v => blankish(v) || /^-?\d*\.?\d+(e-?\d+)?$/i.test(String(v).trim());
+  const isInt = v => blankish(v) || /^\d+$/.test(String(v).trim());
+
+  need("me.name", L("Your name", "Votre nom"));
+  need("me.email", L("Your email", "Votre courriel"));
+  if (!blankish(S.me.email) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.me.email.trim())) out.push(["me.email", L("Your email doesn't look right", "Votre courriel semble incorrect")]);
+  need("me.date", L("Date entered", "Date de saisie"));
+  need("year_assessed", L("Year assessed", "Année de l'évaluation"));
+  if (!blankish(S.year_assessed) && !/^\d{4}$/.test(S.year_assessed.trim())) out.push(["year_assessed", L("Year assessed should be a 4-digit year", "L'année de l'évaluation doit compter 4 chiffres")]);
+  need("assessment_type", L("Assessment type", "Type d'évaluation"));
+  need("stock.name.en", L("Major stock name (English)", "Nom du grand stock (anglais)"));
+  need("stock.name.fr", L("Major stock name (French)", "Nom du grand stock (français)"));
+  need("stock.species.scientific", L("Species", "Espèce"));
+  if (!isInt(S.stock.species.aphia_id)) out.push(["stock.species.aphia_id", L("AphiaID must be a whole number", "L'AphiaID doit être un nombre entier")]);
+  need("stock.region", L("DFO region", "Région du MPO"));
+  if (S.hasComp === "yes") {
+    if (!S.comps.length) out.push(["hasComp", L("Add at least one component", "Ajoutez au moins une composante")]);
+    const seen = new Set();
+    S.comps.forEach((c, i) => {
+      const id = compId(c);
+      if (!id) out.push([`comps.${i}.id`, L(`Component ${i + 1}: ID`, `Composante ${i + 1} : identifiant`)]);
+      else if (!/^[A-Za-z0-9_.-]+$/.test(id)) out.push([`comps.${i}.id`, L(`Component ${i + 1}: ID can't have spaces`, `Composante ${i + 1} : l'identifiant ne peut pas contenir d'espaces`)]);
+      else if (seen.has(id)) out.push([`comps.${i}.id`, L(`Component ID "${id}" is used twice`, `L'identifiant « ${id} » est utilisé deux fois`)]);
+      seen.add(id);
+      need(`comps.${i}.en`, L(`Component ${i + 1}: English name`, `Composante ${i + 1} : nom anglais`));
+      need(`comps.${i}.fr`, L(`Component ${i + 1}: French name`, `Composante ${i + 1} : nom français`));
+    });
+  }
+  need("method.type", L("Model type", "Type de modèle"));
+  need("method.software", L("Software", "Logiciel"));
+  if (S.method.type === "other") need("method.notes", L("Describe the model type", "Décrivez le type de modèle"));
+  S.pubs.forEach((pub, i) => {
+    const p = `pubs.${i}`, n = L(`Publication ${i + 1}: `, `Publication ${i + 1} : `);
+    need(p + ".series", n + L("series", "série"));
+    need(p + ".number", n + L("number", "numéro"));
+    need(p + ".year", n + L("year published", "année de publication"));
+    if (!blankish(pub.year) && !/^\d{4}$/.test(pub.year.trim())) out.push([p + ".year", n + L("year should have 4 digits", "l'année doit compter 4 chiffres")]);
+    need(p + ".title.en", n + L("English title", "titre anglais"));
+    need(p + ".title.fr", n + L("French title", "titre français"));
+    pub.authors.forEach((a, j) => {
+      if ((a.given || a.orcid) && blankish(a.family)) out.push([`${p}.authors.${j}.family`, n + L(`author ${j + 1} family name`, `nom de famille de l'auteur ${j + 1}`)]);
+    });
+  });
+
+  if (S.hasBounds === "yes") { need("interval.level", L("Interval level", "Niveau de l'intervalle")); need("interval.type", L("Interval type", "Type d'intervalle")); }
+
+  const ms = chosen();
+  if (!ms.length) out.push(["metrics.catch.on", L("Tick at least one column", "Cochez au moins une colonne")]);
+  for (const m of ms) {
+    const fs = S.metrics[m.id].f;
+    for (const f of Object.keys(MF[m.id])) {
+      if (!shown(m.id, f)) continue;
+      const path = `metrics.${m.id}.f.${f}`;
+      const req = required(m.id, f);
+      if (f === "period") {
+        const a = (fs.period_from || "").trim(), b = (fs.period_to || "").trim();
+        const p0 = `metrics.${m.id}.f.period_from`;
+        if (!a || !b) out.push([a ? `metrics.${m.id}.f.period_to` : p0, mlabel(m) + colon() + L("period (first and last year)", "période (première et dernière année)")]);
+        else if (!/^\d{4}$/.test(a) || !/^\d{4}$/.test(b) || +a > +b) out.push([p0, mlabel(m) + colon() + L("period should be two years, first then last", "la période doit compter deux années, la première puis la dernière")]);
+        continue;
+      }
+      const v = fs[f];
+      if (req && blankish(v)) out.push([path, mlabel(m) + colon() + FL(f).toLowerCase()]);
+      if (["multiplier", "percentile", "spr"].includes(f) && !isNum(v)) out.push([path, mlabel(m) + colon() + FL(f).toLowerCase() + L(" must be a number", " doit être un nombre")]);
+      if (["min_age", "max_age", "age"].includes(f) && !isInt(v)) out.push([path, mlabel(m) + colon() + FL(f).toLowerCase() + L(" must be a whole number", " doit être un nombre entier")]);
+    }
+    if (fs.applies_to && !targets(m.id).includes(fs.applies_to) && targets(m.id).length > 1) out.push([`metrics.${m.id}.f.applies_to`, mlabel(m) + colon() + L("pick a series that's ticked", "choisissez une série cochée")]);
+    const t = (m.role === "reference" && m.id !== "total_allowable_catch") ? resolvedTarget(m.id) : "";
+    if (t && fs.units && S.metrics[t].f.units && fs.units !== S.metrics[t].f.units) {
+      out.push([`metrics.${m.id}.f.units`, mlabel(m) + colon() + L(`units (${fs.units}) don't match ${M[t].en} (${S.metrics[t].f.units})`, `les unités (${fs.units}) ne correspondent pas à ${M[t].fr} (${S.metrics[t].f.units})`)]);
+    }
+  }
+  return out;
+}
+const compId = c => (c.id || "").trim() || slug(c.en).replace(/-/g, "_");
+
+// ---------------------------------------------------------------------------
+// YAML
+// ---------------------------------------------------------------------------
+function q(v) {
+  const s = String(v).trim();
+  const risky = s === "" || /^[-?:,\[\]{}#&*!|>'"%@`]/.test(s) || /: |\s#|\n/.test(s) ||
+    /^(true|false|yes|no|on|off|null|y|n|~)$/i.test(s) || /^[-+]?(\d[\d_]*)?\.?\d+([eE][-+]?\d+)?$/.test(s) || /:$/.test(s);
+  return risky ? JSON.stringify(s) : s;
+}
+const num = v => String(Number(String(v).trim()));
+function yaml() {
+  const L = [];
+  const put = (ind, k, v, raw) => { if (!blankish(v)) L.push(`${"  ".repeat(ind)}${k}: ${raw ? String(v).trim() : q(v)}`); };
+  // A nested block, written only if something in it is filled in.
+  const block = (ind, k, kv) => {
+    if (kv.every(([, v]) => blankish(v))) return;
+    L.push(`${"  ".repeat(ind)}${k}:`); kv.forEach(([k2, v, raw]) => put(ind + 1, k2, v, raw));
+  };
+  const st = S.stock, sp = st.species;
+  L.push("entered_by:");
+  put(1, "name", S.me.name); put(1, "email", S.me.email); put(1, "date", S.me.date, true);
+  L.push("");
+  put(0, "year_assessed", S.year_assessed, true);
+  put(0, "assessment_type", S.assessment_type);
+  L.push("", "stock:", "  name:");
+  put(2, "en", st.name.en); put(2, "fr", st.name.fr);
+  block(1, "species", [["scientific", sp.scientific], ["en", sp.en], ["fr", sp.fr], ["aphia_id", sp.aphia_id, true]]);
+  block(1, "area", [["en", st.area.en], ["fr", st.area.fr]]);
+  put(1, "region", st.region); put(1, "management", st.management);
+  if (st.fish_stock_provisions) put(1, "fish_stock_provisions", st.fish_stock_provisions === "yes" ? "true" : "false", true);
+  if (st.in_sustainability_survey) put(1, "in_sustainability_survey", st.in_sustainability_survey === "yes" ? "true" : "false", true);
+  put(1, "ram_legacy_id", st.ram_legacy_id);
+  if (S.hasComp === "yes" && S.comps.length) {
+    L.push("", "components:");
+    S.comps.forEach(c => { L.push(`  ${q(compId(c) || "?")}:`, "    name:"); put(3, "en", c.en); put(3, "fr", c.fr); });
+  }
+  L.push("", "method:");
+  put(1, "type", S.method.type); put(1, "software", S.method.software);
+  if (S.method.type === "other") put(1, "notes", S.method.notes);
+  const mt = S.meeting;
+  if (![mt.date, mt.url, mt.csas_process].every(blankish)) L.push("");
+  block(0, "meeting", [["date", mt.date, true], ["url", mt.url], ["csas_process", mt.csas_process]]);
+  L.push("", "publications:");
+  S.pubs.forEach(p => {
+    const at = L.length;
+    put(2, "series", p.series); put(2, "number", p.number); put(2, "year", p.year, true);
+    put(2, "url", p.url); put(2, "doi", p.doi);
+    block(2, "title", [["en", p.title.en], ["fr", p.title.fr]]);
+    const au = p.authors.filter(a => a.given || a.family || a.orcid);
+    if (au.length) {
+      L.push("    authors:");
+      au.forEach(a => {
+        const kv = [["given", a.given], ["family", a.family], ["orcid", a.orcid]].filter(([, v]) => !blankish(v));
+        kv.forEach(([k, v], j) => L.push(`      ${j ? "  " : "- "}${k}: ${q(v)}`));
+      });
+    }
+    if (L.length === at) L.push("    series:");
+    L[at] = "  - " + L[at].slice(4); // the first key starts the list item
+  });
+  if (S.hasBounds === "yes") {
+    L.push("", "interval:"); put(1, "level", S.interval.level, true); put(1, "type", S.interval.type);
+  }
+  L.push("", "metrics:");
+  for (const m of chosen()) {
+    L.push(`  ${m.id}:`);
+    const fs = S.metrics[m.id].f;
+    for (const f of Object.keys(MF[m.id])) {
+      if (!shown(m.id, f)) continue;
+      if (f === "period") { if (fs.period_from && fs.period_to) L.push(`    period: [${num(fs.period_from)}, ${num(fs.period_to)}]`); continue; }
+      const v = fs[f];
+      if (blankish(v)) continue;
+      put(2, f, NUM_FIELDS.includes(f) && !isNaN(Number(v)) ? num(v) : v, NUM_FIELDS.includes(f));
+    }
+  }
+  return L.join("\n") + "\n";
+}
+
+// Columns for one file, in canonical order: each metric (with its bounds), then its ratios.
+// `skip` is the level that doesn't belong in this file.
+function fileColumns(skip) {
+  const ok = id => !M[id] || M[id].level !== skip;
+  const withBounds = (col, id) => hasCI(id) ? [col, col + "_lower", col + "_upper"] : [col];
+  return chosen().filter(m => ok(m.id)).flatMap(m => [
+    ...withBounds(m.id, m.id),
+    ...ratios(m.id).filter(ok).flatMap(den => withBounds(`${m.id}/${den}`, m.id)), // ratios follow their series
+  ]);
+}
+function csvColumns() {
+  const stock = ["year", ...fileColumns("component")];
+  const comp = S.hasComp === "yes" ? ["component", "year", ...fileColumns("stock")] : null;
+  return { stock, comp };
+}
+
+// ---------------------------------------------------------------------------
+// Side panel
+// ---------------------------------------------------------------------------
+function renderSide() {
+  const is = issues();
+  const id = assessmentId() || "assessment";
+  const cols = csvColumns();
+  $("#side").innerHTML = `
+    <div class="box">
+      <h3>${esc(id)}</h3>
+      ${is.length
+        ? `<div class="status todo">${L(`${is.length} thing${is.length > 1 ? "s" : ""} left to fill in`, `${is.length} élément${is.length > 1 ? "s" : ""} à remplir`)}</div>
+           <ul class="todo">${is.map(([p, msg]) => `<li><a data-go="${esc(p)}">${esc(msg)}</a></li>`).join("")}</ul>`
+        : `<div class="status ok">✓ ${L("Ready to download", "Prêt à télécharger")}</div>`}
+      <div class="actions">
+        <button class="btn primary" data-act="download">${L("Download", "Télécharger")} assessment.yaml</button>
+        <button class="btn" data-act="copy">${L("Copy", "Copier")}</button>
+      </div>
+      <div class="hint">${L(`Save it in a folder named <code>${esc(id)}</code>, next to your CSV${cols.comp ? "s" : ""}.`,
+        `Enregistrez-le dans un dossier nommé <code>${esc(id)}</code>, avec ${cols.comp ? "vos fichiers CSV" : "votre fichier CSV"}.`)}</div>
+    </div>
+    <div class="box">
+      <h3>${L("Your CSV columns", "Colonnes de votre CSV")}</h3>
+      <div class="cols-name">stock_timeseries.csv</div>
+      <div class="cols">${cols.stock.join(",")}</div>
+      ${cols.comp ? `<div class="cols-name">component_timeseries.csv</div><div class="cols">${cols.comp.join(",")}</div>` : ""}
+      <div class="hint">${L(`One row per year${cols.comp ? " (per component)" : ""}. Leave blank cells for missing values; no units or text in cells.`,
+        `Une ligne par année${cols.comp ? " (par composante)" : ""}. Laissez vides les valeurs manquantes; pas d'unités ni de texte dans les cellules.`)}
+      ${cols.comp ? L("Leave out any component column you don't have.", "Omettez les colonnes de composante que vous n'avez pas.") : ""}
+      ${S.hasBounds === "yes" ? L(`<code>_lower</code> and <code>_upper</code> columns hold the ${Math.round(S.interval.level * 100) || "…"}% interval.`,
+        `Les colonnes <code>_lower</code> et <code>_upper</code> contiennent l'intervalle à ${Math.round(S.interval.level * 100) || "…"} %.`) : ""}
+      ${[...cols.stock, ...(cols.comp || [])].some(c => c.includes("/")) ? L("A column like <code>spawning_stock/limit_reference</code> is a ratio (here B/LRP).",
+        "Une colonne comme <code>spawning_stock/limit_reference</code> est un rapport (ici B/PRL).") : ""}</div>
+      <div class="actions"><button class="btn small" data-act="csv">${cols.comp ? L("Download blank CSVs", "Télécharger les CSV vides") : L("Download blank CSV", "Télécharger le CSV vide")}</button></div>
+    </div>
+    <div class="box">
+      <h3>${L("Preview", "Aperçu")}</h3>
+      <pre class="code">${esc(yaml())}</pre>
+    </div>`;
+}
+
+// Header and intro text, and the language buttons.
+function renderChrome() {
+  document.documentElement.lang = LANG;
+  document.querySelectorAll("[data-lang]").forEach(b => b.classList.toggle("on", b.dataset.lang === LANG));
+  $("#btn-example").textContent = L("Load example", "Charger l'exemple");
+  $("#btn-reset").textContent = L("Start over", "Recommencer");
+  $("#intro").innerHTML = L(
+    `Fill this in to create the <code>assessment.yaml</code> that describes your time series. You make the CSV yourself;
+    the panel on the right lists the columns it needs. Required fields are marked <span class="req">*</span>. Your draft is saved in this browser.`,
+    `Remplissez ce formulaire pour créer le fichier <code>assessment.yaml</code> qui décrit vos séries chronologiques. Vous préparez
+    le CSV vous-même; le panneau de droite indique les colonnes nécessaires. Les champs obligatoires sont marqués <span class="req">*</span>.
+    Votre brouillon est enregistré dans ce navigateur.`);
+}
+function render() { fillUnits(); renderChrome(); renderForm(); renderSide(); }
+
+// ---------------------------------------------------------------------------
+// Events
+// ---------------------------------------------------------------------------
+function onEdit(e) {
+  const t = e.target;
+  // Checkboxes and radios are handled on "change", everything else on "input".
+  if ((t.type === "checkbox" || t.type === "radio") !== (e.type === "change")) return;
+  const p = t.dataset.b;
+  if (!p) return;
+  if (t.type === "radio" && !t.checked) return;
+  const unitsOf = p.match(/^metrics\.(\w+)\.f\.units$/);
+  const old = unitsOf && get(p);
+  set(p, t.type === "checkbox" ? t.checked : t.value);
+  // References that were following this series' units keep following them.
+  if (unitsOf) for (const m of chosen()) {
+    if (unitSource(m.id) === unitsOf[1] && S.metrics[m.id].f.units === old) S.metrics[m.id].f.units = t.value;
+  }
+  save();
+  // Structural changes re-render the form; typing only refreshes the side panel.
+  if (t.type === "checkbox" || t.type === "radio" || t.tagName === "SELECT") {
+    const y = window.scrollY; render(); window.scrollTo(0, y);
+  } else renderSide();
+}
+document.addEventListener("input", onEdit);
+document.addEventListener("change", onEdit);
+
+function download(name, text, type = "text/yaml") {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], { type }));
+  a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+document.addEventListener("click", e => {
+  const go = e.target.closest("[data-go]");
+  if (go) {
+    const el = document.getElementById("f-" + go.dataset.go) || document.querySelector(`[name="${go.dataset.go}"]`);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      el.focus({ preventScroll: true });
+      el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
+    }
+    return;
+  }
+  const lb = e.target.closest("[data-lang]");
+  if (lb) {
+    LANG = lb.dataset.lang;
+    try { localStorage.setItem(LANG_KEY, LANG); } catch {}
+    const y = window.scrollY; render(); window.scrollTo(0, y);
+    return;
+  }
+  const b = e.target.closest("[data-act]");
+  if (!b) return;
+  const act = b.dataset.act;
+  if (act === "add-pub") S.pubs.push(blankPub());
+  if (act === "rm-pub") S.pubs.splice(+b.dataset.i, 1);
+  if (act === "add-author") S.pubs[+b.dataset.p].authors.push(blankAuthor());
+  if (act === "rm-author") S.pubs[+b.dataset.p].authors.splice(+b.dataset.i, 1);
+  if (act === "add-comp") S.comps.push({ id: "", en: "", fr: "" });
+  if (act === "rm-comp") S.comps.splice(+b.dataset.i, 1);
+  if (act === "download") { download("assessment.yaml", yaml()); return; }
+  if (act === "copy") {
+    navigator.clipboard?.writeText(yaml()).then(() => { b.textContent = L("Copied", "Copié"); setTimeout(() => b.textContent = L("Copy", "Copier"), 1200); });
+    return;
+  }
+  if (act === "csv") {
+    const c = csvColumns();
+    download("stock_timeseries.csv", c.stock.join(",") + "\n", "text/csv");
+    if (c.comp) setTimeout(() => download("component_timeseries.csv", c.comp.join(",") + "\n", "text/csv"), 300);
+    return;
+  }
+  if (act === "reset") {
+    if (!confirm(L("Clear the form and start a new assessment? Your name and email are kept.",
+      "Effacer le formulaire et commencer une nouvelle évaluation? Votre nom et votre courriel sont conservés."))) return;
+    S = blank(); METRICS.forEach(m => S.metrics[m.id] = { on: false, f: {}, ratios: {} });
+  }
+  if (act === "example") { S = example(); }
+  save(); render();
+});
+
+function example() {
+  const s = blank();
+  Object.assign(s, {
+    me: { name: s.me.name || "Jane Doe", email: s.me.email || "jane.doe@dfo-mpo.gc.ca", date: today() },
+    year_assessed: "2024", assessment_type: "full",
+    stock: { name: { en: "Example stock", fr: "Stock exemple" },
+      species: { scientific: "Gadus morhua", en: "Atlantic cod", fr: "Morue franche", aphia_id: "126436" },
+      area: { en: "NAFO 4X5Y", fr: "OPANO 4X5Y" }, region: "maritimes", management: "dfo",
+      fish_stock_provisions: "yes", in_sustainability_survey: "yes", ram_legacy_id: "DFO-MAR-EXAMPLE" },
+    method: { type: "age_structured", software: "ss3", notes: "" },
+    meeting: { date: "2024-05-09", url: "https://csas-sccs.example/meetings/placeholder", csas_process: "https://dmapps/en/csas-sccs/processes/0/view/" },
+    pubs: [
+      { series: "sar", number: "2025/001", year: "2025", url: "https://csas-sccs.example/publications/placeholder", doi: "https://doi.org/10.xxxx/placeholder",
+        title: { en: "Stock Assessment of an Example Stock in 2024", fr: "Évaluation d'un stock exemple en 2024" }, authors: [blankAuthor()] },
+      { series: "resdoc", number: "2025/010", year: "2025", url: "", doi: "",
+        title: { en: "Assessment Model for an Example Stock in 2024", fr: "Modèle d'évaluation d'un stock exemple en 2024" },
+        authors: [{ given: "Jane", family: "Doe", orcid: "0000-0000-0000-0000" }, { given: "Alex", family: "Roe", orcid: "" }] },
+    ],
+    hasBounds: "yes", interval: { level: "0.95", type: "confidence" },
+  });
+  METRICS.forEach(m => s.metrics[m.id] = { on: false, f: {}, ratios: {} });
+  const turn = (id, f, ci = false, ratios = {}) => s.metrics[id] = { on: true, f, ci, ratios };
+  turn("catch", { units: "t", notes: "Bounds reflect uncertainty in recreational removals." }, true);
+  turn("total_allowable_catch", { units: "t" });
+  turn("msy", { units: "t" });
+  turn("spawning_stock", { units: "t" }, true, { limit_reference: true, b_msy: true });
+  turn("limit_reference", { units: "t", basis: "b_msy", multiplier: "0.4", notes: "B_MSY re-estimated for the post-1990 productivity regime." });
+  turn("upper_stock_reference", { units: "t", basis: "b_msy", multiplier: "0.8" });
+  turn("fishing_pressure", { units: "1/yr", type: "average", min_age: "5", max_age: "8" }, true, { f_msy: true });
+  turn("removal_reference", { units: "1/yr", basis: "f_msy", multiplier: "1" });
+  turn("natural_mortality", { units: "1/yr" });
+  turn("recruitment", { units: "millions", age: "1" }, true);
+  return s;
+}
+
+const params = new URLSearchParams(location.search);
+if (params.has("example")) S = example();
+if (["en", "fr"].includes(params.get("lang"))) LANG = params.get("lang");
+render();
+</script>
+</body>
+</html>
