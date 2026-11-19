@@ -1,6 +1,6 @@
 # Column dictionary
 
-This file defines the columns of the time series CSVs listed by the [YAML generator](index.html):
+This file defines the columns of the time series CSVs listed by the [YAML generator](https://tesa-workshops.github.io/assessment-results-workshop-2027/yaml-generator/):
 
 - **`stock_timeseries.csv`**: one row per year, for the stock.
 - **`component_timeseries.csv`** (optional): one row per component per year, for stocks also reported by component (e.g. salmon CUs, herring sections, fishing areas).
