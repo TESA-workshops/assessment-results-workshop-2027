@@ -1,4 +1,4 @@
-# 2027 TESA workshop 
+# 2027 TESA Assessment Database workshop 
 
 Repository to support the planning, organisation and delivery of the 2027 TESA workshop “Developing an open database of Canadian fisheries stock assessment outputs” .
 
@@ -79,5 +79,5 @@ Most participants are planning to travel on the 11th and 15th of January to allo
 |8|PACIFIC|Zhipeng Wu|In person|
 |9|GULF|Daniel Ricard|In person|
 
-
+Awaiting confirmation of participants from all regions to populate participants list 
 
