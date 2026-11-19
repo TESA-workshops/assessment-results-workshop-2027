@@ -810,7 +810,7 @@ function renderSide() {
 function renderChrome() {
   document.documentElement.lang = LANG;
   document.querySelectorAll("[data-lang]").forEach(b => b.classList.toggle("on", b.dataset.lang === LANG));
-  $("#btn-load").textContent = L("Open assessment.yaml", "Ouvrir assessment.yaml");
+  $("#btn-load").textContent = L("Load existing YAML file", "Charger un fichier YAML existant");
   $("#btn-example").textContent = L("Load example", "Charger l'exemple");
   $("#btn-reset").textContent = L("Start over", "Recommencer");
   $("#intro").innerHTML = L(
