@@ -481,6 +481,8 @@ function renderForm() {
       "Cochez chaque série chronologique que vous avez. Chacune est une colonne de votre CSV et demande quelques détails ici.")}</p>
     ${yesno("hasBounds", L("Do any columns have uncertainty intervals (<code>_lower</code> / <code>_upper</code>)?",
       "Des colonnes ont-elles des intervalles d'incertitude (<code>_lower</code> / <code>_upper</code>)?"))}
+    <div class="hint">${L("If any do, say yes. Stock size, fishing pressure, recruitment and ratio columns then get <code>_lower</code> / <code>_upper</code>; for catch and reference points you choose below.",
+      "Si c'est le cas, répondez oui. Les colonnes de taille du stock, de pression de pêche, de recrutement et de rapports ont alors <code>_lower</code> / <code>_upper</code>; pour les prises et les points de référence, vous choisissez plus bas.")}</div>
     ${S.hasBounds === "yes" ? `<div class="sub"><div class="grid">
       ${input("interval.level", L("Interval level", "Niveau de l'intervalle"), { req: true, options: [50, 55, 60, 65, 70, 75, 80, 85, 90, 95].map(p => [String(p / 100), L(`${p}%`, `${p} %`)]) })}
       ${input("interval.type", L("Interval type", "Type d'intervalle"), { req: true, options: opts(V.interval) })}
@@ -510,7 +512,10 @@ function renderMetric(m) {
     // offers only series/B_MSY or series/F_MSY. Either way the tick is stored on the series.
     const ratioTick = (series, den, label) => tick(`metrics.${series}.ratios.${den}`, ratioOn(series, den),
       (S.hasBounds === "yes" ? L(`Has a ratio time series to ${label}, with its own interval`, `A une série de rapports à ${label}, avec son propre intervalle`)
-        : L(`Has a ratio time series to ${label}`, `A une série de rapports à ${label}`)) + ` <code>${series}/${den}</code>`);
+        : L(`Has a ratio time series to ${label}`, `A une série de rapports à ${label}`)) + ` <code>${series}/${den}</code>`) +
+      (S.hasBounds === "yes" && ratioOn(series, den) ? `<div class="hint">${L(
+        "Take the ratio's interval from the model (e.g. delta method, likelihood profile, bootstrap or posterior), so it reflects uncertainty in both the series and the reference point.",
+        "Tirez l'intervalle du rapport du modèle (p. ex. méthode delta, profil de vraisemblance, bootstrap ou loi a posteriori), afin qu'il tienne compte de l'incertitude de la série et du point de référence.")}</div>` : "");
     if (m.role === "series" && MSY_BASIS[m.panel]) {
       extras += `<div class="ticks">${ratioTick(m.id, MSY_BASIS[m.panel], denLabel(MSY_BASIS[m.panel]))}</div>`;
     }
