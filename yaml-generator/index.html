@@ -828,13 +828,18 @@ function renderChrome() {
   $("#btn-example").textContent = L("Load example", "Charger l'exemple");
   $("#btn-reset").textContent = L("Start over", "Recommencer");
   $("#intro").innerHTML = L(
-    `Fill this in to create the <code>assessment.yaml</code> that describes your time series. The panel on the right lists the columns
-    your CSV needs and lets you download a blank CSV with those columns as a starting point to fill in.
-    See the <a href="${DICTIONARY}" target="_blank" rel="noopener">column dictionary</a> for what each column means. Required fields are marked <span class="req">*</span>. Your draft is saved in this browser.`,
-    `Remplissez ce formulaire pour créer le fichier <code>assessment.yaml</code> qui décrit vos séries chronologiques. Le panneau de droite
-    indique les colonnes nécessaires à votre CSV et permet de télécharger un CSV vide avec ces colonnes comme point de départ à remplir.
-    Voir le <a href="${DICTIONARY}" target="_blank" rel="noopener">dictionnaire des colonnes</a> (en anglais) pour la signification de chaque colonne. Les champs obligatoires sont marqués <span class="req">*</span>.
-    Votre brouillon est enregistré dans ce navigateur.`);
+    `To submit your stock assessment output data, you'll need two files: a <strong>YAML file</strong> (<code>assessment.yaml</code>) with
+    metadata about the assessment and a description of the time series you're sharing, and a <strong>CSV file</strong> with the time series
+    values themselves (one row per year). This form builds the YAML file for you: work through the sections below, then download it.
+    As you choose which time series to include, the panel on the right lists the columns your CSV needs and lets you download a blank CSV
+    with those columns, ready to fill in. See the <a href="${DICTIONARY}" target="_blank" rel="noopener">column dictionary</a> for what each column means.
+    Required fields are marked <span class="req">*</span>. Your draft is saved in this browser, so you can close the page and come back.`,
+    `Pour soumettre les données issues de votre évaluation de stock, vous aurez besoin de deux fichiers : un <strong>fichier YAML</strong> (<code>assessment.yaml</code>)
+    contenant les métadonnées de l'évaluation et la description des séries chronologiques que vous partagez, et un <strong>fichier CSV</strong> contenant les
+    valeurs des séries elles-mêmes (une ligne par année). Ce formulaire crée le fichier YAML pour vous : remplissez les sections ci-dessous, puis téléchargez-le.
+    Au fur et à mesure que vous choisissez les séries à inclure, le panneau de droite indique les colonnes nécessaires à votre CSV et permet de télécharger
+    un CSV vide avec ces colonnes, prêt à remplir. Voir le <a href="${DICTIONARY}" target="_blank" rel="noopener">dictionnaire des colonnes</a> (en anglais) pour la signification de chaque colonne.
+    Les champs obligatoires sont marqués <span class="req">*</span>. Votre brouillon est enregistré dans ce navigateur : vous pouvez fermer la page et y revenir.`);
 }
 function render() { fillUnits(); renderChrome(); renderForm(); renderSide(); }
 
