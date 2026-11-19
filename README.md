@@ -1,4 +1,4 @@
-# 2027 TESA workshop 
+# 2027 TESA Assessment Database workshop 
 
 Repository to support the planning, organisation and delivery of the 2027 TESA workshop “Developing an open database of Canadian fisheries stock assessment outputs” .
 
@@ -101,3 +101,4 @@ PAC   |Robyn Forrest       |robyn.forrest@dfo-mpo.gc.ca      |
 QC    |Mathieu Desgagnés   |mathieu.desgagnes@dfo-mpo.gc.ca  |
 -|-|-|-
 
+Awaiting confirmation of participants from all regions to finalize participants list 
