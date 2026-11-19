@@ -398,8 +398,8 @@ function renderPub(pub, i) {
       ${input(p + ".year", L("Year published", "Année de publication"), { req: true, num: true })}
       ${input(p + ".title.en", L("Title (English)", "Titre (anglais)"), { req: true, wide: true })}
       ${input(p + ".title.fr", L("Title (French)", "Titre (français)"), { req: true, wide: true,
-        hint: L("If the document has only one title (e.g. published before 2025), paste it in both fields.",
-          "Si le document n'a qu'un titre (p. ex. publié avant 2025), collez-le dans les deux champs.") })}
+        hint: L("If the document has only one title, paste it in both fields.",
+          "Si le document n'a qu'un titre, collez-le dans les deux champs.") })}
       ${input(p + ".url", "URL", { ph: "https://csas-sccs.dfo-mpo.gc.ca/…" })}
       ${input(p + ".doi", "DOI", { ph: "https://doi.org/…" })}
     </div>
