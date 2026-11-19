@@ -798,7 +798,9 @@ function renderSide() {
         "Les points de référence (et le RMD) figurent sur chaque ligne : répétez une valeur constante, ou modifiez-la les années où elle change.") : ""}
       ${S.hasBounds === "yes" ? L(`<code>_lower</code> and <code>_upper</code> columns hold the ${Math.round(S.interval.level * 100) || "…"}% interval.`,
         `Les colonnes <code>_lower</code> et <code>_upper</code> contiennent l'intervalle à ${Math.round(S.interval.level * 100) || "…"} %.`) : ""}
-      ${ratioHint([...cols.stock, ...(cols.comp || [])])}</div>
+      ${ratioHint([...cols.stock, ...(cols.comp || [])])}
+      ${L(`See the <a href="${DICTIONARY}" target="_blank" rel="noopener">column dictionary</a> for what each column means.`,
+        `Voir le <a href="${DICTIONARY}" target="_blank" rel="noopener">dictionnaire des colonnes</a> (en anglais) pour la signification de chaque colonne.`)}</div>
       <div class="actions"><button class="btn small" data-act="csv">${cols.comp ? L("Download blank CSVs", "Télécharger les CSV vides") : L("Download blank CSV", "Télécharger le CSV vide")}</button></div>
     </div>
     <div class="box">
@@ -806,6 +808,8 @@ function renderSide() {
       <pre class="code">${esc(yaml())}</pre>
     </div>`;
 }
+
+const DICTIONARY = "https://github.com/TESA-workshops/assessment-results-workshop-2027/blob/main/yaml-generator/dictionary.md";
 
 // Explains ratio columns using the first one this assessment actually has.
 function ratioHint(cols) {
