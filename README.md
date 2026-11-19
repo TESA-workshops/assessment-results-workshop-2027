@@ -79,5 +79,5 @@ Most participants are planning to travel on the 11th and 15th of January to allo
 |8|PACIFIC|Zhipeng Wu|In person|
 |9|GULF|Daniel Ricard|In person|
 
-
+Awaiting confirmation of participants from all regions to populate participants list 
 
