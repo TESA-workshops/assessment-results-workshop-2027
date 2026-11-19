@@ -16,3 +16,4 @@ removal_reference,RR,TPR,fishing_pressure,reference,stock,rate|proportion,Remova
 removal_threshold,Removal threshold,Seuil de prélèvement,fishing_pressure,reference,component,rate|proportion,Removal threshold for a component.
 natural_mortality,M,M,fishing_pressure,context,both,rate,Instantaneous natural mortality.
 recruitment,Recruitment,Recrutement,recruitment,series,both,count|mass,Recruits at the age given in `age`.
+recruitment_deviation,Recruitment deviations,Écarts de recrutement,recruitment,context,both,,"Estimated recruitment deviations on the log scale, from the stock-recruit relationship or mean recruitment."

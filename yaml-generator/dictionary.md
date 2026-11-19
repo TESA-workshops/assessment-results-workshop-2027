@@ -94,6 +94,7 @@ If more than one stock-size series is reported, `applies_to` in `assessment.yaml
 | Column | Label | Role | File | Units | Description |
 |---|---|---|---|---|---|
 | `recruitment` | Recruitment | series | both | count, mass | Recruits in each year, at the age given in `age` (e.g. millions of age-1 fish). |
+| `recruitment_deviation` | Recruitment deviations | context | both | none (log scale) | Estimated recruitment deviations in each year, on the log scale (e.g. log(R) − log(expected R)), from the stock-recruit relationship or mean recruitment. The age can be given in `age`. Takes no `units`. An interval is optional. |
 
 ## Interval columns (`_lower`, `_upper`)
 
@@ -113,7 +114,7 @@ For example, `spawning_stock`, `spawning_stock_lower`, `spawning_stock_upper`.
 - **Give intervals, not standard errors or CVs.** If you have a CV, convert it yourself, since you know the error distribution.
   For a lognormal 95% interval: `x * exp(±1.96 * sqrt(log(1 + CV^2)))`.
 
-In the form, stock size, fishing pressure, recruitment, ratio and `msy` columns get bounds whenever the assessment has intervals; for `catch`, `natural_mortality` and reference points you tick whether they have one.
+In the form, stock size, fishing pressure, recruitment, ratio and `msy` columns get bounds whenever the assessment has intervals; for `catch`, `natural_mortality`, `recruitment_deviation` and reference points you tick whether they have one.
 
 ## Ratio columns (`series/denominator`)
 

@@ -101,3 +101,6 @@ recruitment,units,yes,
 recruitment,age,yes,
 recruitment,bounds,if,its column has _lower/_upper
 recruitment,notes,no,
+recruitment_deviation,age,no,
+recruitment_deviation,bounds,if,its column has _lower/_upper
+recruitment_deviation,notes,no,

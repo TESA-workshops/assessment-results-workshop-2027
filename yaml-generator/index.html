@@ -163,6 +163,8 @@ const METRICS = [
   ["removal_threshold","Removal threshold","Seuil de prélèvement","fishing_pressure","reference","component","rate|proportion","Removal threshold for components.","Seuil de prélèvement des composantes."],
   ["natural_mortality","M","M","fishing_pressure","context","both","rate","Instantaneous natural mortality.","Mortalité naturelle instantanée."],
   ["recruitment","Recruitment","Recrutement","recruitment","series","both","count|mass","Recruits at a given age.","Recrues à un âge donné."],
+  ["recruitment_deviation","Recruitment deviations","Écarts de recrutement","recruitment","context","both","","Estimated recruitment deviations, on the log scale, from the stock-recruit relationship or mean recruitment.",
+    "Écarts de recrutement estimés, sur l'échelle log, par rapport à la relation stock-recrutement ou au recrutement moyen."],
 ].map(([id,en,fr,panel,role,level,dims,desc_en,desc_fr]) => ({id,en,fr,panel,role,level,dims:dims.split("|"),desc_en,desc_fr}));
 const mlabel = m => L(m.en, m.fr);
 const M = Object.fromEntries(METRICS.map(m => [m.id, m]));
@@ -227,6 +229,7 @@ const MF = {
   removal_threshold: {units:"yes", basis:"yes", multiplier:"yes", spr:"if", notes:"no"},
   natural_mortality: {units:"yes", min_age:"no", max_age:"no", notes:"no"},
   recruitment: {units:"yes", age:"yes", notes:"no"},
+  recruitment_deviation: {age:"no", notes:"no"},
 };
 const FIELD_LABEL = { units:["Units","Unités"], basis:["Basis","Base"],
   multiplier:["Multiplier","Multiplicateur"], period:["Period","Période"], percentile:["Percentile","Centile"], spr:["SPR (%)","SPR (%)"],
@@ -323,7 +326,7 @@ const ratioOn = (id, den) => !!S.metrics[id].ratios[den];
 const ratios = id => ratioOptions(id).filter(den => ratioOn(id, den));
 // Bounds: optional for catch, M and reference points (ticked), always listed for other
 // series, ratios and MSY, never for the TAC.
-const optionalCI = id => id === "catch" || id === "natural_mortality" || M[id].role === "reference";
+const optionalCI = id => ["catch", "natural_mortality", "recruitment_deviation"].includes(id) || M[id].role === "reference";
 const hasCI = id => S.hasBounds === "yes" && (optionalCI(id) ? !!S.metrics[id].ci : M[id].role === "series" || id === "msy");
 
 // The series whose units a metric should follow: a reference's series, or catch for the TAC.
@@ -340,7 +343,7 @@ function defaultUnits(id) {
 }
 // Fill in units for ticked metrics that don't have any yet (series first, so references can follow them).
 function fillUnits() {
-  for (const m of chosen()) if (blankish(S.metrics[m.id].f.units)) S.metrics[m.id].f.units = defaultUnits(m.id);
+  for (const m of chosen()) if (MF[m.id].units && blankish(S.metrics[m.id].f.units)) S.metrics[m.id].f.units = defaultUnits(m.id);
 }
 // Fishing pressure in 1/yr is F (needs `type`); as a proportion it's a harvest rate (may need `applies_to`).
 const isF = id => id === "fishing_pressure" && S.metrics[id].f.units !== "proportion";
@@ -489,8 +492,8 @@ function renderForm() {
       "Cochez chaque série chronologique que vous avez. Chacune est une colonne de votre CSV et demande quelques détails ici.")}</p>
     ${yesno("hasBounds", L("Do any columns have uncertainty intervals (<code>_lower</code> / <code>_upper</code>)?",
       "Des colonnes ont-elles des intervalles d'incertitude (<code>_lower</code> / <code>_upper</code>)?"))}
-    <div class="hint">${L("If any do, say yes. Stock size, fishing pressure, recruitment and ratio columns then get <code>_lower</code> / <code>_upper</code>; for catch, M and reference points you choose below.",
-      "Si c'est le cas, répondez oui. Les colonnes de taille du stock, de pression de pêche, de recrutement et de rapports ont alors <code>_lower</code> / <code>_upper</code>; pour les prises, M et les points de référence, vous choisissez plus bas.")}</div>
+    <div class="hint">${L("If any do, say yes. Stock size, fishing pressure, recruitment and ratio columns then get <code>_lower</code> / <code>_upper</code>; for catch, M, recruitment deviations and reference points you choose below.",
+      "Si c'est le cas, répondez oui. Les colonnes de taille du stock, de pression de pêche, de recrutement et de rapports ont alors <code>_lower</code> / <code>_upper</code>; pour les prises, M, les écarts de recrutement et les points de référence, vous choisissez plus bas.")}</div>
     ${S.hasBounds === "yes" ? `<div class="sub"><div class="grid">
       ${input("interval.level", L("Interval level", "Niveau de l'intervalle"), { req: true, options: LEVELS.map(v => [v, L(`${Math.round(v * 100)}%`, `${Math.round(v * 100)} %`)]) })}
       ${input("interval.type", L("Interval type", "Type d'intervalle"), { req: true, options: opts(V.interval) })}
