@@ -1,0 +1,16 @@
+unit,dimension,to_base,label_en,label_fr,description
+kg,mass,0.001,kg,kg,Kilograms
+t,mass,1,t,t,Metric tonnes
+kt,mass,1000,kt,kt,Thousands of metric tonnes
+n,count,1,number,nombre,Individuals
+thousands,count,1e3,thousands,milliers,Thousands of individuals
+millions,count,1e6,millions,millions,Millions of individuals
+billions,count,1e9,billions,milliards,Billions of individuals
+1/yr,rate,1,1/yr,1/an,Instantaneous annual rate
+proportion,proportion,1,proportion,proportion,Unitless fraction between 0 and 1
+kg/tow,index,1,kg/tow,kg/trait,Kilograms per survey tow
+n/tow,index,1,number/tow,nombre/trait,Individuals per survey tow
+kg/km2,index,1,kg/km²,kg/km²,Kilograms per square kilometre
+n/km2,index,1,number/km²,nombre/km²,Individuals per square kilometre
+kg/trap,index,1,kg/trap,kg/casier,Kilograms per trap haul
+relative,index,1,relative,relatif,Index scaled to a reference period (e.g. mean = 1)

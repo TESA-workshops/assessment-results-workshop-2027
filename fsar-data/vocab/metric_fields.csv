@@ -1,0 +1,103 @@
+metric,field,required,condition
+catch,units,yes,
+catch,bounds,if,its column has _lower/_upper
+catch,notes,no,
+total_allowable_catch,units,yes,
+total_allowable_catch,notes,no,
+msy,units,yes,
+msy,bounds,if,its column has _lower/_upper
+msy,notes,no,
+spawning_stock,units,yes,
+spawning_stock,min_age,no,
+spawning_stock,max_age,no,
+spawning_stock,bounds,if,its column has _lower/_upper
+spawning_stock,ratios,if,there are ratio columns for it
+spawning_stock,notes,no,
+total_stock,units,yes,
+total_stock,min_age,no,
+total_stock,max_age,no,
+total_stock,bounds,if,its column has _lower/_upper
+total_stock,ratios,if,there are ratio columns for it
+total_stock,notes,no,
+exploitable_stock,units,yes,
+exploitable_stock,min_age,no,
+exploitable_stock,max_age,no,
+exploitable_stock,bounds,if,its column has _lower/_upper
+exploitable_stock,ratios,if,there are ratio columns for it
+exploitable_stock,notes,no,
+index,units,yes,
+index,survey,yes,
+index,min_age,no,
+index,max_age,no,
+index,bounds,if,its column has _lower/_upper
+index,ratios,if,there are ratio columns for it
+index,notes,no,
+limit_reference,units,yes,
+limit_reference,applies_to,if,more than one stock series
+limit_reference,basis,yes,
+limit_reference,multiplier,yes,
+limit_reference,period,if,basis is mean or percentile
+limit_reference,percentile,if,basis is percentile
+limit_reference,bounds,if,its column has _lower/_upper
+limit_reference,notes,no,
+upper_stock_reference,units,yes,
+upper_stock_reference,applies_to,if,more than one stock series
+upper_stock_reference,basis,yes,
+upper_stock_reference,multiplier,yes,
+upper_stock_reference,period,if,basis is mean or percentile
+upper_stock_reference,percentile,if,basis is percentile
+upper_stock_reference,bounds,if,its column has _lower/_upper
+upper_stock_reference,notes,no,
+target_reference,units,yes,
+target_reference,applies_to,if,more than one stock series
+target_reference,basis,yes,
+target_reference,multiplier,yes,
+target_reference,period,if,basis is mean or percentile
+target_reference,percentile,if,basis is percentile
+target_reference,bounds,if,its column has _lower/_upper
+target_reference,notes,no,
+lower_threshold,units,yes,
+lower_threshold,applies_to,if,more than one stock series
+lower_threshold,basis,yes,
+lower_threshold,multiplier,yes,
+lower_threshold,period,if,basis is mean or percentile
+lower_threshold,percentile,if,basis is percentile
+lower_threshold,bounds,if,its column has _lower/_upper
+lower_threshold,notes,no,
+upper_threshold,units,yes,
+upper_threshold,applies_to,if,more than one stock series
+upper_threshold,basis,yes,
+upper_threshold,multiplier,yes,
+upper_threshold,period,if,basis is mean or percentile
+upper_threshold,percentile,if,basis is percentile
+upper_threshold,bounds,if,its column has _lower/_upper
+upper_threshold,notes,no,
+fishing_pressure,units,yes,
+fishing_pressure,type,if,units are 1/yr
+fishing_pressure,min_age,if,type is average
+fishing_pressure,max_age,if,type is average
+fishing_pressure,applies_to,if,units are proportion and there is more than one stock series
+fishing_pressure,bounds,if,its column has _lower/_upper
+fishing_pressure,ratios,if,there are ratio columns for it
+fishing_pressure,notes,no,
+removal_reference,units,yes,
+removal_reference,basis,yes,
+removal_reference,multiplier,yes,
+removal_reference,spr,if,basis is f_spr
+removal_reference,bounds,if,its column has _lower/_upper
+removal_reference,notes,no,
+removal_threshold,units,yes,
+removal_threshold,basis,yes,
+removal_threshold,multiplier,yes,
+removal_threshold,spr,if,basis is f_spr
+removal_threshold,bounds,if,its column has _lower/_upper
+removal_threshold,notes,no,
+natural_mortality,units,yes,
+natural_mortality,min_age,no,
+natural_mortality,max_age,no,
+natural_mortality,bounds,if,its column has _lower/_upper
+natural_mortality,notes,no,
+recruitment,units,yes,
+recruitment,age,yes,
+recruitment,bounds,if,its column has _lower/_upper
+recruitment,notes,no,

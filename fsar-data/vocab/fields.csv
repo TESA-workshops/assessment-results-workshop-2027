@@ -1,0 +1,16 @@
+field,type,values_from,description
+units,string,units.csv,Units of the metric's values and bounds.
+applies_to,metric,metrics.csv,The series this metric is relative to (reference points) or calculated from (fishing pressure as a harvest rate).
+basis,string,values.csv,Quantity a reference point is a multiple of.
+multiplier,number,,Multiple of `basis` (e.g. 0.4 for 0.4 B_MSY).
+period,years,,First and last year the `mean` or `percentile` basis is taken over.
+percentile,number,,Percentile for `basis: percentile` (e.g. 25; 50 for the median).
+spr,number,,Spawning potential ratio in percent for `basis: f_spr` (e.g. 40).
+type,string,values.csv,How fishing pressure in 1/yr (F) is summarized across ages.
+min_age,integer,,Youngest age included.
+max_age,integer,,Oldest age included. Omitted means a plus group.
+age,integer,,Age at recruitment.
+survey,string,,Name of the survey or fishery the index comes from.
+bounds,logical,,"`true` if the metric's column has `_lower` / `_upper` bounds (in either CSV)."
+ratios,list,,"Denominators of the metric's ratio columns, e.g. `[limit_reference, b_msy]` for `spawning_stock/limit_reference` and `spawning_stock/b_msy`."
+notes,string,,Free text for human readers. Never parsed.
