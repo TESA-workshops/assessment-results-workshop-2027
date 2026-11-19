@@ -875,9 +875,22 @@ document.addEventListener("click", e => {
       "Effacer le formulaire et commencer une nouvelle évaluation? Votre nom et votre courriel sont conservés."))) return;
     S = blank(); METRICS.forEach(m => S.metrics[m.id] = { on: false, f: {}, ratios: {} });
   }
-  if (act === "example") { S = example(); }
+  if (act === "example") {
+    if (hasDraft() && !confirm(L("Replace your draft with the example? What you've entered will be lost.",
+      "Remplacer votre brouillon par l'exemple? Ce que vous avez saisi sera perdu."))) return;
+    S = example();
+  }
   save(); render();
 });
+
+// True if the form holds anything beyond a blank form or the example (your name,
+// email and date don't count, since they're kept on "Start over" anyway).
+function hasDraft() {
+  const fresh = blank();
+  METRICS.forEach(m => fresh.metrics[m.id] = { on: false, f: {}, ratios: {} });
+  const strip = s => JSON.stringify({ ...s, me: null });
+  return strip(S) !== strip(fresh) && strip(S) !== strip(example());
+}
 
 function example() {
   const s = blank();
