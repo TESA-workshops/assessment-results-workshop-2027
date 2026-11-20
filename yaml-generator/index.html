@@ -149,8 +149,8 @@ const METRICS = [
   ["msy","MSY","RMD","catch","context","stock","mass|count","Maximum sustainable yield, if estimated.","Rendement maximal soutenu, s'il est estimé."],
   ["spawning_stock","Spawning stock","Stock reproducteur","stock","series","both","mass|count","SSB in mass units; spawner abundance in count units.","BSR en unités de masse; abondance des géniteurs en nombre."],
   ["total_stock","Total stock","Stock total","stock","series","both","mass|count","Whole stock above any minimum age.","Stock entier au-dessus d'un éventuel âge minimal."],
-  ["exploitable_stock","Exploitable stock","Stock exploitable","stock","series","both","mass|count","Only if it's the main stock-size series, e.g. snow crab exploitable biomass or fishable shrimp biomass. Most stocks don't need it.",
-    "Seulement si c'est la principale série de taille du stock, p. ex. biomasse exploitable du crabe des neiges ou biomasse pêchable de la crevette. La plupart des stocks n'en ont pas besoin."],
+  ["exploitable_stock","Exploitable stock","Stock exploitable","stock","series","both","mass|count","Part of the stock vulnerable to the fishery (vulnerable or fishable biomass).",
+    "Partie du stock vulnérable à la pêche (biomasse vulnérable ou pêchable)."],
   ["index","Index","Indice","stock","series","both","index","Only for assessments based on an index rather than a population model (e.g. trap CPUE in kg/trap). Leave unticked if a model estimates stock size, even if it's fit to surveys.",
     "Seulement pour les évaluations fondées sur un indice plutôt que sur un modèle de population (p. ex. CPUE au casier en kg/casier). Laissez décoché si un modèle estime la taille du stock, même s'il est ajusté à des relevés."],
   ["limit_reference","LRP","PRL","stock","reference","stock","mass|count|index","Limit reference point.","Point de référence limite."],
@@ -566,6 +566,7 @@ function metricField(m, f) {
   if (f === "survey") o.ph = L("e.g. RV summer survey", "p. ex. relevé de recherche d'été");
   if (f === "notes") {
     o.wide = true; o.area = true;
+    if (m.id === "exploitable_stock") o.ph = L("Vulnerable to what, e.g. the commercial trawl fleet, mid-year.", "Vulnérable à quoi, p. ex. la flotte commerciale au chalut, en milieu d'année.");
     if (S.metrics[m.id].f.basis === "b_msy_proxy") o.ph = L("What the proxy is, e.g. mean SSB over 1983–2018.", "Ce qu'est l'approximation, p. ex. BSR moyenne de 1983 à 2018.");
     if (S.metrics[m.id].f.basis === "other") o.ph = L("Explain the basis.", "Expliquez la base.");
   }

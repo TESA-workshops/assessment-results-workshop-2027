@@ -4,7 +4,7 @@ total_allowable_catch,TAC,TAC,catch,context,both,mass|count,Total allowable catc
 msy,MSY,RMD,catch,context,stock,mass|count,"Maximum sustainable yield, if estimated. Repeated each year like a reference point."
 spawning_stock,Spawning stock,Stock reproducteur,stock,series,both,mass|count,Spawning (mature) component. In mass units this is SSB; in count units it is spawner abundance.
 total_stock,Total stock,Stock total,stock,series,both,mass|count,Whole stock above any age cutoff given by `min_age`.
-exploitable_stock,Exploitable stock,Stock exploitable,stock,series,both,mass|count,"Component vulnerable to the fishery. Only include it if it is the main stock-size series (e.g. snow crab exploitable biomass, fishable shrimp biomass)."
+exploitable_stock,Exploitable stock,Stock exploitable,stock,series,both,mass|count,"Component vulnerable to the fishery (vulnerable or fishable biomass). Say in `notes` what it is vulnerable to."
 index,Index,Indice,stock,series,both,index,"Survey or fishery index of stock size from the source given in `survey`. Only for assessments based on an index rather than a population model."
 limit_reference,LRP,PRL,stock,reference,stock,mass|count|index,Limit reference point.
 upper_stock_reference,USR,PRS,stock,reference,stock,mass|count|index,Upper stock reference point.

@@ -58,15 +58,14 @@ All metric columns are numeric.
 
 ### Stock size
 
-Report the stock-size series used for management and comparison with reference points.
-Most stocks need only `spawning_stock` and/or `total_stock`.
+Report every stock-size series the assessment estimates (`spawning_stock`, `total_stock`, `exploitable_stock`).
 The column name says *which part of the stock*; the units say *biomass or numbers*.
 
 | Column | Label | Role | File | Units | Description |
 |---|---|---|---|---|---|
 | `spawning_stock` | Spawning stock | series | both | mass, count | Spawning (mature) part of the stock. In mass units this is spawning stock biomass (SSB); in count units it is spawner abundance. Ages can be given in `min_age` / `max_age`. |
 | `total_stock` | Total stock | series | both | mass, count | Whole stock, above any minimum age given in `min_age`. |
-| `exploitable_stock` | Exploitable stock | series | both | mass, count | Part of the stock vulnerable to the fishery. Only if it is the main stock-size series (e.g. snow crab exploitable biomass, fishable shrimp biomass). |
+| `exploitable_stock` | Exploitable stock | series | both | mass, count | Part of the stock vulnerable to the fishery (vulnerable or fishable biomass, e.g. snow crab exploitable biomass). Say in `notes` what it is vulnerable to (e.g. which fleet, and when in the year). |
 | `index` | Index | series | both | index | Survey or fishery index of stock size, from the source named in `survey`. Only for assessments based on an index rather than a population model; a model fit to surveys reports its estimated stock size instead. One index per assessment: the one status is judged from. |
 | `limit_reference` | LRP | reference point | stock | same as its series | Limit reference point, as defined in the assessment. `basis` and `multiplier` say what it is (e.g. 0.4 B_MSY). |
 | `upper_stock_reference` | USR | reference point | stock | same as its series | Upper stock reference point, as defined in the assessment. |
@@ -75,13 +74,13 @@ The column name says *which part of the stock*; the units say *biomass or number
 | `upper_threshold` | Upper threshold | threshold | component | same as its series | Upper status threshold for a component (e.g. a salmon CU upper benchmark). |
 
 A reference point or threshold is in the same units as the series it is compared to.
-If more than one stock-size series is reported, `applies_to` in `assessment.yaml` says which.
+If more than one stock-size series is reported, `applies_to` in `assessment.yaml` says which one the reference points are compared to; that is the series drawn in the FSAR figure.
 
 ### Fishing pressure
 
 | Column | Label | Role | File | Units | Description |
 |---|---|---|---|---|---|
-| `fishing_pressure` | Fishing pressure | series | both | `1/yr`, `proportion` | In `1/yr`, instantaneous fishing mortality (F), averaged over ages, apical, or aggregate (`type`). As a `proportion`, a harvest rate: catch divided by the stock series in `applies_to`. |
+| `fishing_pressure` | Fishing pressure | series | both | `1/yr`, `proportion` | In `1/yr`, instantaneous fishing mortality (F), averaged over ages, apical, or aggregate (`type`). As a `proportion`, a harvest rate: catch divided by the stock series in `applies_to` (often `exploitable_stock`). |
 | `removal_reference` | RR | reference point | stock | same as `fishing_pressure` | Removal reference, as defined in the assessment (e.g. F_MSY, F_0.1, F40%). |
 | `removal_threshold` | Removal threshold | threshold | component | same as `fishing_pressure` | Removal threshold for a component. |
 | `natural_mortality` | M | context | both | `1/yr` | Instantaneous natural mortality in each year. Ages can be given in `min_age` / `max_age`. |
