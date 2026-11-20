@@ -5,9 +5,6 @@ This file defines the columns of the time series CSVs listed by the [YAML/CSV ge
 - **`stock_timeseries.csv`**: one row per year, for the stock.
 - **`component_timeseries.csv`** (optional): one row per component per year, for stocks also reported by component (e.g. salmon CUs, herring sections, fishing areas).
 
-What each column means (units, basis, ages, survey, interval level) goes in `assessment.yaml`, not in the CSV.
-See [`fsar-data/README.md`](../fsar-data/README.md) for the full format and [`fsar-data/vocab/`](../fsar-data/vocab/) for the tables these definitions come from.
-
 **Contents**
 
 - [Rules for every column](#rules-for-every-column)
