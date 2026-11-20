@@ -10,7 +10,7 @@ Repository to support the planning, organisation and delivery of the 2027 TESA w
 
 **When:** Tuesday January 12 to Thursday January 14 2027
 
-**Where:** [Bedford Institute of Oceanography]([https://www.dfo-mpo.gc.ca/index-eng.html](https://www.dfo-mpo.gc.ca/videos/bio-iob-eng.html)), [1 Challenger Dr, Dartmouth, NS](https://maps.app.goo.gl/jzNx4yYy9gChJYJi7)
+**Where:** [Bedford Institute of Oceanography](https://www.dfo-mpo.gc.ca/videos/bio-iob-eng.html), [1 Challenger Dr, Dartmouth, NS](https://maps.app.goo.gl/jzNx4yYy9gChJYJi7)
 
 **Format:** Hybrid, in-person workshop with possibility to join via MS Teams (selected talks)
 
