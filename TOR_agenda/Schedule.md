@@ -10,18 +10,16 @@
 
 | Time | Activity |
 |------|----------|
-| 09:30 | Roundtable: Participant Introductions |
-| 10:30 | Motivation and Scope of Workshop (Catarina Wor and Jacob Burbank) |
-| 10:30 | SPRS Database Show and Tell |
-| 11:00 | Break |
-| 11:15 | ICES AdviceXplorer Database Concept and Show and Tell (Carlos Pinto) |
-| 12:15 | Head count for Wednesday dinner, then lunch break |
-| 13:00 | ** ** |
-| 13:45 | **Talk by DFO Expert (25-30 min):** |
-| 14:30 | Break |
-| 15:00 | **Short Talk by DFO Expert (10-15 min):** |
-| 15:25 | **Talk by DFO Expert (25-30 min):** |
-| 16:00 | Overview of the Day and Plan for Tomorrow. Thoughts from External Experts |
+| 10:00 | Roundtable: Participant Introductions |
+| 10:40 | Motivation and Scope of Workshop (Catarina Wor and Jacob Burbank) |
+| 11:00 | Introducing CanSTAR: the template and the database prototype behind it (Dan Ricard, Sean Anderson, Zhipeng Wu)|
+| 12:00 | Head count for Wednesday dinner, then lunch break |
+| 13:00 | **Plenary by External Expert:** AdviceXplorer Database Concept and Show and Tell (Carlos Pinto) |
+| 14:00 | break |
+| 15:00 | SPRS Database Show and Tell (Zhipeng Wu, Tom Bird and Erika Anderson) |
+| 15:15 | Roundtable: thoughts from participants and hopes for the workshop |
+| 16:30 | Introduction and discussion of break out groups themes and overview of the day and plan for days 2 and 3. |
+| 17:00 | Adjourn |
 
 ---
 
@@ -30,18 +28,13 @@
 
 | Time | Activity |
 |------|----------|
-| 09:00 | **Recap |
-| 09:45 | **break out group |
-| 10:30 | Break |
-| 10:45 | **Plenary by External Expert:**  (Speaker TBD) |
-| 11:45 | Discussion Following Plenary |
+| 10:00 | Recap   |
+| 10:40 | Break |
+| 10:30 | break out groups |
 | 12:00 | Lunch |
-| 13:15 |  |
-| 13:35 |  |
-| 13:55 |  |
-| 14:15 |   |
-| 14:30 | |
-| 16:00 | |
+| 13:00 | break out groups |
+| 15:00 | Break |
+| 15:15 | Summary Report from break out groups and plenary discussion |
 | 18:30 | Group Dinner (Optional) |
 
 ---
@@ -51,15 +44,11 @@
 
 | Time | Activity |
 |------|----------|
-| 09:00 | Quick Recap of Wednesday |
-| 09:30 |  |
-| 09:50 |  |
-| 10:05 |  |
-| 10:30 | Break |
-| 10:45 |  |
-| 11:45 |  |
+| 10:00 | Quick Recap of Wednesday |
+| 10:30 | break out groups |
 | 12:00 | Lunch |
-| 13:00 |  |
-| 14:45 | Break |
-| 15:00 |  |
-| 16:20 | Wrap-Up (Catarina Wor and Jacob Burbank) |
+| 13:00 | Reports from break out groups |
+| 14:00 | Discussion on next steps: Governance structure, user interface and continued development  |
+| 15:30 | Break |
+| 15:50 | Discussion on workshop report: assigning tasks and deadlines |
+| 16:30 | Wrap-Up (Catarina Wor and Jacob Burbank) |
