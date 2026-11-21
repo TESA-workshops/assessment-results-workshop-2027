@@ -1960,7 +1960,16 @@ function loadYaml(text) {
     known.metrics = { ...y.metrics };
     unknown.forEach(id => delete known.metrics[id]);
   }
-  out.push(...compareYaml(known, parse(buildYaml())));
+  // entered_by.date is reset to today, so the file's date (or none) is not compared.
+  const written = parse(buildYaml());
+  for (const doc of [known, written]) {
+    if (doc.entered_by && typeof doc.entered_by === "object") {
+      doc.entered_by = { ...doc.entered_by };
+      delete doc.entered_by.date;
+      if (!Object.keys(doc.entered_by).length) delete doc.entered_by;
+    }
+  }
+  out.push(...compareYaml(known, written));
   state.me.date = today(); // entered now
   if (out.length) state = old;
   return [...new Set(out)];
