@@ -140,6 +140,7 @@ aside .box.bad h3 { color: var(--bad); }
   <span class="saved" id="saved"></span>
   <button class="btn small ghost" data-act="load" id="btn-load"></button>
   <input type="file" id="file" accept=".yaml,.yml" hidden>
+  <button class="btn small ghost" data-act="template" id="btn-template"></button>
   <a class="btn small ghost" href="?example" target="_blank" rel="noopener" id="btn-example"></a>
   <button class="btn small ghost" data-act="reset" id="btn-reset"></button>
   <div class="seg" role="group" aria-label="Language / Langue">
@@ -252,6 +253,19 @@ const FIELD_LABEL = { units:["Units","Unités"], basis:["Basis","Base"],
   multiplier:["Multiplier","Multiplicateur"], period:["Period","Période"], percentile:["Percentile","Centile"], spr:["SPR (%)","SPR (%)"],
   applies_to:["Relative to","Par rapport à"], type:["How F is summarized","Calcul de F"], min_age:["Min age","Âge min."],
   max_age:["Max age","Âge max."], age:["Age at recruitment","Âge au recrutement"], survey:["Survey or fishery","Relevé ou pêche"], notes:["Notes","Notes"] };
+// Field hints, shared by the form and the YAML template so the wording matches.
+const HINT = {
+  multiplier: ["e.g. 0.4 for 0.4 B_MSY", "p. ex. 0.4 pour 0.4 B_RMD"],
+  removal_multiplier: ["e.g. 1 for F_MSY", "p. ex. 1 pour F_RMD"],
+  max_age: ["Blank = plus group", "Vide = groupe plus"],
+  percentile: ["50 for the median", "50 pour la médiane"],
+  spr: ["40 for F40%", "40 pour F40%"],
+  survey: ["e.g. RV summer survey", "p. ex. relevé de recherche d'été"],
+  fp_units: ["1/yr for F; proportion for a harvest rate.", "1/an pour F; proportion pour un taux d'exploitation."],
+  applies_to: ["Which series this is compared to.", "Série à laquelle ceci est comparé."],
+  fp_applies_to: ["Which stock series catch is divided by.", "Série du stock par laquelle les prises sont divisées."],
+  exploitable_notes: ["Vulnerable to what, e.g. the commercial trawl fleet, mid-year.", "Vulnérable à quoi, p. ex. la flotte commerciale au chalut, en milieu d'année."],
+};
 const FL = f => L(...FIELD_LABEL[f]);
 const fl = f => FL(f).replace(/^./, c => c.toLowerCase()); // "How F is summarized" -> "how F is summarized"
 // Starting units when a metric is ticked; people change them if needed.
@@ -589,27 +603,26 @@ function metricField(m, f) {
         · <button class="linkbtn" data-act="unlock-units" data-i="${m.id}">${L("change", "modifier")}</button></div></div>`;
     }
     if (t) o.hint = L("Same units as", "Mêmes unités que") + ` <code>${t}</code>.`;
-    if (m.id === "fishing_pressure") o.hint = L("1/yr for F; proportion for a harvest rate.", "1/an pour F; proportion pour un taux d'exploitation.");
+    if (m.id === "fishing_pressure") o.hint = L(...HINT.fp_units);
   }
   if (f === "basis") o.options = opts(V.basis.filter(([k]) => (m.panel === "fishing_pressure" ? REMOVAL_BASIS : STOCK_BASIS).includes(k)));
   if (f === "type") o.options = opts(V.type);
   if (f === "applies_to") {
     o.options = targets(m.id).map(t => [t, mlabel(M[t])]);
-    o.hint = m.id === "fishing_pressure" ? L("Which stock series catch is divided by.", "Série du stock par laquelle les prises sont divisées.")
-      : L("Which series this is compared to.", "Série à laquelle ceci est comparé.");
+    o.hint = L(...(m.id === "fishing_pressure" ? HINT.fp_applies_to : HINT.applies_to));
   }
-  if (f === "multiplier") { o.num = true; o.ph = L("e.g. 0.4", "p. ex. 0.4"); o.hint = L("e.g. 0.4 for 0.4 B_MSY", "p. ex. 0.4 pour 0.4 B_RMD"); }
+  if (f === "multiplier") { o.num = true; o.ph = L("e.g. 0.4", "p. ex. 0.4"); o.hint = L(...(m.panel === "fishing_pressure" ? HINT.removal_multiplier : HINT.multiplier)); }
   if (f === "min_age" || f === "max_age" || f === "age") o.num = true;
-  if (f === "max_age" && m.id !== "fishing_pressure") o.hint = L("Blank = plus group", "Vide = groupe plus");
-  if (f === "survey") o.ph = L("e.g. RV summer survey", "p. ex. relevé de recherche d'été");
+  if (f === "max_age" && m.id !== "fishing_pressure") o.hint = L(...HINT.max_age);
+  if (f === "survey") o.ph = L(...HINT.survey);
   if (f === "notes") {
     o.wide = true; o.area = true;
-    if (m.id === "exploitable_stock") o.ph = L("Vulnerable to what, e.g. the commercial trawl fleet, mid-year.", "Vulnérable à quoi, p. ex. la flotte commerciale au chalut, en milieu d'année.");
+    if (m.id === "exploitable_stock") o.ph = L(...HINT.exploitable_notes);
     if (S.metrics[m.id].f.basis === "b_msy_proxy") o.ph = L("What the proxy is, e.g. mean SSB over 1983–2018.", "Ce qu'est l'approximation, p. ex. BSR moyenne de 1983 à 2018.");
     if (S.metrics[m.id].f.basis === "other") o.ph = L("Explain the basis.", "Expliquez la base.");
   }
-  if (f === "percentile") { o.num = true; o.ph = L("e.g. 25", "p. ex. 25"); o.hint = L("50 for the median", "50 pour la médiane"); }
-  if (f === "spr") { o.num = true; o.ph = L("e.g. 40", "p. ex. 40"); o.hint = L("40 for F40%", "40 pour F40%"); }
+  if (f === "percentile") { o.num = true; o.ph = L("e.g. 25", "p. ex. 25"); o.hint = L(...HINT.percentile); }
+  if (f === "spr") { o.num = true; o.ph = L("e.g. 40", "p. ex. 40"); o.hint = L(...HINT.spr); }
   if (f === "period") {
     const base = `metrics.${m.id}.f.period_`;
     return `<div class="f"><label for="f-${base}from">${L("Period (first and last year)", "Période (première et dernière année)")}<span class="req">*</span></label>
@@ -803,6 +816,199 @@ function yaml() {
   return L.join("\n") + "\n";
 }
 
+// ---------------------------------------------------------------------------
+// Blank template: every key the form writes, with the allowed codes and what's
+// required in comments. Metrics are commented out: lines to uncomment start with
+// "# " (at the block's indentation) and help lines with "## ", so toggling the
+// comment on a block leaves valid YAML.
+// ---------------------------------------------------------------------------
+// Conditions for "if" fields that don't come from a basis (the `condition` column
+// of ../fsar-data/vocab/metric_fields.csv).
+const IF_TEXT = {
+  applies_to: ["there is more than one stock-size series", "il y a plus d'une série de taille du stock"],
+  "fishing_pressure.applies_to": ["units are proportion and there is more than one stock-size series",
+    "les unités sont proportion et il y a plus d'une série de taille du stock"],
+  type: ["units are 1/yr", "les unités sont 1/yr"],
+  min_age: ["type is average", "type est average"],
+  max_age: ["type is average", "type est average"],
+};
+const T_COL = 23, T_WIDTH = 80; // column for inline comments; line width
+function wrapText(text, width) {
+  const out = [];
+  let cur = "";
+  // A "|" between codes stays at the end of the line before it.
+  const words = text.split(" ").reduce((ws, w) => (w === "|" && ws.length ? ws[ws.length - 1] += " |" : ws.push(w), ws), []);
+  for (const w of words) {
+    if (cur && (cur + " " + w).length > width) { out.push(cur); cur = w; }
+    else cur = cur ? cur + " " + w : w;
+  }
+  if (cur) out.push(cur);
+  return out;
+}
+const lc = s => s.replace(/^./, c => c.toLowerCase());
+
+function templateYaml() {
+  const out = [];
+  const bar = list => list.join(" | ");
+  const join = (...xs) => xs.filter(Boolean).join("; ");
+  const REQ = L("required", "obligatoire");
+  const reqIf = cond => (L("required if ", "obligatoire si ") + cond).replace(/ si il/, " s'il");
+  const eg = x => L("e.g. ", "p. ex. ") + x;
+  const DATE = L("YYYY-MM-DD", "AAAA-MM-JJ");
+  // Where a line goes: live (`pre` "") or in a commented-out block (`pre` "# " after `bi`).
+  const LIVE = { bi: "", pre: "" }, COMP = { bi: "", pre: "# " }, MET = { bi: "  ", pre: "# " };
+  const help = (c, depth, text) => {
+    const lead = c.pre ? c.bi + "## " + "  ".repeat(depth) : "  ".repeat(depth) + "# ";
+    wrapText(text, T_WIDTH - lead.length).forEach(t => out.push(lead + t));
+  };
+  // A key, with its note inline if it fits and on the lines above if not.
+  const kv = (c, depth, key, note = "", val = "") => {
+    const head = c.bi + c.pre + "  ".repeat(depth) + key + ":" + (val === "" ? "" : " " + val);
+    const inline = (head.length < T_COL ? head.padEnd(T_COL) : head + " ") + "# " + note;
+    if (!note) out.push(head);
+    else if (inline.length <= T_WIDTH) out.push(inline);
+    else { help(c, depth, note); out.push(head); }
+  };
+  const codes = k => bar(V[k].map(([c]) => c));
+  const bullet = text => wrapText(text, T_WIDTH - 4).forEach((t, i) => out.push((i ? "#   " : "# - ") + t));
+
+  // Header
+  out.push(L("# assessment.yaml template, made by the DFO stock assessment output form",
+    "# Modèle assessment.yaml créé par le formulaire de résultats d'évaluation du MPO"));
+  if (/^https?:$/.test(location.protocol)) out.push("# " + location.origin + location.pathname);
+  out.push("#");
+  bullet(L(`Fill in the value after each colon. Text values don't need quotes unless they start with a symbol or contain ": ".`,
+    "Remplissez la valeur après chaque deux-points. Le texte n'a pas besoin de guillemets, sauf s'il commence par un symbole ou contient « : »."));
+  bullet(L("Leave a value blank, or delete the line, if it doesn't apply.",
+    "Laissez une valeur vide, ou supprimez la ligne, si elle ne s'applique pas."));
+  bullet(L(`"required" fields must be filled in. Fields with a list of options take exactly one of the codes shown.`,
+    "Les champs « obligatoire » doivent être remplis. Les champs avec une liste d'options prennent exactement un des codes indiqués."));
+  bullet(L("Lines starting with # are comments and are ignored.", "Les lignes qui commencent par # sont des commentaires et sont ignorées."));
+  bullet(L(`To check the file, open the form and use "Load existing YAML file". (The form doesn't keep comments if you download the file again from it.)`,
+    "Pour vérifier le fichier, ouvrez le formulaire et utilisez « Charger un fichier YAML existant ». (Le formulaire ne conserve pas les commentaires si vous téléchargez de nouveau le fichier à partir de celui-ci.)"));
+  bullet(L("What each CSV column means: ", "Signification de chaque colonne du CSV (en anglais) : ") + DICTIONARY);
+  out.push("");
+
+  kv(LIVE, 0, "entered_by", L("who filled in this file", "qui a rempli ce fichier"));
+  kv(LIVE, 1, "name", REQ);
+  kv(LIVE, 1, "email", REQ);
+  kv(LIVE, 1, "date", join(REQ, DATE), today());
+  out.push("");
+  kv(LIVE, 0, "year_assessed", join(REQ, eg("2024")));
+  kv(LIVE, 0, "assessment_type", join(REQ, codes("atype")) + L(" (update: an interim or indicator update)", " (update : mise à jour intermédiaire ou des indicateurs)"));
+  out.push("");
+
+  out.push("stock:");
+  kv(LIVE, 1, "name", L("required in both languages; the major stock name", "obligatoire dans les deux langues; le nom du grand stock"));
+  kv(LIVE, 2, "en"); kv(LIVE, 2, "fr");
+  out.push("  species:");
+  kv(LIVE, 2, "scientific", join(REQ, eg("Gadus morhua")));
+  kv(LIVE, 2, "en", L("common name, e.g. Atlantic cod", "nom commun anglais, p. ex. Atlantic cod"));
+  kv(LIVE, 2, "fr", L("e.g. Morue franche", "nom commun français, p. ex. Morue franche"));
+  kv(LIVE, 2, "aphia_id", L("WoRMS AphiaID (a whole number), e.g. 126436", "AphiaID de WoRMS (nombre entier), p. ex. 126436"));
+  kv(LIVE, 1, "area", eg(L("NAFO 4RST", "OPANO 4RST")));
+  kv(LIVE, 2, "en"); kv(LIVE, 2, "fr");
+  kv(LIVE, 1, "region", join(REQ, codes("region")));
+  kv(LIVE, 1, "management", codes("management"));
+  kv(LIVE, 1, "fish_stock_provisions", L("true | false (prescribed under Schedule IX of the Fishery (General) Regulations)",
+    "true | false (visé à l'annexe IX du Règlement de pêche (dispositions générales))"));
+  kv(LIVE, 1, "in_sustainability_survey", L("true | false (in the Sustainability Survey for Fisheries)", "true | false (dans le Sondage sur la durabilité des pêches)"));
+  kv(LIVE, 1, "ram_legacy_id", eg("DFO-GULF-WITFLOUN4RST"));
+  out.push("");
+
+  help(COMP, 0, L("Only if you also have component_timeseries.csv. Add one entry per component.",
+    "Seulement si vous avez aussi component_timeseries.csv. Ajoutez une entrée par composante."));
+  kv(COMP, 0, "components");
+  kv(COMP, 1, "north", L("the ID used in the component column (no spaces)", "l'identifiant de la colonne component (sans espaces)"));
+  kv(COMP, 2, "name", L("required in both languages", "obligatoire dans les deux langues"));
+  kv(COMP, 3, "en"); kv(COMP, 3, "fr");
+  out.push("");
+
+  out.push("method:");
+  kv(LIVE, 1, "type", join(REQ, codes("method")) + L(" (other: describe it in notes)", " (other : décrivez-le dans notes)"));
+  kv(LIVE, 1, "software", join(REQ, codes("software")));
+  kv(LIVE, 1, "notes", reqIf(L("type is other", "type est other")));
+  out.push("");
+
+  kv(LIVE, 0, "meeting", L("the peer-review meeting (all optional)", "la réunion d'examen par les pairs (facultatif)"));
+  kv(LIVE, 1, "date", DATE);
+  kv(LIVE, 1, "url");
+  kv(LIVE, 1, "csas_process", L("dmapps process URL", "URL du processus dans dmapps"));
+  out.push("");
+
+  kv(LIVE, 0, "publications", L(`one entry per document (e.g. the SAR and its Research Document); copy the lines from "- series:" down for each one`,
+    "une entrée par document (p. ex. l'avis scientifique et son document de recherche); copiez les lignes à partir de « - series: » pour chacun"));
+  kv(LIVE, 1, "- series", join(REQ, codes("series")));
+  kv(LIVE, 2, "number", join(REQ, eg("2025/001")));
+  kv(LIVE, 2, "year", L("required; year published", "obligatoire; année de publication"));
+  kv(LIVE, 2, "url"); kv(LIVE, 2, "doi");
+  kv(LIVE, 2, "title", L("required in both languages (use the same text if there is only one title)",
+    "obligatoire dans les deux langues (même texte s'il n'y a qu'un titre)"));
+  kv(LIVE, 3, "en"); kv(LIVE, 3, "fr");
+  kv(LIVE, 2, "authors", L("one entry per author, in order", "une entrée par auteur, dans l'ordre"));
+  kv(LIVE, 3, "- given");
+  kv(LIVE, 4, "family", L("required for each author", "obligatoire pour chaque auteur"));
+  kv(LIVE, 4, "orcid", eg("0000-0000-0000-0000"));
+  out.push("");
+
+  kv(LIVE, 0, "interval", L("leave blank if no column has _lower / _upper", "laissez vide si aucune colonne n'a _lower / _upper"));
+  kv(LIVE, 1, "level", bar(LEVELS));
+  kv(LIVE, 1, "type", codes("interval"));
+  out.push("");
+
+  out.push("metrics:");
+  help(MET, 0, L("One entry for each metric column in your CSVs. Uncomment the ones you have: select the block and press Ctrl+/ (Cmd+/ on a Mac) in most editors.",
+    "Une entrée pour chaque colonne de mesure de vos CSV. Décommentez celles que vous avez : sélectionnez le bloc et appuyez sur Ctrl+/ (Cmd+/ sur un Mac) dans la plupart des éditeurs."));
+  const basisIf = (m, f) => { // e.g. "required if basis is mean or percentile"
+    const bs = Object.keys(BASIS_FIELDS).filter(b => BASIS_FIELDS[b].includes(f) && (m.panel === "fishing_pressure" ? REMOVAL_BASIS : STOCK_BASIS).includes(b));
+    return bs.length ? reqIf(L("basis is ", "basis est ") + bs.join(L(" or ", " ou "))) : "";
+  };
+  const note = (m, f) => {
+    const id = m.id, r = MF[id][f];
+    const cond = r === "yes" ? REQ : r === "if" && IF_TEXT[`${id}.${f}`] ? reqIf(L(...IF_TEXT[`${id}.${f}`]))
+      : r === "if" && IF_TEXT[f] ? reqIf(L(...IF_TEXT[f])) : MF[id].basis ? basisIf(m, f) : "";
+    const units = bar(UNITS.filter(u => m.dims.includes(u.dim)).map(u => u.id));
+    const hint = {
+      units: m.role === "reference" ? L("same units as the series it is compared to: ", "mêmes unités que la série à laquelle il est comparé : ") + units
+        : id === "fishing_pressure" ? units + " (" + lc(L(...HINT.fp_units)).replace(/\.$/, "") + ")" : units,
+      survey: lc(L(...HINT.survey)),
+      max_age: id === "fishing_pressure" ? "" : lc(L(...HINT.max_age)),
+      age: id === "recruitment" ? fl("age") : "",
+      applies_to: lc(L(...(id === "fishing_pressure" ? HINT.fp_applies_to : HINT.applies_to))).replace(/\.$/, "") + colon() + bar(STOCK_SERIES),
+      basis: bar(V.basis.map(([c]) => c).filter(c => (m.panel === "fishing_pressure" ? REMOVAL_BASIS : STOCK_BASIS).includes(c))),
+      multiplier: lc(L(...(m.panel === "fishing_pressure" ? HINT.removal_multiplier : HINT.multiplier))),
+      period: L("[first, last], e.g. [1985, 2009]", "[première, dernière], p. ex. [1985, 2009]"),
+      percentile: lc(L(...HINT.percentile)),
+      spr: lc(L(...HINT.spr)),
+      type: codes("type"),
+      notes: id === "exploitable_stock" ? lc(L(...HINT.exploitable_notes)).replace(/\.$/, "") : "",
+    }[f];
+    return join(cond, hint);
+  };
+  for (const [panel, en, fr] of PANELS) {
+    out.push("");
+    help(MET, 0, `---- ${L(en, fr)} ----`);
+    if (panel === "stock") help(MET, 0, L("Report every stock-size series the assessment estimates.", "Déclarez chaque série de taille du stock estimée par l'évaluation."));
+    for (const m of METRICS.filter(m => m.panel === panel)) {
+      out.push("");
+      help(MET, 0, (m.level === "component" ? L("Only in component_timeseries.csv. ", "Seulement dans component_timeseries.csv. ") : "") + L(m.desc_en, m.desc_fr));
+      kv(MET, 0, m.id);
+      for (const f of Object.keys(MF[m.id])) {
+        if (f === "notes") { // the CSV columns it has, just before the free text (as in yaml())
+          if (m.id !== "total_allowable_catch") kv(MET, 1, "bounds", L(`true if the CSV has ${m.id}_lower and _upper`, `true si le CSV a ${m.id}_lower et _upper`));
+          if (m.role === "series" && MSY_BASIS[m.panel]) {
+            const dens = [...METRICS.filter(r => r.panel === m.panel && r.role === "reference").map(r => r.id), MSY_BASIS[m.panel]];
+            kv(MET, 1, "ratios", L(`ratio columns, e.g. [${dens[0]}, ${MSY_BASIS[m.panel]}] for ${m.id}/${dens[0]} and ${m.id}/${MSY_BASIS[m.panel]}; any of: `,
+              `colonnes de rapport, p. ex. [${dens[0]}, ${MSY_BASIS[m.panel]}] pour ${m.id}/${dens[0]} et ${m.id}/${MSY_BASIS[m.panel]}; parmi : `) + bar(dens), "[]");
+          }
+        }
+        kv(MET, 1, f, note(m, f));
+      }
+    }
+  }
+  return out.join("\n") + "\n";
+}
+
 // Columns for one file, in canonical order: each metric (with its bounds), then its ratios.
 // `skip` is the level that doesn't belong in this file.
 function fileColumns(skip) {
@@ -918,7 +1124,8 @@ function renderChrome() {
   document.title = $("#h1").textContent = L("DFO stock assessment output YAML/CSV generator", "Générateur YAML/CSV des résultats d'évaluation de stock du MPO");
   $("#saved").textContent = savedMsg();
   $("#btn-load").textContent = L("Load existing YAML file", "Charger un fichier YAML existant");
-  $("#btn-example").textContent = L("Open example in a new tab", "Ouvrir l'exemple dans un nouvel onglet");
+  $("#btn-template").textContent = L("Download YAML template", "Télécharger un modèle YAML");
+  $("#btn-example").textContent =L("Open example in a new tab", "Ouvrir l'exemple dans un nouvel onglet");
   $("#btn-example").href = "?example&lang=" + LANG;
   $("#btn-reset").textContent = L("Start over", "Recommencer");
   $("#intro").innerHTML = L(
@@ -929,7 +1136,9 @@ function renderChrome() {
       <li>Download <code>assessment.yaml</code> and the blank CSV from the panel on the right.</li>
       <li>Fill in the CSV (one row per year) and put both files in a folder named after the assessment.</li>
     </ol>
-    The <a href="${DICTIONARY}" target="_blank" rel="noopener">column dictionary</a> describes each CSV column.`,
+    The <a href="${DICTIONARY}" target="_blank" rel="noopener">column dictionary</a> describes each CSV column.
+    Prefer editing YAML directly? <button class="linkbtn" data-act="template">Download a template</button> with every field
+    and its options, then use <b>Load existing YAML file</b> to check it.`,
     `Les données issues d'une évaluation de stock sont soumises en deux fichiers : <code>assessment.yaml</code>, qui décrit l'évaluation et
     ses séries chronologiques, et un CSV contenant les valeurs des séries.
     <ol class="steps">
@@ -937,7 +1146,9 @@ function renderChrome() {
       <li>Téléchargez <code>assessment.yaml</code> et le CSV vide à partir du panneau de droite.</li>
       <li>Remplissez le CSV (une ligne par année) et placez les deux fichiers dans un dossier nommé d'après l'évaluation.</li>
     </ol>
-    Le <a href="${DICTIONARY}" target="_blank" rel="noopener">dictionnaire des colonnes</a> (en anglais) décrit chaque colonne du CSV.`);
+    Le <a href="${DICTIONARY}" target="_blank" rel="noopener">dictionnaire des colonnes</a> (en anglais) décrit chaque colonne du CSV.
+    Vous préférez modifier le YAML directement? <button class="linkbtn" data-act="template">Téléchargez un modèle</button> avec chaque
+    champ et ses options, puis utilisez <b>Charger un fichier YAML existant</b> pour le vérifier.`);
 }
 function render() { fillUnits(); renderChrome(); renderForm(); renderSide(); }
 
@@ -1010,6 +1221,7 @@ document.addEventListener("click", e => {
   if (act === "rm-comp") S.comps.splice(+b.dataset.i, 1);
   if (act === "unlock-units") unlockUnits.add(b.dataset.i);
   if (act === "download") { download("assessment.yaml", yaml()); return; }
+  if (act === "template") { download("assessment.yaml", templateYaml()); return; }
   if (act === "copy") {
     navigator.clipboard?.writeText(yaml()).then(() => { b.textContent = L("Copied", "Copié"); setTimeout(() => b.textContent = L("Copy", "Copier"), 1200); });
     return;
@@ -1182,13 +1394,24 @@ function roundTrip(a, b, path = "", out = []) {
   return out;
 }
 
+// Removes null values, then mappings and list items left empty, so a blank field or
+// block means the same as a missing one (as prune_blank() in ../fsar-data/R/fsar-data.R).
+function pruneBlank(x) {
+  const empty = v => v == null || (typeof v === "object" && Object.keys(v).length === 0);
+  if (Array.isArray(x)) return x.map(pruneBlank).filter(v => !empty(v));
+  if (x && typeof x === "object") {
+    return Object.fromEntries(Object.entries(x).map(([k, v]) => [k, pruneBlank(v)]).filter(([, v]) => !empty(v)));
+  }
+  return x;
+}
+
 // Returns problems with the file; if there are none, S holds the loaded file.
 function loadYaml(text) {
   if (typeof jsyaml === "undefined") return [L("The YAML reader didn't load. Check your internet connection and reload the page.",
     "Le lecteur YAML n'a pas été chargé. Vérifiez votre connexion Internet et rechargez la page.")];
   let y;
   // CORE_SCHEMA keeps dates as text (as the form has them).
-  try { y = jsyaml.load(text, { schema: jsyaml.CORE_SCHEMA }); }
+  try { y = pruneBlank(jsyaml.load(text, { schema: jsyaml.CORE_SCHEMA })); }
   catch (e) { return [L("It isn't valid YAML: ", "Ce n'est pas du YAML valide : ") + e.message]; }
   if (!y || typeof y !== "object" || Array.isArray(y)) return [L("It doesn't look like an assessment.yaml.", "Cela ne ressemble pas à un assessment.yaml.")];
   const { s, unknown } = fromYaml(y);
@@ -1198,7 +1421,7 @@ function loadYaml(text) {
   out.push(...vocabErrors());
   const known = { ...y }; // unknown metrics are reported above
   if (unknown.length) { known.metrics = { ...y.metrics }; unknown.forEach(id => delete known.metrics[id]); }
-  out.push(...roundTrip(known, jsyaml.load(yaml(), { schema: jsyaml.CORE_SCHEMA })));
+  out.push(...roundTrip(known, pruneBlank(jsyaml.load(yaml(), { schema: jsyaml.CORE_SCHEMA }))));
   S.me.date = today(); // entered now
   if (out.length) S = old;
   return [...new Set(out)];
