@@ -55,7 +55,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); ou
 .flash { animation: flash 1.2s; }
 @keyframes flash { 0%, 40% { background: var(--warn-soft); } }
 
-.btn { border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 8px; padding: 6px 13px; font: inherit; font-size: 14px; cursor: pointer; }
+.btn { text-decoration: none; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 8px; padding: 6px 13px; font: inherit; font-size: 14px; cursor: pointer; }
 .btn:hover { border-color: var(--accent); }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .btn.ghost { border-color: transparent; color: var(--muted); }
@@ -71,7 +71,8 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); ou
 
 .row { display: grid; gap: 10px; align-items: end; margin-bottom: 10px; }
 .row.author { grid-template-columns: 1fr 1fr 1fr auto; }
-.row.comp { grid-template-columns: 150px 1fr 1fr auto; }
+.row.comp { grid-template-columns: 150px 1fr 1fr auto; align-items: start; }
+.row.comp > .btn { margin-top: 24px; }
 
 .panel-name { margin: 18px 0 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
 .panel-name:first-of-type { margin-top: 6px; }
@@ -82,6 +83,14 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); ou
 .mname { font-weight: 600; }
 .mcode { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--muted); }
 .mdesc { font-size: 12.5px; color: var(--muted); flex-basis: 100%; padding-left: 27px; margin-top: -2px; }
+.metric.on .mdesc { display: none; }
+.panel-lede { font-size: 12.5px; color: var(--muted); margin: -2px 0 8px; }
+.ro { padding: 7px 0; font-size: 14px; }
+.linkbtn { border: 0; background: none; padding: 0; font: inherit; color: var(--accent); cursor: pointer; text-decoration: underline; }
+section.card > h2 .badge { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--warn); }
+section.card > h2 .badge.ok { color: var(--ok); }
+ol.steps { margin: 0 0 10px; padding-left: 22px; }
+ol.steps li { margin: 2px 0; }
 .mbody { border-top: 1px solid var(--line); padding: 12px 14px 14px 39px; }
 .extras { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
 .extras .q { font-size: 13px; font-weight: 600; }
@@ -96,13 +105,20 @@ aside h3 { margin: 0 0 8px; font-size: 14px; }
 .status { font-weight: 600; }
 .status.ok { color: var(--ok); }
 .status.todo { color: var(--warn); }
-ul.todo { list-style: none; padding: 0; margin: 8px 0 0; font-size: 13px; max-height: 220px; overflow: auto; }
+ul.todo { list-style: none; padding: 0; margin: 8px 0 0; font-size: 13px; }
 ul.todo li { padding: 3px 0; }
-ul.todo a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--muted); cursor: pointer; }
-ul.todo a:hover { color: var(--accent); border-color: var(--accent); }
+ul.todo ul { list-style: none; padding: 0 0 4px 14px; margin: 0; }
+ul.todo button { border: 0; background: none; padding: 0; font: inherit; text-align: left; color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--muted); cursor: pointer; }
+ul.todo button:hover, ul.todo button:focus-visible { color: var(--accent); border-color: var(--accent); }
+ul.todo .sec { font-weight: 600; }
+ul.todo .sec-n { color: var(--warn); font-weight: 600; }
+ul.todo .sec-n.ok { color: var(--ok); }
+details.preview summary { cursor: pointer; font-size: 14px; font-weight: 600; }
+details.preview[open] summary { margin-bottom: 8px; }
 .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
 pre.code { background: var(--chip); border-radius: 8px; padding: 10px 12px; overflow: auto; font-size: 12px; line-height: 1.45; margin: 0; max-height: 380px; }
-.cols { font-family: ui-monospace, Menlo, monospace; font-size: 12px; background: var(--chip); border-radius: 6px; padding: 8px 10px; word-break: break-all; margin: 4px 0 6px; }
+.cols { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0 6px; }
+.cols code { font-size: 12px; background: var(--chip); border-radius: 5px; padding: 1px 6px; white-space: nowrap; }
 .cols-name { font-size: 13px; font-weight: 600; margin-top: 8px; }
 
 @media (max-width: 900px) {
@@ -119,12 +135,12 @@ aside .box.bad h3 { color: var(--bad); }
 </head>
 <body>
 <header>
-  <h1>DFO stock assessment output YAML/CSV generator</h1>
+  <h1 id="h1">DFO stock assessment output YAML/CSV generator</h1>
   <span class="spacer"></span>
   <span class="saved" id="saved"></span>
   <button class="btn small ghost" data-act="load" id="btn-load"></button>
   <input type="file" id="file" accept=".yaml,.yml" hidden>
-  <button class="btn small ghost" data-act="example" id="btn-example"></button>
+  <a class="btn small ghost" href="?example" target="_blank" rel="noopener" id="btn-example"></a>
   <button class="btn small ghost" data-act="reset" id="btn-reset"></button>
   <div class="seg" role="group" aria-label="Language / Langue">
     <button data-lang="en">EN</button><button data-lang="fr">FR</button>
@@ -135,6 +151,7 @@ aside .box.bad h3 { color: var(--bad); }
   <main>
     <p class="intro" id="intro"></p>
     <div id="form"></div>
+    <section class="card" id="finish"></section>
   </main>
   <aside id="side"></aside>
 </div>
@@ -236,6 +253,7 @@ const FIELD_LABEL = { units:["Units","Unités"], basis:["Basis","Base"],
   applies_to:["Relative to","Par rapport à"], type:["How F is summarized","Calcul de F"], min_age:["Min age","Âge min."],
   max_age:["Max age","Âge max."], age:["Age at recruitment","Âge au recrutement"], survey:["Survey or fishery","Relevé ou pêche"], notes:["Notes","Notes"] };
 const FL = f => L(...FIELD_LABEL[f]);
+const fl = f => FL(f).replace(/^./, c => c.toLowerCase()); // "How F is summarized" -> "how F is summarized"
 // Starting units when a metric is ticked; people change them if needed.
 const DEFAULT_UNITS = { catch: "t", spawning_stock: "t", total_stock: "t", exploitable_stock: "t",
   index: "kg/tow", fishing_pressure: "1/yr", natural_mortality: "1/yr", recruitment: "millions" };
@@ -275,14 +293,20 @@ if (!S || !S.me) S = blank();
 METRICS.forEach(m => S.metrics[m.id] ||= { on: false, f: {} });
 METRICS.forEach(m => S.metrics[m.id].ratios ||= {});
 
+// With ?example in the URL the page shows the example and never saves, so it can't
+// replace a draft stored in this browser.
+const EXAMPLE_MODE = new URLSearchParams(location.search).has("example");
+let savedMsg = () => EXAMPLE_MODE ? L("Example: changes aren't saved", "Exemple : les modifications ne sont pas enregistrées") : "";
 let saveTimer;
 function save() {
+  if (EXAMPLE_MODE) return;
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
     try {
       localStorage.setItem(KEY, JSON.stringify(S));
       localStorage.setItem(ME_KEY, JSON.stringify({ name: S.me.name, email: S.me.email }));
-      $("#saved").textContent = L("Draft saved", "Brouillon enregistré");
+      savedMsg = () => L("Draft saved", "Brouillon enregistré");
+      $("#saved").textContent = savedMsg();
     } catch {}
   }, 300);
 }
@@ -383,10 +407,11 @@ function input(path, label, o = {}) {
   }
   return `<div class="f${o.wide ? " wide" : ""}"><label for="f-${path}">${label}${req}</label>${ctl}${o.hint ? `<div class="hint">${o.hint}</div>` : ""}</div>`;
 }
-function yesno(path, q, labels) {
-  const v = get(path);
-  const lab = labels || { yes: L("Yes", "Oui"), no: L("No", "Non") };
-  return `<div class="yesno"><span class="q">${q}</span>${["no", "yes"].map(x =>
+// `unsure` adds a third choice that writes nothing (for optional questions).
+function yesno(path, q, unsure = false) {
+  const v = get(path) || "";
+  const lab = { yes: L("Yes", "Oui"), no: L("No", "Non"), "": L("Not sure", "Je ne sais pas") };
+  return `<div class="yesno"><span class="q">${q}</span>${(unsure ? ["no", "yes", ""] : ["no", "yes"]).map(x =>
     `<label><input type="radio" name="${path}" data-b="${path}" value="${x}"${v === x ? " checked" : ""}> ${lab[x]}</label>`).join("")}</div>`;
 }
 
@@ -411,7 +436,7 @@ function renderPub(pub, i) {
       ${input(`${p}.authors.${j}.given`, L("Given name", "Prénom"))}
       ${input(`${p}.authors.${j}.family`, L("Family name", "Nom de famille"))}
       ${input(`${p}.authors.${j}.orcid`, "ORCID", { ph: "0000-0000-0000-0000" })}
-      <button class="btn small ghost" data-act="rm-author" data-p="${i}" data-i="${j}" title="${L("Remove author", "Retirer l'auteur")}">✕</button>
+      ${pub.authors.length > 1 ? `<button class="btn small ghost" data-act="rm-author" data-p="${i}" data-i="${j}" title="${L("Remove author", "Retirer l'auteur")}">✕</button>` : "<span></span>"}
     </div>`).join("")}
     <button class="btn small" data-act="add-author" data-p="${i}">${L("+ Add author", "+ Ajouter un auteur")}</button>
   </div>`;
@@ -420,20 +445,20 @@ function renderPub(pub, i) {
 function renderForm() {
   let h = "";
 
-  h += `<section class="card"><h2>${L("About you", "À propos de vous")}</h2>
+  h += `<section class="card" id="sec-me"><h2>${L("About you", "À propos de vous")}${badge("me")}</h2>
     <p class="lede">${L("The person filling in this file, in case there are questions about it.", "La personne qui remplit ce fichier, au cas où il y aurait des questions.")}</p>
     <div class="grid">
       ${input("me.name", L("Your name", "Votre nom"), { req: true })}
       ${input("me.email", L("Email", "Courriel"), { req: true, type: "email" })}
-      ${input("me.date", L("Date entered", "Date de saisie"), { req: true, type: "date" })}
-    </div></section>`;
+    </div>
+    <div class="hint" style="margin-top:8px">${L("Date entered", "Date de saisie")}${colon()}${esc(S.me.date || today())}</div></section>`;
 
-  h += `<section class="card"><h2>${L("Assessment", "Évaluation")}</h2><div class="grid">
+  h += `<section class="card" id="sec-assessment"><h2>${L("Assessment", "Évaluation")}${badge("assessment")}</h2><div class="grid">
       ${input("year_assessed", L("Year assessed", "Année de l'évaluation"), { req: true, num: true, ph: L("e.g. 2024", "p. ex. 2024") })}
       ${input("assessment_type", L("Assessment type", "Type d'évaluation"), { req: true, options: opts(V.atype) })}
     </div></section>`;
 
-  h += `<section class="card"><h2>Stock</h2><div class="grid">
+  h += `<section class="card" id="sec-stock"><h2>Stock${badge("stock")}</h2><div class="grid">
       ${input("stock.name.en", L("Major stock name (English)", "Nom du grand stock (anglais)"), { req: true, ph: L("e.g. 4X5Y Atlantic Cod", "p. ex. 4X5Y Atlantic Cod") })}
       ${input("stock.name.fr", L("Major stock name (French)", "Nom du grand stock (français)"), { req: true, ph: L("e.g. Morue franche de 4X5Y", "p. ex. Morue franche de 4X5Y") })}
       ${input("stock.region", L("DFO region", "Région du MPO"), { req: true, options: opts(V.region) })}
@@ -447,17 +472,17 @@ function renderForm() {
         hint: L(`From <a href="https://www.marinespecies.org" target="_blank" rel="noopener">WoRMS</a>`, `Tiré de <a href="https://www.marinespecies.org" target="_blank" rel="noopener">WoRMS</a>`) })}
       ${input("stock.ram_legacy_id", L("RAM Legacy ID", "Identifiant RAM Legacy"), { ph: L("e.g. DFO-GULF-WITFLOUN4RST", "p. ex. DFO-GULF-WITFLOUN4RST") })}
     </div>
-    ${yesno("stock.fish_stock_provisions", L("Prescribed under the Fish Stocks provisions?", "Visé par les dispositions relatives aux stocks de poissons?"))}
+    ${yesno("stock.fish_stock_provisions", L("Prescribed under the Fish Stocks provisions?", "Visé par les dispositions relatives aux stocks de poissons?"), true)}
     <div class="hint">${L(`Prescribed stocks are listed in Schedule IX of the <a href="https://laws-lois.justice.gc.ca/eng/regulations/SOR-93-53/" target="_blank" rel="noopener">Fishery (General) Regulations</a>. See also the <a href="https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/guidelines-lignes-directrices-eng.htm" target="_blank" rel="noopener">DFO guidelines</a>.`,
       `Les stocks visés figurent à l'annexe IX du <a href="https://laws-lois.justice.gc.ca/fra/reglements/DORS-93-53/" target="_blank" rel="noopener">Règlement de pêche (dispositions générales)</a>.`)}</div>
-    ${yesno("stock.in_sustainability_survey", L("In the Sustainability Survey for Fisheries?", "Dans le Sondage sur la durabilité des pêches?"))}
+    ${yesno("stock.in_sustainability_survey", L("In the Sustainability Survey for Fisheries?", "Dans le Sondage sur la durabilité des pêches?"), true)}
     <div class="hint">${L(`See the <a href="https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html" target="_blank" rel="noopener">Sustainability Survey for Fisheries</a> for the list of stocks.`,
       `Voir le <a href="https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-fra.html" target="_blank" rel="noopener">Sondage sur la durabilité des pêches</a> pour la liste des stocks.`)}</div>
     ${yesno("hasComp", L("Is the stock also reported by component (e.g. CUs, herring sections, fishing areas)?",
       "Le stock est-il aussi présenté par composante (p. ex. UC, sections de hareng, zones de pêche)?"))}
     ${S.hasComp === "yes" ? `<div class="sub">
       ${S.comps.map((c, i) => `<div class="row comp">
-        ${input(`comps.${i}.id`, L("ID", "Identifiant"), { ph: slug(c.en).replace(/-/g, "_") || L("north", "nord") })}
+        ${input(`comps.${i}.id`, L("ID", "Identifiant"), { hint: `<span id="comp-hint-${i}">${compHint(c)}</span>` })}
         ${input(`comps.${i}.en`, L("Name (English)", "Nom (anglais)"), { req: true })}
         ${input(`comps.${i}.fr`, L("Name (French)", "Nom (français)"), { req: true })}
         <button class="btn small ghost" data-act="rm-comp" data-i="${i}" title="${L("Remove component", "Retirer la composante")}">✕</button>
@@ -468,13 +493,13 @@ function renderForm() {
     </div>` : ""}
   </section>`;
 
-  h += `<section class="card"><h2>${L("Method", "Méthode")}</h2><div class="grid">
+  h += `<section class="card" id="sec-method"><h2>${L("Method", "Méthode")}${badge("method")}</h2><div class="grid">
       ${input("method.type", L("Model type", "Type de modèle"), { req: true, options: opts(V.method) })}
       ${input("method.software", L("Software", "Logiciel"), { req: true, options: opts(V.software) })}
       ${S.method.type === "other" ? input("method.notes", L("Describe the model type", "Décrivez le type de modèle"), { req: true, wide: true, area: true }) : ""}
     </div></section>`;
 
-  h += `<section class="card"><h2>${L("Meeting and publications", "Réunion et publications")}</h2>
+  h += `<section class="card" id="sec-pubs"><h2>${L("Meeting and publications", "Réunion et publications")}${badge("pubs")}</h2>
     <p class="lede">${L("The peer-review meeting, and each document from it (e.g. the FSAR or SAR and its Research Document).",
       "La réunion d'examen par les pairs et chaque document qui en découle (p. ex. l'ASP ou l'AS et son document de recherche).")}</p>
     <div class="grid">
@@ -487,19 +512,23 @@ function renderForm() {
   </section>`;
 
   // Metrics
-  h += `<section class="card"><h2>${L("Columns in your CSV", "Colonnes de votre CSV")}</h2>
+  h += `<section class="card" id="sec-metrics"><h2>${L("Columns in your CSV", "Colonnes de votre CSV")}${badge("metrics")}</h2>
     <p class="lede">${L("Tick each time series you have. Each one is a column in your CSV, and needs a few details here.",
       "Cochez chaque série chronologique que vous avez. Chacune est une colonne de votre CSV et demande quelques détails ici.")}</p>
     ${yesno("hasBounds", L("Do any columns have uncertainty intervals (<code>_lower</code> / <code>_upper</code>)?",
       "Des colonnes ont-elles des intervalles d'incertitude (<code>_lower</code> / <code>_upper</code>)?"))}
     <div class="hint">${L("If any do, say yes. Stock size, fishing pressure, recruitment and ratio columns then get <code>_lower</code> / <code>_upper</code>; for catch, M, recruitment deviations and reference points you choose below.",
-      "Si c'est le cas, répondez oui. Les colonnes de taille du stock, de pression de pêche, de recrutement et de rapports ont alors <code>_lower</code> / <code>_upper</code>; pour les prises, M, les écarts de recrutement et les points de référence, vous choisissez plus bas.")}</div>
+      "Si c'est le cas, répondez oui. Les colonnes de taille du stock, de pression de pêche, de recrutement et de rapports ont alors <code>_lower</code> / <code>_upper</code>; pour les prises, M, les écarts de recrutement et les points de référence, vous choisissez plus bas.")}
+      ${L("The columns hold the interval bounds themselves. If you have a CV, convert it to an interval using the error distribution. For a lognormal 95% interval: <code>x * exp(±1.96 * sqrt(log(1 + CV^2)))</code>.",
+        "Les colonnes contiennent les bornes de l'intervalle. Si vous avez un CV, convertissez-le en intervalle selon la distribution de l'erreur. Pour un intervalle lognormal à 95 % : <code>x * exp(±1.96 * sqrt(log(1 + CV^2)))</code>.")}</div>
     ${S.hasBounds === "yes" ? `<div class="sub"><div class="grid">
       ${input("interval.level", L("Interval level", "Niveau de l'intervalle"), { req: true, options: LEVELS.map(v => [v, L(`${Math.round(v * 100)}%`, `${Math.round(v * 100)} %`)]) })}
       ${input("interval.type", L("Interval type", "Type d'intervalle"), { req: true, options: opts(V.interval) })}
     </div></div>` : ""}`;
   for (const [panel, en, fr] of PANELS) {
     h += `<div class="panel-name">${L(en, fr)}</div>`;
+    if (panel === "stock") h += `<div class="panel-lede">${L("Report every stock-size series the assessment estimates.",
+      "Déclarez chaque série de taille du stock que l'évaluation estime.")}</div>`;
     for (const m of METRICS.filter(m => m.panel === panel && visible(m))) h += renderMetric(m);
   }
   h += `</section>`;
@@ -511,7 +540,8 @@ function renderMetric(m) {
   const st = S.metrics[m.id];
   let body = "";
   if (st.on) {
-    const fields = Object.keys(MF[m.id]).filter(f => shown(m.id, f));
+    // "Relative to" comes first in the form: it sets the units and the ratio.
+    const fields = Object.keys(MF[m.id]).filter(f => shown(m.id, f)).sort((a, b) => (b === "applies_to") - (a === "applies_to"));
     const tick = (path, checked, label) =>
       `<label><input type="checkbox" data-b="${path}"${checked ? " checked" : ""}> ${label}</label>`;
     let extras = "";
@@ -519,38 +549,46 @@ function renderMetric(m) {
       extras += `<div class="ticks">${tick(`metrics.${m.id}.ci`, st.ci,
         L(`${mlabel(m)} has an interval`, `${mlabel(m)} a un intervalle`) + ` <code>${m.id}_lower</code>, <code>${m.id}_upper</code>`)}</div>`;
     }
-    // Ratio ticks: a reference point offers series/reference under itself; a series
-    // offers only series/B_MSY or series/F_MSY. Either way the tick is stored on the series.
-    const ratioTick = (series, den, label) => tick(`metrics.${series}.ratios.${den}`, ratioOn(series, den),
-      (S.hasBounds === "yes" ? L(`Has a ratio time series to ${label}, with its own interval`, `A une série de rapports à ${label}, avec son propre intervalle`)
-        : L(`Has a ratio time series to ${label}`, `A une série de rapports à ${label}`)) + ` <code>${series}/${den}</code>`) +
-      (S.hasBounds === "yes" && ratioOn(series, den) ? `<div class="hint">${L(
-        "Take the ratio's interval from the model (e.g. delta method, likelihood profile, bootstrap or posterior), so it reflects uncertainty in both the series and the reference point.",
-        "Tirez l'intervalle du rapport du modèle (p. ex. méthode delta, profil de vraisemblance, bootstrap ou loi a posteriori), afin qu'il tienne compte de l'incertitude de la série et du point de référence.")}</div>` : "");
-    if (m.role === "series" && MSY_BASIS[m.panel]) {
-      extras += `<div class="ticks">${ratioTick(m.id, MSY_BASIS[m.panel], denLabel(MSY_BASIS[m.panel]))}</div>`;
+    // Every ratio a series can have is ticked under that series.
+    const ratioTick = den => tick(`metrics.${m.id}.ratios.${den}`, ratioOn(m.id, den),
+      L(`Has a ratio time series to ${denLabel(den)}`, `A une série de rapports à ${denLabel(den)}`) + ` <code>${m.id}/${den}</code>`);
+    const dens = ratioOptions(m.id);
+    if (dens.length) {
+      extras += `<div class="ticks">${dens.map(ratioTick).join("")}</div>`;
+      if (S.hasBounds === "yes" && ratios(m.id).length) extras += `<div class="hint">${L(
+        "Each ratio has its own interval. Take it from the model (e.g. delta method, likelihood profile, bootstrap or posterior), so it reflects uncertainty in both the series and the reference point.",
+        "Chaque rapport a son propre intervalle. Tirez-le du modèle (p. ex. méthode delta, profil de vraisemblance, bootstrap ou loi a posteriori), afin qu'il tienne compte de l'incertitude de la série et du point de référence.")}</div>`;
     }
     if (m.role === "reference") {
       const series = resolvedTarget(m.id);
       extras += series
-        ? `<div class="ticks">${ratioTick(series, m.id, mlabel(m))}</div>`
-        : targets(m.id).length ? `<div class="hint">${L("Choose what it applies to, to add a ratio time series.", "Choisissez à quoi il s'applique pour ajouter une série de rapports.")}</div>` : "";
+        ? `<div class="hint">${L(`A ratio time series to ${esc(mlabel(m))} is ticked under ${esc(mlabel(M[series]))}.`,
+            `Une série de rapports à ${esc(mlabel(m))} se coche sous ${esc(mlabel(M[series]))}.`)}</div>`
+        : targets(m.id).length ? `<div class="hint">${L("Choose what it's relative to, to add a ratio time series.", "Choisissez à quoi il se rapporte pour ajouter une série de rapports.")}</div>` : "";
     }
     if (extras) extras = `<div class="extras">${extras}</div>`;
     body = `<div class="mbody"><div class="grid">${fields.map(f => metricField(m, f)).join("")}</div>${extras}</div>`;
   }
   return `<div class="metric${st.on ? " on" : ""}">
-    <label class="mhead"><input type="checkbox" data-b="metrics.${m.id}.on"${st.on ? " checked" : ""}>
+    <label class="mhead" title="${st.on ? esc(L(m.desc_en, m.desc_fr)) : ""}"><input type="checkbox" id="f-metrics.${m.id}.on" data-b="metrics.${m.id}.on"${st.on ? " checked" : ""}>
       <span class="mname">${esc(mlabel(m))}</span><span class="mcode">${m.id}</span>
       <span class="mdesc">${esc(L(m.desc_en, m.desc_fr))}</span></label>${body}</div>`;
 }
 
+const unlockUnits = new Set(); // references whose units the user chose to set by hand
 function metricField(m, f) {
   const path = `metrics.${m.id}.f.${f}`;
   const o = { req: required(m.id, f) };
   if (f === "units") {
     o.options = UNITS.filter(u => m.dims.includes(u.dim)).map(u => [u.id, L(u.en, u.fr)]);
-    if (m.role === "reference" && resolvedTarget(m.id)) o.hint = L("Same units as", "Mêmes unités que") + ` <code>${resolvedTarget(m.id)}</code>.`;
+    const t = m.role === "reference" ? resolvedTarget(m.id) : "";
+    const tu = t && S.metrics[t].f.units, mine = S.metrics[m.id].f.units;
+    if (t && tu && mine === tu && !unlockUnits.has(m.id)) {
+      const u = UNITS.find(u => u.id === tu);
+      return `<div class="f"><label>${FL(f)}</label><div class="ro">${esc(u ? L(u.en, u.fr) : tu)}${L(", same as ", ", comme ")}${esc(mlabel(M[t]))}
+        · <button class="linkbtn" data-act="unlock-units" data-i="${m.id}">${L("change", "modifier")}</button></div></div>`;
+    }
+    if (t) o.hint = L("Same units as", "Mêmes unités que") + ` <code>${t}</code>.`;
     if (m.id === "fishing_pressure") o.hint = L("1/yr for F; proportion for a harvest rate.", "1/an pour F; proportion pour un taux d'exploitation.");
   }
   if (f === "basis") o.options = opts(V.basis.filter(([k]) => (m.panel === "fishing_pressure" ? REMOVAL_BASIS : STOCK_BASIS).includes(k)));
@@ -595,7 +633,6 @@ function issues() {
   need("me.name", L("Your name", "Votre nom"));
   need("me.email", L("Your email", "Votre courriel"));
   if (!blankish(S.me.email) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.me.email.trim())) out.push(["me.email", L("Your email doesn't look right", "Votre courriel semble incorrect")]);
-  need("me.date", L("Date entered", "Date de saisie"));
   need("year_assessed", L("Year assessed", "Année de l'évaluation"));
   if (!blankish(S.year_assessed) && !/^\d{4}$/.test(S.year_assessed.trim())) out.push(["year_assessed", L("Year assessed should be a 4-digit year", "L'année de l'évaluation doit compter 4 chiffres")]);
   need("assessment_type", L("Assessment type", "Type d'évaluation"));
@@ -651,9 +688,9 @@ function issues() {
         continue;
       }
       const v = fs[f];
-      if (req && blankish(v)) out.push([path, mlabel(m) + colon() + FL(f).toLowerCase()]);
-      if (["multiplier", "percentile", "spr"].includes(f) && !isNum(v)) out.push([path, mlabel(m) + colon() + FL(f).toLowerCase() + L(" must be a number", " doit être un nombre")]);
-      if (["min_age", "max_age", "age"].includes(f) && !isInt(v)) out.push([path, mlabel(m) + colon() + FL(f).toLowerCase() + L(" must be a whole number", " doit être un nombre entier")]);
+      if (req && blankish(v)) out.push([path, mlabel(m) + colon() + fl(f)]);
+      if (["multiplier", "percentile", "spr"].includes(f) && !isNum(v)) out.push([path, mlabel(m) + colon() + fl(f) + L(" must be a number", " doit être un nombre")]);
+      if (["min_age", "max_age", "age"].includes(f) && !isInt(v)) out.push([path, mlabel(m) + colon() + fl(f) + L(" must be a whole number", " doit être un nombre entier")]);
     }
     if (fs.applies_to && !targets(m.id).includes(fs.applies_to) && targets(m.id).length > 1) out.push([`metrics.${m.id}.f.applies_to`, mlabel(m) + colon() + L("pick a series that's ticked", "choisissez une série cochée")]);
     const t = (m.role === "reference" && m.id !== "total_allowable_catch") ? resolvedTarget(m.id) : "";
@@ -664,6 +701,26 @@ function issues() {
   return out;
 }
 const compId = c => (c.id || "").trim() || slug(c.en).replace(/-/g, "_");
+function compHint(c) {
+  if ((c.id || "").trim()) return "";
+  const id = compId(c);
+  return id ? L(`Will be <code>${esc(id)}</code> if left blank`, `Sera <code>${esc(id)}</code> si laissé vide`)
+    : L("Made from the English name if left blank", "Tiré du nom anglais si laissé vide");
+}
+
+// Form sections, in page order, and which one a to-do item belongs to.
+const SECTIONS = [["me", "About you", "À propos de vous"], ["assessment", "Assessment", "Évaluation"], ["stock", "Stock", "Stock"],
+  ["method", "Method", "Méthode"], ["pubs", "Meeting and publications", "Réunion et publications"], ["metrics", "Columns in your CSV", "Colonnes de votre CSV"]];
+function sectionOf(path) {
+  const k = path.split(".")[0];
+  if (k === "year_assessed" || k === "assessment_type") return "assessment";
+  if (k === "hasComp" || k === "comps") return "stock";
+  if (k === "meeting") return "pubs";
+  if (k === "hasBounds" || k === "interval") return "metrics";
+  return k;
+}
+const leftIn = (is, sec) => is.filter(([p]) => sectionOf(p) === sec).length;
+const badge = sec => `<span class="badge" data-badge="${sec}"></span>`;
 
 // ---------------------------------------------------------------------------
 // YAML
@@ -685,7 +742,7 @@ function yaml() {
   };
   const st = S.stock, sp = st.species;
   L.push("entered_by:");
-  put(1, "name", S.me.name); put(1, "email", S.me.email); put(1, "date", S.me.date, true);
+  put(1, "name", S.me.name); put(1, "email", S.me.email); put(1, "date", S.me.date || today(), true);
   L.push("");
   put(0, "year_assessed", S.year_assessed, true);
   put(0, "assessment_type", S.assessment_type);
@@ -767,8 +824,22 @@ function csvColumns() {
 // ---------------------------------------------------------------------------
 function renderSide() {
   const is = issues();
-  const id = assessmentId() || "assessment";
+  const id = assessmentId();
   const cols = csvColumns();
+  const left = is.length ? L(`${is.length} thing${is.length > 1 ? "s" : ""} left to fill in`, `${is.length} élément${is.length > 1 ? "s" : ""} à remplir`) : "";
+  const folder = id ? `<code>${esc(id)}</code>` : L("fill in the stock name and year assessed", "remplissez le nom du stock et l'année de l'évaluation");
+  const todo = SECTIONS.map(([sec, en, fr]) => {
+    const mine = is.filter(([p]) => sectionOf(p) === sec);
+    return `<li><button class="sec" data-sec="${sec}">${esc(L(en, fr))}</button>
+      <span class="sec-n${mine.length ? "" : " ok"}">· ${mine.length ? L(`${mine.length} left`, `${mine.length} à remplir`) : "✓"}</span>
+      ${mine.length ? `<ul>${mine.map(([p, msg]) => `<li><button data-go="${esc(p)}">${esc(msg)}</button></li>`).join("")}</ul>` : ""}</li>`;
+  }).join("");
+  const downloads = `<div class="actions">
+        <button class="btn primary" data-act="download">${L("Download", "Télécharger")} assessment.yaml</button>
+        <button class="btn" data-act="csv">${cols.comp ? L("Download blank CSVs", "Télécharger les CSV vides") : L("Download blank CSV", "Télécharger le CSV vide")}</button>
+      </div>`;
+  const draftHint = is.length ? L("You can download it before it's finished and load it again later to carry on.",
+    "Vous pouvez le télécharger avant de l'avoir terminé, puis le charger de nouveau plus tard pour continuer.") : "";
   $("#side").innerHTML = (loadErrors ? `
     <div class="box bad">
       <h3>${L(`Couldn't load ${esc(loadErrors.name)}`, `Impossible de charger ${esc(loadErrors.name)}`)}</h3>
@@ -778,23 +849,21 @@ function renderSide() {
       <div class="actions"><button class="btn small" data-act="dismiss-load">${L("Dismiss", "Fermer")}</button></div>
     </div>` : "") + `
     <div class="box">
-      <h3>${esc(id)}</h3>
-      ${is.length
-        ? `<div class="status todo">${L(`${is.length} thing${is.length > 1 ? "s" : ""} left to fill in`, `${is.length} élément${is.length > 1 ? "s" : ""} à remplir`)}</div>
-           <ul class="todo">${is.map(([p, msg]) => `<li><a data-go="${esc(p)}">${esc(msg)}</a></li>`).join("")}</ul>`
-        : `<div class="status ok">✓ ${L("Ready to download", "Prêt à télécharger")}</div>`}
+      <h3>${L("Folder", "Dossier")}${colon()}${folder}</h3>
+      ${is.length ? `<div class="status todo">${left}</div>` : `<div class="status ok">✓ ${L("Ready to download", "Prêt à télécharger")}</div>`}
       <div class="actions">
         <button class="btn primary" data-act="download">${L("Download", "Télécharger")} assessment.yaml</button>
         <button class="btn" data-act="copy">${L("Copy", "Copier")}</button>
       </div>
-      <div class="hint">${L(`Save it in a folder named <code>${esc(id)}</code>, next to your CSV${cols.comp ? "s" : ""}.`,
-        `Enregistrez-le dans un dossier nommé <code>${esc(id)}</code>, avec ${cols.comp ? "vos fichiers CSV" : "votre fichier CSV"}.`)}</div>
+      <div class="hint">${draftHint} ${id ? L(`Save it in a folder named <code>${esc(id)}</code>, next to your CSV${cols.comp ? "s" : ""}.`,
+        `Enregistrez-le dans un dossier nommé <code>${esc(id)}</code>, avec ${cols.comp ? "vos fichiers CSV" : "votre fichier CSV"}.`) : ""}</div>
+      <ul class="todo">${todo}</ul>
     </div>
     <div class="box">
       <h3>${L("Your CSV columns", "Colonnes de votre CSV")}</h3>
       <div class="cols-name">stock_timeseries.csv</div>
-      <div class="cols">${cols.stock.join(",")}</div>
-      ${cols.comp ? `<div class="cols-name">component_timeseries.csv</div><div class="cols">${cols.comp.join(",")}</div>` : ""}
+      <div class="cols">${cols.stock.map(c => `<code>${esc(c)}</code>`).join("")}</div>
+      ${cols.comp ? `<div class="cols-name">component_timeseries.csv</div><div class="cols">${cols.comp.map(c => `<code>${esc(c)}</code>`).join("")}</div>` : ""}
       <div class="hint">${L(`One row per year${cols.comp ? " (per component)" : ""}. Leave blank cells for missing values; no units or text in cells.`,
         `Une ligne par année${cols.comp ? " (par composante)" : ""}. Laissez vides les valeurs manquantes; pas d'unités ni de texte dans les cellules.`)}
       ${cols.comp ? L("Leave out any component column you don't have.", "Omettez les colonnes de composante que vous n'avez pas.") : ""}
@@ -805,13 +874,31 @@ function renderSide() {
       ${ratioHint([...cols.stock, ...(cols.comp || [])])}
       ${L(`See the <a href="${DICTIONARY}" target="_blank" rel="noopener">column dictionary</a> for what each column means.`,
         `Voir le <a href="${DICTIONARY}" target="_blank" rel="noopener">dictionnaire des colonnes</a> (en anglais) pour la signification de chaque colonne.`)}</div>
-      <div class="actions"><button class="btn small" data-act="csv">${cols.comp ? L("Download blank CSVs", "Télécharger les CSV vides") : L("Download blank CSV", "Télécharger le CSV vide")}</button></div>
+      <div class="actions">
+        <button class="btn small" data-act="csv">${cols.comp ? L("Download blank CSVs", "Télécharger les CSV vides") : L("Download blank CSV", "Télécharger le CSV vide")}</button>
+        <button class="btn small" data-act="copy-cols">${L("Copy column names", "Copier les noms de colonnes")}</button>
+      </div>
     </div>
     <div class="box">
-      <h3>${L("Preview", "Aperçu")}</h3>
-      <pre class="code">${esc(yaml())}</pre>
+      <details class="preview"${previewOpen ? " open" : ""}><summary>${L("Show YAML", "Afficher le YAML")}</summary>
+      <pre class="code">${esc(yaml())}</pre></details>
     </div>`;
+
+  // Section badges and the closing card change as you type, so they're refreshed here.
+  document.querySelectorAll("[data-badge]").forEach(b => {
+    const n = leftIn(is, b.dataset.badge);
+    b.className = "badge" + (n ? "" : " ok");
+    b.textContent = n ? L(`${n} left`, `${n} à remplir`) : "✓";
+  });
+  $("#finish").innerHTML = `<h2>${L("Next steps", "Étapes suivantes")}</h2>
+    <p class="lede">${is.length ? `<span class="status todo">${left}.</span> ` : `<span class="status ok">✓ ${L("Ready to download.", "Prêt à télécharger.")}</span> `}
+      ${L(`Download <code>assessment.yaml</code> and the blank CSV${cols.comp ? "s" : ""}, fill in the CSV${cols.comp ? "s" : ""} (one row per year), and put the files together in a folder named ${id ? folder : "after the stock and year assessed"}.`,
+        `Téléchargez <code>assessment.yaml</code> et ${cols.comp ? "les CSV vides" : "le CSV vide"}, remplissez ${cols.comp ? "les CSV" : "le CSV"} (une ligne par année), puis placez les fichiers ensemble dans un dossier nommé ${id ? folder : "d'après le stock et l'année de l'évaluation"}.`)}
+      ${draftHint}</p>
+    ${downloads}`;
 }
+let previewOpen = false;
+document.addEventListener("toggle", e => { if (e.target.matches?.("details.preview")) previewOpen = e.target.open; }, true);
 
 const DICTIONARY = "https://github.com/TESA-workshops/assessment-results-workshop-2027/blob/main/yaml-generator/dictionary.md";
 
@@ -828,22 +915,29 @@ function ratioHint(cols) {
 function renderChrome() {
   document.documentElement.lang = LANG;
   document.querySelectorAll("[data-lang]").forEach(b => b.classList.toggle("on", b.dataset.lang === LANG));
+  document.title = $("#h1").textContent = L("DFO stock assessment output YAML/CSV generator", "Générateur YAML/CSV des résultats d'évaluation de stock du MPO");
+  $("#saved").textContent = savedMsg();
   $("#btn-load").textContent = L("Load existing YAML file", "Charger un fichier YAML existant");
-  $("#btn-example").textContent = L("Load example", "Charger l'exemple");
+  $("#btn-example").textContent = L("Open example in a new tab", "Ouvrir l'exemple dans un nouvel onglet");
+  $("#btn-example").href = "?example&lang=" + LANG;
   $("#btn-reset").textContent = L("Start over", "Recommencer");
   $("#intro").innerHTML = L(
-    `To submit your stock assessment output data, you'll need two files: a <strong>YAML file</strong> (<code>assessment.yaml</code>) with
-    metadata about the assessment and a description of the time series you're sharing, and a <strong>CSV file</strong> with the time series
-    values themselves (one row per year). This form builds the YAML file for you: work through the sections below, then download it.
-    As you choose which time series to include, the panel on the right lists the columns your CSV needs and lets you download a blank CSV
-    with those columns, ready to fill in. See the <a href="${DICTIONARY}" target="_blank" rel="noopener">column dictionary</a> for what each column means.
-    Required fields are marked <span class="req">*</span>. Your draft is saved in this browser, so you can close the page and come back.`,
-    `Pour soumettre les données issues de votre évaluation de stock, vous aurez besoin de deux fichiers : un <strong>fichier YAML</strong> (<code>assessment.yaml</code>)
-    contenant les métadonnées de l'évaluation et la description des séries chronologiques que vous partagez, et un <strong>fichier CSV</strong> contenant les
-    valeurs des séries elles-mêmes (une ligne par année). Ce formulaire crée le fichier YAML pour vous : remplissez les sections ci-dessous, puis téléchargez-le.
-    Au fur et à mesure que vous choisissez les séries à inclure, le panneau de droite indique les colonnes nécessaires à votre CSV et permet de télécharger
-    un CSV vide avec ces colonnes, prêt à remplir. Voir le <a href="${DICTIONARY}" target="_blank" rel="noopener">dictionnaire des colonnes</a> (en anglais) pour la signification de chaque colonne.
-    Les champs obligatoires sont marqués <span class="req">*</span>. Votre brouillon est enregistré dans ce navigateur : vous pouvez fermer la page et y revenir.`);
+    `Stock assessment output data are submitted as two files: <code>assessment.yaml</code>, which describes the assessment and its
+    time series, and a CSV with the time series values.
+    <ol class="steps">
+      <li>Fill in this form. Required fields are marked <span class="req">*</span>. Your draft is saved in this browser.</li>
+      <li>Download <code>assessment.yaml</code> and the blank CSV from the panel on the right.</li>
+      <li>Fill in the CSV (one row per year) and put both files in a folder named after the assessment.</li>
+    </ol>
+    The <a href="${DICTIONARY}" target="_blank" rel="noopener">column dictionary</a> describes each CSV column.`,
+    `Les données issues d'une évaluation de stock sont soumises en deux fichiers : <code>assessment.yaml</code>, qui décrit l'évaluation et
+    ses séries chronologiques, et un CSV contenant les valeurs des séries.
+    <ol class="steps">
+      <li>Remplissez ce formulaire. Les champs obligatoires sont marqués <span class="req">*</span>. Votre brouillon est enregistré dans ce navigateur.</li>
+      <li>Téléchargez <code>assessment.yaml</code> et le CSV vide à partir du panneau de droite.</li>
+      <li>Remplissez le CSV (une ligne par année) et placez les deux fichiers dans un dossier nommé d'après l'évaluation.</li>
+    </ol>
+    Le <a href="${DICTIONARY}" target="_blank" rel="noopener">dictionnaire des colonnes</a> (en anglais) décrit chaque colonne du CSV.`);
 }
 function render() { fillUnits(); renderChrome(); renderForm(); renderSide(); }
 
@@ -860,6 +954,9 @@ function onEdit(e) {
   const unitsOf = p.match(/^metrics\.(\w+)\.f\.units$/);
   const old = unitsOf && get(p);
   set(p, t.type === "checkbox" ? t.checked : t.value);
+  if (p === "hasComp" && t.value === "yes" && !S.comps.length) S.comps.push({ id: "", en: "", fr: "" });
+  const comp = p.match(/^comps\.(\d+)\.(id|en)$/);
+  if (comp) { const h = $(`#comp-hint-${comp[1]}`); if (h) h.innerHTML = compHint(S.comps[+comp[1]]); }
   // References that were following this series' units keep following them.
   if (unitsOf) for (const m of chosen()) {
     if (unitSource(m.id) === unitsOf[1] && S.metrics[m.id].f.units === old) S.metrics[m.id].f.units = t.value;
@@ -891,6 +988,8 @@ document.addEventListener("click", e => {
     }
     return;
   }
+  const sec = e.target.closest("[data-sec]");
+  if (sec) { document.getElementById("sec-" + sec.dataset.sec)?.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
   const lb = e.target.closest("[data-lang]");
   if (lb) {
     LANG = lb.dataset.lang;
@@ -909,9 +1008,16 @@ document.addEventListener("click", e => {
   if (act === "rm-author") S.pubs[+b.dataset.p].authors.splice(+b.dataset.i, 1);
   if (act === "add-comp") S.comps.push({ id: "", en: "", fr: "" });
   if (act === "rm-comp") S.comps.splice(+b.dataset.i, 1);
+  if (act === "unlock-units") unlockUnits.add(b.dataset.i);
   if (act === "download") { download("assessment.yaml", yaml()); return; }
   if (act === "copy") {
     navigator.clipboard?.writeText(yaml()).then(() => { b.textContent = L("Copied", "Copié"); setTimeout(() => b.textContent = L("Copy", "Copier"), 1200); });
+    return;
+  }
+  if (act === "copy-cols") {
+    const c = csvColumns();
+    const text = c.stock.join(",") + (c.comp ? "\n" + c.comp.join(",") : "");
+    navigator.clipboard?.writeText(text).then(() => { b.textContent = L("Copied", "Copié"); setTimeout(() => b.textContent = L("Copy column names", "Copier les noms de colonnes"), 1200); });
     return;
   }
   if (act === "csv") {
@@ -925,12 +1031,7 @@ document.addEventListener("click", e => {
       "Effacer le formulaire et commencer une nouvelle évaluation? Votre nom et votre courriel sont conservés."))) return;
     S = blank(); METRICS.forEach(m => S.metrics[m.id] = { on: false, f: {}, ratios: {} });
   }
-  if (act === "example") {
-    if (hasDraft() && !confirm(L("Replace your draft with the example? What you've entered will be lost.",
-      "Remplacer votre brouillon par l'exemple? Ce que vous avez saisi sera perdu."))) return;
-    S = example();
-  }
-  save(); render();
+  const y = window.scrollY; save(); render(); window.scrollTo(0, y);
 });
 
 // True if the form holds anything beyond a blank form or the example (your name,
@@ -941,7 +1042,6 @@ function hasDraftOf(s) {
   const strip = x => JSON.stringify({ ...x, me: null });
   return strip(s) !== strip(fresh) && strip(s) !== strip(example());
 }
-const hasDraft = () => hasDraftOf(S);
 
 function example() {
   const s = blank();
@@ -981,7 +1081,8 @@ function example() {
 // ---------------------------------------------------------------------------
 // Load an existing assessment.yaml. The file is read into the form, written out
 // again, and the two compared: a file is loaded only if the form holds all of it
-// exactly and it has nothing left to fill in. Otherwise nothing changes.
+// exactly. Otherwise nothing changes. A file can be unfinished (e.g. a downloaded
+// draft); what's left to fill in then shows in the to-do list.
 // ---------------------------------------------------------------------------
 let loadErrors = null; // { name, list } after a rejected file
 
@@ -1002,7 +1103,7 @@ function fromYaml(y) {
     region: str(st.region), management: str(st.management), ram_legacy_id: str(st.ram_legacy_id),
     fish_stock_provisions: yn(st.fish_stock_provisions), in_sustainability_survey: yn(st.in_sustainability_survey) };
   s.hasComp = "components" in y ? "yes" : "no";
-  s.comps = Object.entries(obj(y.components)).map(([id, c]) => ({ id, ...en_fr(obj(c).name) }));
+  s.comps = Object.entries(obj(y.components)).map(([id, c]) => ({ id: id === "?" ? "" : id, ...en_fr(obj(c).name) })); // "?" is a blank ID
   const me = obj(y.method), mt = obj(y.meeting);
   s.method = { type: str(me.type), software: str(me.software), notes: str(me.notes) };
   s.meeting = { date: str(mt.date), url: str(mt.url), csas_process: str(mt.csas_process) };
@@ -1066,6 +1167,7 @@ function roundTrip(a, b, path = "", out = []) {
     for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) {
       const p = Array.isArray(a) ? `${path}[${+k + 1}]` : path ? `${path}.${k}` : k;
       if (!(k in b)) { if (a[k] != null) out.push(L(`\`${p}\`: the form can't hold this`, `« ${p} » : le formulaire ne peut pas le contenir`)); }
+      else if ((!(k in a) || a[k] == null) && b[k] == null) continue; // both blank, as in a draft
       else if (!(k in a) || a[k] == null) {
         out.push(/\.bounds$/.test(p)
           ? L(`\`${p}\` is missing: with \`interval:\` set, the form gives every stock size, fishing pressure and recruitment series (and msy) bounds`,
@@ -1098,7 +1200,6 @@ function loadYaml(text) {
   if (unknown.length) { known.metrics = { ...y.metrics }; unknown.forEach(id => delete known.metrics[id]); }
   out.push(...roundTrip(known, jsyaml.load(yaml(), { schema: jsyaml.CORE_SCHEMA })));
   S.me.date = today(); // entered now
-  out.push(...issues().map(([, msg]) => msg));
   if (out.length) S = old;
   return [...new Set(out)];
 }
@@ -1111,7 +1212,11 @@ async function onLoadFile(file) {
     `Remplacer votre brouillon par ${file.name}? Ce que vous avez saisi sera perdu.`))) S = old;
   else { loadErrors = null; save(); }
   render();
-  if (!problems.length && S !== old) $("#saved").textContent = L(`Loaded ${file.name}`, `${file.name} chargé`);
+  if (!problems.length && S !== old) {
+    const n = issues().length;
+    savedMsg = () => L(`Loaded ${file.name}`, `${file.name} chargé`) + (n ? L(` · ${n} left to fill in`, ` · ${n} à remplir`) : "");
+    $("#saved").textContent = savedMsg();
+  }
 }
 $("#file").addEventListener("change", e => {
   const file = e.target.files[0];
@@ -1120,7 +1225,7 @@ $("#file").addEventListener("change", e => {
 });
 
 const params = new URLSearchParams(location.search);
-if (params.has("example")) S = example();
+if (EXAMPLE_MODE) S = example();
 if (["en", "fr"].includes(params.get("lang"))) LANG = params.get("lang");
 render();
 </script>
