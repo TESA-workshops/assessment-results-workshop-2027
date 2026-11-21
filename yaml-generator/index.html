@@ -556,14 +556,14 @@ function denominatorLabel(den) {
 const hasRatio = (id, den) => !!metricState(id).ratios[den];
 const tickedRatios = id => ratioOptions(id).filter(den => hasRatio(id, den));
 
-// Bounds (_lower/_upper columns): ticked by hand for catch, M, recruitment deviations
-// and reference points; automatic for other series and MSY; never for the TAC.
-const boundsAreOptional = id => ["catch", "natural_mortality", "recruitment_deviation"].includes(id)
-  || METRIC_BY_ID[id].role === "reference";
+// Bounds (_lower/_upper columns): ticked per metric, never for the TAC. Series and MSY
+// start ticked; catch, M, recruitment deviations and reference points start unticked.
+const canHaveBounds = id => id !== "total_allowable_catch";
+const boundsByDefault = id => METRIC_BY_ID[id].role === "series" || id === "msy";
 function hasBoundsColumns(id) {
-  if (state.hasBounds !== "yes") return false;
-  if (boundsAreOptional(id)) return !!metricState(id).ci;
-  return METRIC_BY_ID[id].role === "series" || id === "msy";
+  if (state.hasBounds !== "yes" || !canHaveBounds(id)) return false;
+  const ci = metricState(id).ci;
+  return ci === undefined ? boundsByDefault(id) : !!ci;
 }
 
 // The metric whose units this one follows: a reference point's series, or catch for the TAC and MSY.
@@ -815,10 +815,10 @@ function columnsCard() {
     ${yesNo("hasBounds", tr("Do any columns have uncertainty intervals (<code>_lower</code> / <code>_upper</code>)?",
                             "Des colonnes ont-elles des intervalles d'incertitude (<code>_lower</code> / <code>_upper</code>)?"))}
     <div class="hint">${tr(
-      "If any do, say yes. Stock size, fishing pressure, recruitment and ratio columns then get <code>_lower</code> / <code>_upper</code>; "
-        + "for catch, M, recruitment deviations and reference points you choose below.",
-      "Si c'est le cas, répondez oui. Les colonnes de taille du stock, de pression de pêche, de recrutement et de rapports ont alors "
-        + "<code>_lower</code> / <code>_upper</code>; pour les prises, M, les écarts de recrutement et les points de référence, vous choisissez plus bas.")}
+      "If any do, say yes. Then tick or untick \"has an interval\" on each column below: "
+        + "stock size, fishing pressure, recruitment and MSY start ticked; catch, M, recruitment deviations and reference points start unticked.",
+      "Si c'est le cas, répondez oui. Cochez ou décochez ensuite « a un intervalle » pour chaque colonne plus bas : "
+        + "la taille du stock, la pression de pêche, le recrutement et le RMD sont cochés au départ; les prises, M, les écarts de recrutement et les points de référence ne le sont pas.")}
       ${tr("The columns hold the interval bounds themselves. If you have a CV, convert it to an interval using the error distribution. "
              + "For a lognormal 95% interval: <code>x * exp(±1.96 * sqrt(log(1 + CV^2)))</code>.",
            "Les colonnes contiennent les bornes de l'intervalle. Si vous avez un CV, convertissez-le en intervalle selon la distribution de l'erreur. "
@@ -846,8 +846,8 @@ function metricBody(m) {
     `<label><input type="checkbox" data-b="${path}"${checked ? " checked" : ""}> ${label}</label>`;
 
   let extras = "";
-  if (state.hasBounds === "yes" && boundsAreOptional(m.id)) {
-    extras += `<div class="ticks">${tick(`metrics.${m.id}.ci`, ms.ci,
+  if (state.hasBounds === "yes" && canHaveBounds(m.id)) {
+    extras += `<div class="ticks">${tick(`metrics.${m.id}.ci`, hasBoundsColumns(m.id),
       tr(`${metricLabel(m)} has an interval`, `${metricLabel(m)} a un intervalle`) + ` <code>${m.id}_lower</code>, <code>${m.id}_upper</code>`)}</div>`;
   }
   // A ratio is ticked where its denominator is: under the reference point it divides by,
@@ -1794,7 +1794,7 @@ function exampleState() {
   const tick = (id, f, ci = false, ratios = {}) => s.metrics[id] = { on: true, f, ci, ratios };
   tick("catch", { units: "t", notes: "Bounds reflect uncertainty in recreational removals." }, true);
   tick("total_allowable_catch", { units: "t" });
-  tick("msy", { units: "t" });
+  tick("msy", { units: "t" }, true);
   tick("spawning_stock", { units: "t" }, true, { limit_reference: true, b_msy: true });
   tick("limit_reference", { units: "t", basis: "b_msy", multiplier: "0.4", notes: "B_MSY re-estimated for the post-1990 productivity regime." });
   tick("upper_stock_reference", { units: "t", basis: "b_msy", multiplier: "0.8" });
@@ -1936,11 +1936,8 @@ function compareYaml(a, b, path = "", out = []) {
       } else if (!inA && b[k] == null) {
         continue; // both blank
       } else if (!inA) {
-        out.push(/\.bounds$/.test(p)
-          ? tr(`\`${p}\` is missing: with \`interval:\` set, the form gives every stock size, fishing pressure and recruitment series (and msy) bounds`,
-               `« ${p} » manque : avec « interval: », le formulaire donne des bornes à chaque série de taille du stock, de pression de pêche et de recrutement (et au RMD)`)
-          : tr(`\`${p}\` is missing (the form would write ${JSON.stringify(b[k])})`,
-               `« ${p} » manque (le formulaire écrirait ${JSON.stringify(b[k])})`));
+        out.push(tr(`\`${p}\` is missing (the form would write ${JSON.stringify(b[k])})`,
+                    `« ${p} » manque (le formulaire écrirait ${JSON.stringify(b[k])})`));
       } else {
         compareYaml(a[k], b[k], p, out);
       }
