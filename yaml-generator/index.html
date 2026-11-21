@@ -786,7 +786,9 @@ function publicationBlock(pub, i) {
       ${field(p + ".url", "URL", { required: true, placeholder: "https://csas-sccs.dfo-mpo.gc.ca/…" })}
       ${field(p + ".doi", "DOI", { placeholder: "https://doi.org/…" })}
     </div>
-    <div class="f" style="margin-top:12px"><label>${tr("Authors", "Auteurs")}</label></div>
+    <div class="f" style="margin-top:12px"><label>${tr("Authors", "Auteurs")}</label>
+      <div class="hint">${tr("If DFO is the author, enter DFO as the family name and leave the given name blank.",
+                             "Si l'auteur est le MPO, inscrivez MPO comme nom de famille et laissez le prénom vide.")}</div></div>
     ${authors}
     <button class="btn small" data-act="add-author" data-p="${i}">${tr("+ Add author", "+ Ajouter un auteur")}</button>
   </div>`;
@@ -1384,7 +1386,8 @@ function buildTemplate() {
   key(LIVE, 3, "fr");
   key(LIVE, 2, "authors", tr("one entry per author, in order", "une entrée par auteur, dans l'ordre"));
   key(LIVE, 3, "- given");
-  key(LIVE, 4, "family", tr("required for each author", "obligatoire pour chaque auteur"));
+  key(LIVE, 4, "family", tr("required for each author; if DFO is the author, give family: DFO and no given name",
+                            "obligatoire pour chaque auteur; si l'auteur est le MPO, inscrivez family: MPO sans prénom"));
   key(LIVE, 4, "orcid", eg("0000-0000-0000-0000"));
   out.push("");
 
@@ -1778,9 +1781,9 @@ function exampleState() {
     method: { type: "age_structured", software: "ss3", notes: "", software_notes: "" },
     meeting: { date: "2024-05-09", url: "https://csas-sccs.example/meetings/placeholder", csas_process: "https://dmapps/en/csas-sccs/processes/0/view/" },
     pubs: [
-      { series: "sar", number: "2025/001", year: "2025", url: "https://csas-sccs.example/publications/placeholder", doi: "https://doi.org/10.xxxx/placeholder",
+      { series: "fsar", number: "2025/001", year: "2025", url: "https://csas-sccs.example/publications/placeholder", doi: "https://doi.org/10.xxxx/placeholder",
         title: { en: "Stock Assessment of an Example Stock in 2024", fr: "Évaluation d'un stock exemple en 2024" },
-        authors: [blankAuthor()] },
+        authors: [{ given: "", family: "DFO", orcid: "" }] },
       { series: "resdoc", number: "2025/010", year: "2025", url: "https://csas-sccs.example/publications/placeholder-resdoc", doi: "",
         title: { en: "Assessment Model for an Example Stock in 2024", fr: "Modèle d'évaluation d'un stock exemple en 2024" },
         authors: [{ given: "Jane", family: "Doe", orcid: "0000-0000-0000-0000" }, { given: "Alex", family: "Roe", orcid: "" }] },
