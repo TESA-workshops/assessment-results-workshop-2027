@@ -313,6 +313,7 @@ const VALUES = {
     ["r", "R custom model", "Modèle personnalisé R"],
     ["python", "Python custom model", "Modèle personnalisé Python"],
     ["none", "None (no model)", "Aucun (pas de modèle)"],
+    ["other", "Other", "Autre"],
   ],
   assessment_type: [
     ["full", "Full assessment", "Évaluation complète"],
@@ -457,7 +458,7 @@ function blankState() {
       area: { en: "", fr: "" },
       region: "", management: "dfo", fish_stock_provisions: "", in_sustainability_survey: "", ram_legacy_id: "",
     },
-    method: { type: "", software: "", notes: "" },
+    method: { type: "", software: "", notes: "", software_notes: "" },
     meeting: { date: "", url: "", csas_process: "" },
     pubs: [blankPub()],
     hasComp: "no",   // "yes" if the stock is also reported by component
@@ -639,12 +640,12 @@ function field(path, label, spec = {}) {
   return `<div class="f${spec.wide ? " wide" : ""}"><label for="f-${path}">${label}${star}</label>${control}${hint}</div>`;
 }
 
-// A yes/no question. `unsure` adds "Not sure", which writes nothing (for optional questions).
-function yesNo(path, question, unsure = false) {
+// A yes/no question; `required` marks it with a star.
+function yesNo(path, question, required = false) {
   const value = getPath(path) || "";
-  const labels = { yes: tr("Yes", "Oui"), no: tr("No", "Non"), "": tr("Not sure", "Je ne sais pas") };
-  const answers = unsure ? ["no", "yes", ""] : ["no", "yes"];
-  return `<div class="yesno"><span class="q">${question}</span>${answers.map(a =>
+  const labels = { yes: tr("Yes", "Oui"), no: tr("No", "Non") };
+  const star = required ? `<span class="req">*</span>` : "";
+  return `<div class="yesno"><span class="q">${question}${star}</span>${["no", "yes"].map(a =>
     `<label><input type="radio" name="${path}" data-b="${path}" value="${a}"${value === a ? " checked" : ""}> ${labels[a]}</label>`).join("")}</div>`;
 }
 
@@ -688,7 +689,9 @@ function stockCard() {
       ${field("stock.name.en", tr("Major stock name (English)", "Nom du grand stock (anglais)"),
         { required: true, placeholder: eg("4X5Y Atlantic Cod", "4X5Y Atlantic Cod") })}
       ${field("stock.name.fr", tr("Major stock name (French)", "Nom du grand stock (français)"),
-        { required: true, placeholder: eg("Morue franche de 4X5Y", "Morue franche de 4X5Y") })}
+        { required: true, placeholder: eg("Morue franche de 4X5Y", "Morue franche de 4X5Y"),
+          hint: tr("If the stock has a name in only one language, paste it in both fields.",
+                   "Si le stock n'a de nom que dans une langue, collez-le dans les deux champs.") })}
       ${field("stock.region", tr("DFO region", "Région du MPO"), { required: true, options: choices(VALUES.region) })}
       ${field("stock.area.en", tr("Area (English)", "Zone (anglais)"), { placeholder: eg("NAFO 4RST", "NAFO 4RST") })}
       ${field("stock.area.fr", tr("Area (French)", "Zone (français)"), { placeholder: eg("OPANO 4RST", "OPANO 4RST") })}
@@ -741,6 +744,9 @@ function methodCard() {
       ${state.method.type === "other"
         ? field("method.notes", tr("Describe the model type", "Décrivez le type de modèle"), { required: true, wide: true, textarea: true })
         : ""}
+      ${state.method.software === "other"
+        ? field("method.software_notes", tr("Describe the software", "Décrivez le logiciel"), { required: true, wide: true, textarea: true })
+        : ""}
     </div>`);
 }
 
@@ -777,7 +783,7 @@ function publicationBlock(pub, i) {
       ${field(p + ".title.fr", tr("Title (French)", "Titre (français)"), { required: true, wide: true,
         hint: tr("If the document has only one title, paste it in both fields.",
                  "Si le document n'a qu'un titre, collez-le dans les deux champs.") })}
-      ${field(p + ".url", "URL", { placeholder: "https://csas-sccs.dfo-mpo.gc.ca/…" })}
+      ${field(p + ".url", "URL", { required: true, placeholder: "https://csas-sccs.dfo-mpo.gc.ca/…" })}
       ${field(p + ".doi", "DOI", { placeholder: "https://doi.org/…" })}
     </div>
     <div class="f" style="margin-top:12px"><label>${tr("Authors", "Auteurs")}</label></div>
@@ -961,6 +967,8 @@ function todoItems() {
   need("stock.name.en", tr("Major stock name (English)", "Nom du grand stock (anglais)"));
   need("stock.name.fr", tr("Major stock name (French)", "Nom du grand stock (français)"));
   need("stock.species.scientific", tr("Species", "Espèce"));
+  need("stock.fish_stock_provisions", tr("Prescribed under the Fish Stocks provisions?", "Visé par les dispositions relatives aux stocks de poissons?"));
+  need("stock.in_sustainability_survey", tr("In the Sustainability Survey for Fisheries?", "Dans le Sondage sur la durabilité des pêches?"));
   if (!isWhole(state.stock.species.aphia_id)) {
     add("stock.species.aphia_id", tr("AphiaID must be a whole number", "L'AphiaID doit être un nombre entier"));
   }
@@ -983,6 +991,7 @@ function todoItems() {
   need("method.type", tr("Model type", "Type de modèle"));
   need("method.software", tr("Software", "Logiciel"));
   if (state.method.type === "other") need("method.notes", tr("Describe the model type", "Décrivez le type de modèle"));
+  if (state.method.software === "other") need("method.software_notes", tr("Describe the software", "Décrivez le logiciel"));
 
   state.pubs.forEach((pub, i) => {
     const p = `pubs.${i}`, n = tr(`Publication ${i + 1}: `, `Publication ${i + 1} : `);
@@ -990,6 +999,7 @@ function todoItems() {
     need(p + ".number", n + tr("number", "numéro"));
     need(p + ".year", n + tr("year published", "année de publication"));
     if (!isBlank(pub.year) && !is4DigitYear(pub.year)) add(p + ".year", n + tr("year should have 4 digits", "l'année doit compter 4 chiffres"));
+    need(p + ".url", n + "URL");
     need(p + ".title.en", n + tr("English title", "titre anglais"));
     need(p + ".title.fr", n + tr("French title", "titre français"));
     pub.authors.forEach((a, j) => {
@@ -1137,6 +1147,7 @@ function buildYaml() {
   put(1, "type", method.type);
   put(1, "software", method.software);
   if (method.type === "other") put(1, "notes", method.notes);
+  if (method.software === "other") put(1, "software_notes", method.software_notes);
 
   if (![meeting.date, meeting.url, meeting.csas_process].every(isBlank)) lines.push("");
   block(0, "meeting", [["date", meeting.date, true], ["url", meeting.url], ["csas_process", meeting.csas_process]]);
@@ -1316,7 +1327,8 @@ function buildTemplate() {
   out.push("");
 
   out.push("stock:");
-  key(LIVE, 1, "name", tr("required in both languages; the major stock name", "obligatoire dans les deux langues; le nom du grand stock"));
+  key(LIVE, 1, "name", tr("required in both languages (use the same text if there is only one name); the major stock name",
+                          "obligatoire dans les deux langues (utilisez le même texte s'il n'y a qu'un nom); le nom du grand stock"));
   key(LIVE, 2, "en");
   key(LIVE, 2, "fr");
   out.push("  species:");
@@ -1329,10 +1341,10 @@ function buildTemplate() {
   key(LIVE, 2, "fr");
   key(LIVE, 1, "region", join(REQUIRED, codes("region")));
   key(LIVE, 1, "management", codes("management"));
-  key(LIVE, 1, "fish_stock_provisions", tr("true | false (prescribed under Schedule IX of the Fishery (General) Regulations)",
-                                           "true | false (visé à l'annexe IX du Règlement de pêche (dispositions générales))"));
-  key(LIVE, 1, "in_sustainability_survey", tr("true | false (in the Sustainability Survey for Fisheries)",
-                                              "true | false (dans le Sondage sur la durabilité des pêches)"));
+  key(LIVE, 1, "fish_stock_provisions", tr("required; true | false (prescribed under Schedule IX of the Fishery (General) Regulations)",
+                                           "obligatoire; true | false (visé à l'annexe IX du Règlement de pêche (dispositions générales))"));
+  key(LIVE, 1, "in_sustainability_survey", tr("required; true | false (in the Sustainability Survey for Fisheries)",
+                                              "obligatoire; true | false (dans le Sondage sur la durabilité des pêches)"));
   key(LIVE, 1, "ram_legacy_id", eg("DFO-GULF-WITFLOUN4RST"));
   out.push("");
 
@@ -1347,8 +1359,9 @@ function buildTemplate() {
 
   out.push("method:");
   key(LIVE, 1, "type", join(REQUIRED, codes("method")) + tr(" (other: describe it in notes)", " (other : décrivez-le dans notes)"));
-  key(LIVE, 1, "software", join(REQUIRED, codes("software")));
+  key(LIVE, 1, "software", join(REQUIRED, codes("software")) + tr(" (other: describe it in software_notes)", " (other : décrivez-le dans software_notes)"));
   key(LIVE, 1, "notes", requiredIf(tr("type is other", "type est other")));
+  key(LIVE, 1, "software_notes", requiredIf(tr("software is other", "software est other")));
   out.push("");
 
   key(LIVE, 0, "meeting", tr("the peer-review meeting (all optional)", "la réunion d'examen par les pairs (facultatif)"));
@@ -1362,7 +1375,7 @@ function buildTemplate() {
   key(LIVE, 1, "- series", join(REQUIRED, codes("series")));
   key(LIVE, 2, "number", join(REQUIRED, eg("2025/001")));
   key(LIVE, 2, "year", tr("required; year published", "obligatoire; année de publication"));
-  key(LIVE, 2, "url");
+  key(LIVE, 2, "url", REQUIRED);
   key(LIVE, 2, "doi");
   key(LIVE, 2, "title", tr("required in both languages (use the same text if there is only one title)",
                            "obligatoire dans les deux langues (même texte s'il n'y a qu'un titre)"));
@@ -1761,13 +1774,13 @@ function exampleState() {
       region: "maritimes", management: "dfo",
       fish_stock_provisions: "yes", in_sustainability_survey: "yes", ram_legacy_id: "DFO-MAR-EXAMPLE",
     },
-    method: { type: "age_structured", software: "ss3", notes: "" },
+    method: { type: "age_structured", software: "ss3", notes: "", software_notes: "" },
     meeting: { date: "2024-05-09", url: "https://csas-sccs.example/meetings/placeholder", csas_process: "https://dmapps/en/csas-sccs/processes/0/view/" },
     pubs: [
       { series: "sar", number: "2025/001", year: "2025", url: "https://csas-sccs.example/publications/placeholder", doi: "https://doi.org/10.xxxx/placeholder",
         title: { en: "Stock Assessment of an Example Stock in 2024", fr: "Évaluation d'un stock exemple en 2024" },
         authors: [blankAuthor()] },
-      { series: "resdoc", number: "2025/010", year: "2025", url: "", doi: "",
+      { series: "resdoc", number: "2025/010", year: "2025", url: "https://csas-sccs.example/publications/placeholder-resdoc", doi: "",
         title: { en: "Assessment Model for an Example Stock in 2024", fr: "Modèle d'évaluation d'un stock exemple en 2024" },
         authors: [{ given: "Jane", family: "Doe", orcid: "0000-0000-0000-0000" }, { given: "Alex", family: "Roe", orcid: "" }] },
     ],
@@ -1841,7 +1854,8 @@ function stateFromYaml(y) {
   s.comps = Object.entries(mapping(y.components)).map(([id, c]) => ({ id: id === "?" ? "" : id, ...enFr(mapping(c).name) }));
 
   const method = mapping(y.method), meeting = mapping(y.meeting);
-  s.method = { type: text(method.type), software: text(method.software), notes: text(method.notes) };
+  s.method = { type: text(method.type), software: text(method.software), notes: text(method.notes),
+    software_notes: text(method.software_notes) };
   s.meeting = { date: text(meeting.date), url: text(meeting.url), csas_process: text(meeting.csas_process) };
   s.pubs = list(y.publications).map(p => {
     p = mapping(p);

@@ -113,6 +113,7 @@ From the YAML top level, `entered_by:`, `stock:`, `method:`, `meeting:`, and `in
 | `method_type` | text | FK → `vocab_value` (`method.type`) |
 | `method_notes` | text | describes the method when `method_type` is `other` |
 | `method_software` | text | FK → `vocab_value` (`method.software`) |
+| `method_software_notes` | text | describes the software when `method_software` is `other` |
 | `meeting_date` | date | peer-review meeting |
 | `meeting_url` | text | CSAS meeting page |
 | `csas_process` | text | dmapps CSAS process URL |
