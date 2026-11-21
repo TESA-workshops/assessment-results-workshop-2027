@@ -848,25 +848,26 @@ function metricBody(m) {
     extras += `<div class="ticks">${tick(`metrics.${m.id}.ci`, ms.ci,
       tr(`${metricLabel(m)} has an interval`, `${metricLabel(m)} a un intervalle`) + ` <code>${m.id}_lower</code>, <code>${m.id}_upper</code>`)}</div>`;
   }
-  // Every ratio a series can have is ticked under that series.
-  const ratioTick = den => tick(`metrics.${m.id}.ratios.${den}`, hasRatio(m.id, den),
-    tr(`Has a ratio time series to ${denominatorLabel(den)}`, `A une série de rapports à ${denominatorLabel(den)}`) + ` <code>${m.id}/${den}</code>`);
-  const dens = ratioOptions(m.id);
-  if (dens.length) {
-    extras += `<div class="ticks">${dens.map(ratioTick).join("")}</div>`;
-    if (state.hasBounds === "yes" && tickedRatios(m.id).length) {
-      extras += `<div class="hint">${tr(
-        "Each ratio has its own interval. Take it from the model (e.g. delta method, likelihood profile, bootstrap or posterior), "
-          + "so it reflects uncertainty in both the series and the reference point.",
-        "Chaque rapport a son propre intervalle. Tirez-le du modèle (p. ex. méthode delta, profil de vraisemblance, bootstrap ou loi a posteriori), "
-          + "afin qu'il tienne compte de l'incertitude de la série et du point de référence.")}</div>`;
-    }
+  // A ratio is ticked where its denominator is: under the reference point it divides by,
+  // or under the series for B_MSY / F_MSY (which have no block of their own). The tick
+  // then appears where the user is, rather than above them. It's stored on the series.
+  const ratioTick = (series, den) => tick(`metrics.${series}.ratios.${den}`, hasRatio(series, den),
+    tr(`Has a ratio time series to ${denominatorLabel(den)}`, `A une série de rapports à ${denominatorLabel(den)}`) + ` <code>${series}/${den}</code>`);
+  const intervalHint = series => state.hasBounds === "yes" && tickedRatios(series).length ? `<div class="hint">${tr(
+      "Each ratio has its own interval. Take it from the model (e.g. delta method, likelihood profile, bootstrap or posterior), "
+        + "so it reflects uncertainty in both the series and the reference point.",
+      "Chaque rapport a son propre intervalle. Tirez-le du modèle (p. ex. méthode delta, profil de vraisemblance, bootstrap ou loi a posteriori), "
+        + "afin qu'il tienne compte de l'incertitude de la série et du point de référence.")}</div>` : "";
+  const msyDen = MSY_DENOMINATOR[m.panel];
+  if (m.role === "series" && ratioOptions(m.id).includes(msyDen)) {
+    extras += `<div class="ticks">${ratioTick(m.id, msyDen)}</div>`;
+    if (hasRatio(m.id, msyDen)) extras += intervalHint(m.id);
   }
   if (m.role === "reference") {
     const series = targetSeries(m.id);
-    if (series) {
-      extras += `<div class="hint">${tr(`A ratio time series to ${esc(metricLabel(m))} is ticked under ${esc(metricLabel(METRIC_BY_ID[series]))}.`,
-        `Une série de rapports à ${esc(metricLabel(m))} se coche sous ${esc(metricLabel(METRIC_BY_ID[series]))}.`)}</div>`;
+    if (series && ratioOptions(series).includes(m.id)) {
+      extras += `<div class="ticks">${ratioTick(series, m.id)}</div>`;
+      if (hasRatio(series, m.id)) extras += intervalHint(series);
     } else if (seriesOptions(m.id).length) {
       extras += `<div class="hint">${tr("Choose what it's relative to, to add a ratio time series.",
                                         "Choisissez à quoi il se rapporte pour ajouter une série de rapports.")}</div>`;
