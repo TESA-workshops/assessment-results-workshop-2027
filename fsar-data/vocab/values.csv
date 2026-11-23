@@ -1,0 +1,59 @@
+field,value,label_en,label_fr,description,panel
+basis,b_msy,B_MSY,B_RMD,Biomass or abundance at maximum sustainable yield.,stock
+basis,b_msy_proxy,B_MSY proxy,Approximation de B_RMD,A proxy for B_MSY; describe it in `notes`.,stock
+basis,b0,B0,B0,Unfished biomass or abundance.,stock
+basis,b_recover,B_recover,B_rétablissement,Lowest biomass from which the stock has recovered.,stock
+basis,s_msy,S_MSY,S_RMD,Spawners at maximum sustainable yield.,stock
+basis,s_gen,S_gen,S_gen,Spawners that would reach S_MSY in one generation without fishing.,stock
+basis,mean,Mean over a period,Moyenne sur une période,Mean of the series over `period`.,stock
+basis,percentile,Percentile over a period,Centile sur une période,The `percentile` of the series over `period` (50 for the median).,stock
+basis,f_msy,F_MSY,F_RMD,Fishing mortality at maximum sustainable yield.,fishing_pressure
+basis,u_msy,U_MSY,U_RMD,Harvest rate at maximum sustainable yield.,fishing_pressure
+basis,f_0.1,F_0.1,F_0.1,Fishing mortality where yield-per-recruit slope is 10% of its origin value.,fishing_pressure
+basis,f_spr,F_SPR,F_SPR,Fishing mortality giving `spr` percent spawning potential ratio (e.g. F40%).,fishing_pressure
+basis,other,Other,Autre,Not one of the above; explain in `notes`.,
+type,average,Average,Moyenne,Average over ages `min_age` to `max_age`.,
+type,apical,Apical,Apicale,Fully selected (maximum at age).,
+type,aggregate,Aggregate,Agrégée,From a model without age structure.,
+interval.type,confidence,Confidence,Confiance,Frequentist confidence interval.,
+interval.type,credible,Credible,Crédibilité,Bayesian credible interval.,
+assessment_type,full,Full assessment,Évaluation complète,"A full assessment, usually with a peer-review meeting.",
+assessment_type,update,Update,Mise à jour,"An interim or indicator update between full assessments (e.g. a Science Response).",
+method.type,age_structured,Age-structured,Structuré selon l'âge,Population model tracking numbers at age.,
+method.type,length_structured,Length-structured,Structuré selon la longueur,Population model tracking numbers at length.,
+method.type,stage_structured,Stage-structured,Structuré selon le stade,"Population model tracking life stages or size classes (e.g. crab, lobster).",
+method.type,surplus_production,Surplus production,Production excédentaire,Biomass dynamics model without age or size structure.,
+method.type,delay_difference,Delay-difference,Différence-délai,Biomass model with lagged recruitment and growth.,
+method.type,spawner_recruit,Spawner-recruit,Géniteurs-recrues,Stock-recruitment analysis of spawners and recruits (e.g. salmon).,
+method.type,index_based,Index-based,Fondé sur un indice,Status from survey or fishery indices without a population model.,
+method.type,other,Other,Autre,Not one of the above; describe it in `method.notes`.,
+method.software,ss3,Stock Synthesis (SS3),Stock Synthesis (SS3),,
+method.software,wham,WHAM,WHAM,Woods Hole Assessment Model.,
+method.software,fims,FIMS,FIMS,Fisheries Integrated Modeling System.,
+method.software,sam,SAM,SAM,State-space Assessment Model.,
+method.software,iscam,iSCAM,iSCAM,Integrated Statistical Catch-at-Age Model.,
+method.software,jags,JAGS custom model,Modèle personnalisé JAGS,A model written for this assessment in JAGS.,
+method.software,stan,Stan custom model,Modèle personnalisé Stan,A model written for this assessment in Stan.,
+method.software,tmb,TMB / RTMB custom model,Modèle personnalisé TMB / RTMB,A model written for this assessment in TMB or RTMB.,
+method.software,r,R custom model,Modèle personnalisé R,A model written for this assessment in R.,
+method.software,python,Python custom model,Modèle personnalisé Python,A model written for this assessment in Python.,
+method.software,none,None (no model),Aucun (pas de modèle),"No model software, e.g. an index-based assessment.",
+method.software,other,Other,Autre,Not one of the above; describe it in `method.software_notes`.,
+stock.management,dfo,DFO,MPO,Fisheries and Oceans Canada.,
+stock.management,nafo,NAFO,OPANO,Northwest Atlantic Fisheries Organization.,
+stock.management,iccat,ICCAT,CICTA,International Commission for the Conservation of Atlantic Tunas.,
+stock.management,nasco,NASCO,OCSAN,North Atlantic Salmon Conservation Organization.,
+stock.management,psc,Pacific Salmon Commission,Commission du saumon du Pacifique,,
+stock.management,iphc,IPHC,CIFP,International Pacific Halibut Commission.,
+stock.management,other,Other,Autre,,
+stock.region,newfoundland_labrador,Newfoundland and Labrador,Terre-Neuve-et-Labrador,,
+stock.region,maritimes,Maritimes,Maritimes,,
+stock.region,gulf,Gulf,Golfe,,
+stock.region,quebec,Quebec,Québec,,
+stock.region,ontario_prairie,Ontario and Prairie,Ontario et Prairies,,
+stock.region,arctic,Arctic,Arctique,,
+stock.region,pacific,Pacific,Pacifique,,
+publications.series,fsar,Fisheries Science Advisory Report,Avis scientifique sur les pêches,,
+publications.series,sar,Science Advisory Report,Avis scientifique,,
+publications.series,resdoc,Research Document,Document de recherche,,
+publications.series,sr,Science Response,Réponse des Sciences,,

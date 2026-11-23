@@ -1,0 +1,100 @@
+entered_by:
+  name: Catarina Wor
+  email: catarina.wor@dfo-mpo.gc.ca
+  date: 2026-11-19
+
+year_assessed: 2024
+assessment_type: full
+
+stock:
+  name:
+    en: FRASER SPRING RUN 42 CHINOOK SALMON
+    fr: SAUMON CHINOOK DE PRINTEMPS 42 DU FRASER
+  species:
+    scientific: ONCORHYNCHUS TSHAWYTSCHA
+    en: CHINOOK SALMON
+    fr: SAUMON CHINOOK
+    aphia_id: 158075
+  area:
+    en: Pacific coast
+    fr: Pacifique
+  region: pacific
+  management: dfo
+  fish_stock_provisions: true
+  in_sustainability_survey: false
+
+components:
+  CK-17:
+    name:
+      en: LOWER THOMPSON_SP_1.2
+      fr: THOMPSON INFÉRIEURE_SP_1. 2
+  CK-16:
+    name:
+      en: SOUTH THOMPSON-BESSETTE CREEK_SU_1.2
+      fr: RIVIÈRE THOMPSON SUD-RUISSEAU BESSETTE_SU_1.2
+
+method:
+  type: spawner_recruit
+  software: stan
+
+meeting:
+  date: 2025-07-23
+  url: https://csas-scas.dfo-mpo.gc.ca/meetings-reunions/9feda300-6e4c-4d38-b983-b986d85a05e7?lang=en
+
+publications:
+  - series: fsar
+    number: 2026/032
+    year: 2026
+    url: https://csas-scas.dfo-mpo.gc.ca/publications-publications/f7b39a8b-4b68-466b-a0a6-52a69a5119d8?lang=en
+    title:
+      en: Fraser Spring 1.2 (42) Chinook Salmon (Oncorhynchus tshawytscha) Stock Assessment in 2024.
+      fr: ÉVALUATION DU STOCK DE SAUMON CHINOOK (ONCORHYNCHUS TSHAWYTSCHA) DE PRINTEMPS 1.2 (42) DU FRASER, 2024
+    authors:
+      - given: DFO
+
+interval:
+  level: 0.95
+  type: credible
+
+metrics:
+  catch:
+    units: "n"
+  spawning_stock:
+    units: "n"
+    min_age: 3
+    max_age: 3
+    bounds: true
+    ratios: [lower_threshold, upper_threshold]
+  limit_reference:
+    units: relative
+    basis: other
+    multiplier: 1
+    notes: Categorical. LRP = All component CUs > lower threshhold
+  lower_threshold:
+    units: "n"
+    basis: s_gen
+    multiplier: 1
+    bounds: true
+  upper_threshold:
+    units: "n"
+    basis: s_msy
+    multiplier: 0.85
+    bounds: true
+  fishing_pressure:
+    units: proportion
+    bounds: true
+    ratios: [removal_threshold, f_msy]
+  removal_reference:
+    units: proportion
+    basis: u_msy
+    multiplier: 1
+    bounds: true
+  removal_threshold:
+    units: proportion
+    basis: u_msy
+    multiplier: 1
+    bounds: true
+  recruitment:
+    units: "n"
+    age: 3,4,5,6
+    bounds: true

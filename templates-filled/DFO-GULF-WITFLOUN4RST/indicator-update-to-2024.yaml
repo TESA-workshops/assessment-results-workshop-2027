@@ -32,9 +32,10 @@ assessment_method:
   category: Survey index
   method: Survey index
   software: custom
-  timespan:
-    first_year: 1971
-    last_year: 2024
+
+timespan:
+  first_year: 1971
+  last_year: 2024
 
 managing_body:
   management: DFO
