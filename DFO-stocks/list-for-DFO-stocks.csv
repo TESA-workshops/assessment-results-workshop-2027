@@ -51,37 +51,37 @@ LFA 32,Homarus americanus,Lobster LFA 32,Homard ZPH 32,Maritimes,batch1,yes,yes
 LFA 33,Homarus americanus,Lobster LFA 33,Homard ZPH 33,Maritimes,batch1,yes,yes
 LFA 34,Homarus americanus,Lobster LFA 34,Homard ZPH 34,Maritimes,batch1,yes,yes
 LFA 41,Homarus americanus,Lobster LFA 41,Homard ZPH 41,Maritimes,batch1,yes,yes
-Shrimp Fishing Area 8,Pandalus borealis,Northern shrimp Shrimp Fishing Area 8,French,National,batch1,yes,yes
-Shrimp Fishing Area 9,Pandalus borealis,Northern shrimp Shrimp Fishing Area 9,French,National,batch1,yes,yes
-Shrimp Fishing Area 10,Pandalus borealis,Northern shrimp Shrimp Fishing Area 10,French,National,batch1,yes,yes
-Shrimp Fishing Area 12,Pandalus borealis,Northern shrimp Shrimp Fishing Area 12,French,National,batch1,yes,yes
-Shrimp Fishing Area 13 to 15,Pandalus borealis,Northern shrimp Shrimp Fishing Areas 13 to 15,French,National,batch1,yes,yes
-Area,Merluccius productus,Pacific hake Offshore,French,Pacific,batch1,yes,yes
-Area,Hippoglossus stenolepis,Pacific halibut,French,Pacific,batch1,yes,yes
-Area,Clupea pallasii,Pacific herring Central Coast,French,Pacific,batch1,yes,yes
-Area,Clupea pallasii,Pacific herring Haida Gwaii,French,Pacific,batch1,yes,yes
-Area,Clupea pallasii,Pacific herring Prince Rupert District,French,Pacific,batch1,yes,yes
-Area,Clupea pallasii,Pacific herring Strait of Georgia,French,Pacific,batch1,yes,yes
-Area,Clupea pallasii,Pacific herring West Coast of Vancouver Island,French,Pacific,batch1,yes,yes
-Area,Sebastes alutus,Pacific ocean perch North and West Coasts of Haida Gwaii,French,Pacific,batch1,yes,yes
-Area,Sebastes alutus,Pacific ocean perch Queen Charlotte Sound,French,Pacific,batch1,yes,yes
-Area,Sebastes alutus,Pacific ocean perch West Coast of Vancouver Island,French,Pacific,batch1,yes,yes
-Area,Oncorhynchus gorbuscha,Pink salmon Fraser,French,Pacific,batch1,yes,yes
-Area,Pollachius virens,Pollock NAFO 4X5 Western Component,French,National,batch1,yes,yes
-Area,Sebastes maliger,Quillback rockfish Inside Waters,French,Pacific,batch1,yes,yes
-Area,Sebastes maliger,Quillback rockfish Outside Waters,French,Pacific,batch1,yes,yes
-Area,Strongylocentrotus franciscanus,Red sea urchin,French,Pacific,batch1,yes,yes
-Area,Anoplopoma fimbria,Sablefish,French,Pacific,batch1,yes,yes
-Area,Placopecten magellanicus,Sea scallop Scallop Fishing Area 20,French,National,batch1,yes,yes
-Area,Merluccius bilinearis,Silver hake NAFOÂ 4VWX,French,Maritimes,batch1,yes,yes
-Area,Chionoecetes opilio,Snow crab CBA 12A,French,National,batch1,yes,yes
-Area,Chionoecetes opilio,Snow crab CBA 12B,French,National,batch1,yes,yes
-Area,Chionoecetes opilio,Snow crab North-Eastern Nova Scotia (N-ENS),French,National,batch1,yes,yes
-Area,Chionoecetes opilio,Snow crab South-Eastern Nova Scotia (S-ENS),French,National,batch1,yes,yes
-Area,Oncorhynchus nerka,Sockeye salmon Fraser (Early Stuart),French,Pacific,batch1,yes,yes
-Area,Oncorhynchus nerka,Sockeye salmon Somass (Barkley Sound),French,Pacific,batch1,yes,yes
-Area,Oncorhynchus nerka,Sockeye salmon Stikine,French,Pacific,batch1,yes,yes
-Area,Pandalus platyceros,Spot prawn,French,Pacific,batch1,yes,yes
-Area,Sebastes ruberrimus,Yelloweye rockfish Inside Waters,French,Pacific,batch1,yes,yes
-Area,Sebastes ruberrimus,Yelloweye rockfish Outside Waters,French,Pacific,batch1,yes,yes
-Area,Sebastes reedi,Yellowmouth rockfish,French,Pacific,batch1,yes,yes
+Shrimp Fishing Area 8,Pandalus borealis,Northern shrimp Shrimp Fishing Area 8,Crevette nordique de la zone de pêche de la crevette 8,Quebec,batch1,yes,yes
+Shrimp Fishing Area 9,Pandalus borealis,Northern shrimp Shrimp Fishing Area 9,Crevette nordique de la zone de pêche de la crevette 9,Quebec,batch1,yes,yes
+Shrimp Fishing Area 10,Pandalus borealis,Northern shrimp Shrimp Fishing Area 10,Crevette nordique de la zone de pêche de la crevette 10,Quebec,batch1,yes,yes
+Shrimp Fishing Area 12,Pandalus borealis,Northern shrimp Shrimp Fishing Area 12,Crevette nordique de la zone de pêche de la crevette 12,Quebec,batch1,yes,yes
+Shrimp Fishing Area 13 to 15,Pandalus borealis,Northern shrimp Shrimp Fishing Areas 13 to 15,Crevette nordique des zones de pêche de la crevette 13 à 15,Maritimes,batch1,yes,yes
+"PFMA 1 to 12,20,21,23 to 27, 101 to 11, 121, 123 to 127",Merluccius productus,Pacific hake Offshore,Merlu du Pacifique au large,Pacific,batch1,yes,yes
+All PFMAs in BC,Hippoglossus stenolepis,Pacific halibut,Flétan du Pacifique,Pacific,batch1,yes,yes
+PFMA 6 to 10,Clupea pallasii,Pacific herring Central Coast,Hareng du Pacifique de la côte centrale,Pacific,batch1,yes,yes
+PFMA 2,Clupea pallasii,Pacific herring Haida Gwaii,Hareng du Pacifique de Haida Gwaii,Pacific,batch1,yes,yes
+PFMA 3 to 5,Clupea pallasii,Pacific herring Prince Rupert District,Hareng du Pacifique du district de Prince Rupert,Pacific,batch1,yes,yes
+"PFMA 13 to 19, 28",Clupea pallasii,Pacific herring Strait of Georgia,Hareng du Pacifique du détroit de Georgie,Pacific,batch1,yes,yes
+PFMA 23 to 25,Clupea pallasii,Pacific herring West Coast of Vancouver Island,Hareng du Pacifique de la côte ouest de l’île de Vancouver,Pacific,batch1,yes,yes
+"PFMA 1, 2, 142",Sebastes alutus,Pacific ocean perch North and West Coasts of Haida Gwaii,Sébaste à longue mâchoire des côtes nord et ouest de Haida Gwaii,Pacific,batch1,yes,yes
+"PFMA 2, 6 to 11, 106 to 11, 140, 142",Sebastes alutus,Pacific ocean perch Queen Charlotte Sound,Sébaste à longue mâchoire du bassin de la Reine-Charlotte,Pacific,batch1,yes,yes
+"PFMA 20, 21, 23, 27, 121, 123 to 127",Sebastes alutus,Pacific ocean perch West Coast of Vancouver Island,Sébaste à longue mâchoire de la côte ouest de l’île de Vancouver,Pacific,batch1,yes,yes
+Fraser River,Oncorhynchus gorbuscha,Pink salmon Fraser,Saumon rose du Fraser,Pacific,batch1,yes,yes
+NAFO 4X5,Pollachius virens,Pollock NAFO 4X5 Western Component,Goberge OPANO 4X5 composante ouest,Maritimes,batch1,yes,yes
+"PFMA 12 to 20, 28,29",Sebastes maliger,Quillback rockfish Inside Waters,Sébaste à dos épineux des eaux intérieures,Pacific,batch1,yes,yes
+"PFMA 1 to 11, 21 to 27, 101 to 111, 121, 123, 127, 130, 142",Sebastes maliger,Quillback rockfish Outside Waters,Sébaste à dos épineux des eaux extérieures,Pacific,batch1,yes,yes
+PFMA 1 to 29,Strongylocentrotus franciscanus,Red sea urchin,Oursin rouge géant,Pacific,batch1,yes,yes
+All PFMAs in BC,Anoplopoma fimbria,Sablefish,Morue charbonnière,Pacific,batch1,yes,yes
+SFA 20,Placopecten magellanicus,Sea scallop Scallop Fishing Area 20,Pétoncle géant de la zone de pêche 20,Quebec,batch1,yes,yes
+NAFO 4VWX,Merluccius bilinearis,Silver hake NAFO 4VWX,Merlu argenté OPANO 4VWX,Maritimes,batch1,yes,yes
+Crab Fishing Area 12A,Chionoecetes opilio,Snow crab CBA 12A,Crabe des neiges de la zone 12A,Quebec,batch1,yes,yes
+Crab Fishing Area 12B,Chionoecetes opilio,Snow crab CBA 12B,Crabe des neiges de la zone 12B,Quebec,batch1,yes,yes
+Crab Fishing Area 20 to 22,Chionoecetes opilio,Snow crab North-Eastern Nova Scotia (N-ENS),Crabe des neiges du nord-est de la Nouvelle-Écosse [N-ENÉ],Maritimes,batch1,yes,yes
+"Crab Fishing Area 23, 24",Chionoecetes opilio,Snow crab South-Eastern Nova Scotia (S-ENS),Crabe des neiges du sud-est de la Nouvelle-Écosse [S-ENÉ],Maritimes,batch1,yes,yes
+Stuart River watershed,Oncorhynchus nerka,Sockeye salmon Fraser (Early Stuart),Saumon rouge Fraser (montaison hâtive de la rivière Stuart),Pacific,batch1,yes,yes
+Somass River and Barkley Sound and Alberni Inlet watershed,Oncorhynchus nerka,Sockeye salmon Somass (Barkley Sound),Saumon rouge Somass (détroit de Barkley),Pacific,batch1,yes,yes
+Stikine River watershed,Oncorhynchus nerka,Sockeye salmon Stikine,Saumon rouge Stikine,Pacific,batch1,yes,yes
+All PFMAs in BC,Pandalus platyceros,Spot prawn,Crevette tachetée,Pacific,batch1,yes,yes
+"PFMA 12 to 19, 28, 29",Sebastes ruberrimus,Yelloweye rockfish Inside Waters,Sébaste aux yeux jaunes des eaux intérieures,Pacific,batch1,yes,yes
+"PFMA 1 to 11, 21 to 27, 101 to 111, 121, 123 to 127, 130, 142",Sebastes ruberrimus,Yelloweye rockfish Outside Waters,Sébaste aux yeux jaunes des eaux extérieures,Pacific,batch1,yes,yes
+All PFMAs in BC,Sebastes reedi,Yellowmouth rockfish,Sébaste à bouche jaune,Pacific,batch1,yes,yes
