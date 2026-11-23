@@ -2,7 +2,7 @@ area_name,species_name,stock_name_en,stock_name_fr,managing_dfo_region,fsp_list,
 NAFO 4TVn,Gadus morhua,Atlantic cod NAFO 4TVn,Morue franche OPANO 4TVn,Gulf,batch1,yes,yes
 NAFO 4T,Urophycis tenuis,White Hake NAFO 4T,Merluche Blanche OPANO 4T,Gulf,batch1,yes,yes
 NAFO 4T,Hippoglossoides platessoides,American Plaice NAFO 4T,Plie Canadienne OPANO 4T,Gulf,batch1,yes,yes
-NAFO 4T,Limanda ferruginea,Yellowtail Flounder NAFO 4T,Limande Ã  Queue Jaune OPANO 4T,Gulf,batch2,yes,yes
+NAFO 4T,Limanda ferruginea,Yellowtail Flounder NAFO 4T,Limande à queue jaune OPANO 4T,Gulf,batch2,yes,yes
 NAFO 4T,Pseudopleuronectes americanus,Winter Flounder NAFO 4T,Plie Rouge OPANO 4T,Gulf,batch1,yes,yes
 NAFO 4RST,Glyptocephalus cynoglossus,Witch Flounder NAFO 4RST,Plie Grise OPANO 4RST,Gulf,batch1,yes,yes
 NAFO 4T,Clupea harengus,Atlantic Herring NAFO 4T (Spring Spawner),Hareng de printemps OPANO 4T,Gulf,batch1,yes,yes
@@ -85,3 +85,8 @@ All PFMAs in BC,Pandalus platyceros,Spot prawn,Crevette tachetée,Pacific,batch1
 "PFMA 12 to 19, 28, 29",Sebastes ruberrimus,Yelloweye rockfish Inside Waters,Sébaste aux yeux jaunes des eaux intérieures,Pacific,batch1,yes,yes
 "PFMA 1 to 11, 21 to 27, 101 to 111, 121, 123 to 127, 130, 142",Sebastes ruberrimus,Yelloweye rockfish Outside Waters,Sébaste aux yeux jaunes des eaux extérieures,Pacific,batch1,yes,yes
 All PFMAs in BC,Sebastes reedi,Yellowmouth rockfish,Sébaste à bouche jaune,Pacific,batch1,yes,yes
+Skeena River watershed and PFMA 4,Oncorhynchus kisutch,Skeena Coho,Saumon coho de la rivière Skeena,Pacific,batch3,NA,yes
+Taku River watershed,Oncorhynchus kisutch,Taku Coho,Saumon coho de la rivière Taku,Pacific,batch3,NA,yes
+Okanagan River watershed,Oncorhynchus nerka,Okanagan Sockeye,Saumon rouge de l'Okanagan,Pacific,batch3,NA,yes
+PFMA 12-14,Oncorhynchus tshawytscha,Upper Georgia Strait Chinook,Saumon quinnat du nord du détroit de Georgia,Pacific,batch3,NA,yes
+Mid- and Upper Fraser River watershed,Oncorhynchus tshawytscha,Fraser Spring 42 Chinook,Saumon quinnat Fraser (montaison printanière 4₂),Pacific,batch3,NA,yes
