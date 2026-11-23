@@ -38,6 +38,7 @@ method.software,tmb,TMB / RTMB custom model,Modèle personnalisé TMB / RTMB,A m
 method.software,r,R custom model,Modèle personnalisé R,A model written for this assessment in R.,
 method.software,python,Python custom model,Modèle personnalisé Python,A model written for this assessment in Python.,
 method.software,none,None (no model),Aucun (pas de modèle),"No model software, e.g. an index-based assessment.",
+method.software,other,Other,Autre,Not one of the above; describe it in `method.software_notes`.,
 stock.management,dfo,DFO,MPO,Fisheries and Oceans Canada.,
 stock.management,nafo,NAFO,OPANO,Northwest Atlantic Fisheries Organization.,
 stock.management,iccat,ICCAT,CICTA,International Commission for the Conservation of Atlantic Tunas.,

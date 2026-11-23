@@ -1,8 +1,4 @@
----
-output:
-  html_document: default
-  word_document: default
----
+
 # 2027 TESA Assessment Database Workshop - Terms of Reference (ToR) 
 
 **Technical Expertise for Stock Assessment (TESA) Workshop**  

@@ -12,16 +12,11 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root {
     --bg: #121615; --panel: #1a201e; --ink: #e5ebe8; --muted: #9aa7a1; --line: #2c3532;
     --accent: #4fc1b3; --accent-soft: #173431; --warn: #f0a55a; --warn-soft: #3a2a19;
     --bad: #f08a83; --ok: #74c98a; --chip: #232b28; color-scheme: dark;
   }
-}
-:root[data-theme="dark"] {
-  --bg: #121615; --panel: #1a201e; --ink: #e5ebe8; --muted: #9aa7a1; --line: #2c3532;
-  --accent: #4fc1b3; --accent-soft: #173431; --warn: #f0a55a; --warn-soft: #3a2a19;
-  --bad: #f08a83; --ok: #74c98a; --chip: #232b28; color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
@@ -55,7 +50,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); ou
 .flash { animation: flash 1.2s; }
 @keyframes flash { 0%, 40% { background: var(--warn-soft); } }
 
-.btn { border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 8px; padding: 6px 13px; font: inherit; font-size: 14px; cursor: pointer; }
+.btn { text-decoration: none; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 8px; padding: 6px 13px; font: inherit; font-size: 14px; cursor: pointer; }
 .btn:hover { border-color: var(--accent); }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .btn.ghost { border-color: transparent; color: var(--muted); }
@@ -68,10 +63,10 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); ou
 .sub { margin: 10px 0 4px; padding: 12px 14px; border-left: 3px solid var(--accent-soft); }
 .subhead { display: flex; justify-content: space-between; align-items: center; margin: 0 0 8px; font-size: 13px; font-weight: 700; color: var(--muted); }
 
-
 .row { display: grid; gap: 10px; align-items: end; margin-bottom: 10px; }
 .row.author { grid-template-columns: 1fr 1fr 1fr auto; }
-.row.comp { grid-template-columns: 150px 1fr 1fr auto; }
+.row.comp { grid-template-columns: 150px 1fr 1fr auto; align-items: start; }
+.row.comp > .btn { margin-top: 24px; }
 
 .panel-name { margin: 18px 0 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
 .panel-name:first-of-type { margin-top: 6px; }
@@ -82,6 +77,14 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); ou
 .mname { font-weight: 600; }
 .mcode { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--muted); }
 .mdesc { font-size: 12.5px; color: var(--muted); flex-basis: 100%; padding-left: 27px; margin-top: -2px; }
+.metric.on .mdesc { display: none; }
+.panel-lede { font-size: 12.5px; color: var(--muted); margin: -2px 0 8px; }
+.ro { padding: 7px 0; font-size: 14px; }
+.linkbtn { border: 0; background: none; padding: 0; font: inherit; color: var(--accent); cursor: pointer; text-decoration: underline; }
+section.card > h2 .badge { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--warn); }
+section.card > h2 .badge.ok { color: var(--ok); }
+ol.steps { margin: 0 0 10px; padding-left: 22px; }
+ol.steps li { margin: 2px 0; }
 .mbody { border-top: 1px solid var(--line); padding: 12px 14px 14px 39px; }
 .extras { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
 .extras .q { font-size: 13px; font-weight: 600; }
@@ -96,13 +99,20 @@ aside h3 { margin: 0 0 8px; font-size: 14px; }
 .status { font-weight: 600; }
 .status.ok { color: var(--ok); }
 .status.todo { color: var(--warn); }
-ul.todo { list-style: none; padding: 0; margin: 8px 0 0; font-size: 13px; max-height: 220px; overflow: auto; }
+ul.todo { list-style: none; padding: 0; margin: 8px 0 0; font-size: 13px; }
 ul.todo li { padding: 3px 0; }
-ul.todo a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--muted); cursor: pointer; }
-ul.todo a:hover { color: var(--accent); border-color: var(--accent); }
+ul.todo ul { list-style: none; padding: 0 0 4px 14px; margin: 0; }
+ul.todo button { border: 0; background: none; padding: 0; font: inherit; text-align: left; color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--muted); cursor: pointer; }
+ul.todo button:hover, ul.todo button:focus-visible { color: var(--accent); border-color: var(--accent); }
+ul.todo .sec { font-weight: 600; }
+ul.todo .sec-n { color: var(--warn); font-weight: 600; }
+ul.todo .sec-n.ok { color: var(--ok); }
+details.preview summary { cursor: pointer; font-size: 14px; font-weight: 600; }
+details.preview[open] summary { margin-bottom: 8px; }
 .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
 pre.code { background: var(--chip); border-radius: 8px; padding: 10px 12px; overflow: auto; font-size: 12px; line-height: 1.45; margin: 0; max-height: 380px; }
-.cols { font-family: ui-monospace, Menlo, monospace; font-size: 12px; background: var(--chip); border-radius: 6px; padding: 8px 10px; word-break: break-all; margin: 4px 0 6px; }
+.cols { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0 6px; }
+.cols code { font-size: 12px; background: var(--chip); border-radius: 5px; padding: 1px 6px; white-space: nowrap; }
 .cols-name { font-size: 13px; font-weight: 600; margin-top: 8px; }
 
 @media (max-width: 900px) {
@@ -119,12 +129,13 @@ aside .box.bad h3 { color: var(--bad); }
 </head>
 <body>
 <header>
-  <h1>DFO stock assessment output YAML/CSV generator</h1>
+  <h1 id="h1">DFO stock assessment output YAML/CSV generator</h1>
   <span class="spacer"></span>
   <span class="saved" id="saved"></span>
   <button class="btn small ghost" data-act="load" id="btn-load"></button>
   <input type="file" id="file" accept=".yaml,.yml" hidden>
-  <button class="btn small ghost" data-act="example" id="btn-example"></button>
+  <button class="btn small ghost" data-act="template" id="btn-template"></button>
+  <a class="btn small ghost" href="?example" target="_blank" rel="noopener" id="btn-example"></a>
   <button class="btn small ghost" data-act="reset" id="btn-reset"></button>
   <div class="seg" role="group" aria-label="Language / Langue">
     <button data-lang="en">EN</button><button data-lang="fr">FR</button>
@@ -135,739 +146,1538 @@ aside .box.bad h3 { color: var(--bad); }
   <main>
     <p class="intro" id="intro"></p>
     <div id="form"></div>
+    <section class="card" id="finish"></section>
   </main>
   <aside id="side"></aside>
 </div>
 
 <script>
+// ===========================================================================
+// DFO stock assessment output YAML/CSV generator
+//
+// How this page works:
+// - `state` holds everything entered in the form, and is saved in this browser
+//   (localStorage) as you type.
+// - render() redraws the page from `state`. Each input has data-b="a.path.in.state";
+//   typing in it updates that path in `state` (see onEdit()).
+// - Buttons have data-act="..."; onAction() says what each one does.
+// - buildYaml() writes assessment.yaml from `state`; stateFromYaml() reads one back.
+// - Text is in English and French: tr("English", "Français") picks one.
+//   YAML keys and codes are always English.
+// ===========================================================================
+
 // ---------------------------------------------------------------------------
-// Vocabulary (mirrors ../vocab/*.csv)
+// Vocabulary: codes and labels. These copy ../fsar-data/vocab/*.csv; keep them in step.
 // ---------------------------------------------------------------------------
+
+// Metrics (one per CSV column), in form order.
+//   panel: the group it's listed under in the form (see PANELS)
+//   role:  "series" (a time series), "reference" (a reference point) or "context"
+//   level: which CSV it can go in: "stock", "component" or "both"
+//   dims:  the kinds of units it can take (see UNITS)
 const METRICS = [
-  ["catch","Catch","Prises","catch","series","both","mass|count","Total removals. Give an interval if removals are uncertain (e.g. recreational catch).","Prélèvements totaux. Donnez un intervalle si les prélèvements sont incertains (p. ex. pêche récréative)."],
-  ["total_allowable_catch","TAC","TAC","catch","context","both","mass|count","Total allowable catch.","Total autorisé des captures."],
-  ["msy","MSY","RMD","catch","context","stock","mass|count","Maximum sustainable yield, if estimated.","Rendement maximal soutenu, s'il est estimé."],
-  ["spawning_stock","Spawning stock","Stock reproducteur","stock","series","both","mass|count","SSB in mass units; spawner abundance in count units.","BSR en unités de masse; abondance des géniteurs en nombre."],
-  ["total_stock","Total stock","Stock total","stock","series","both","mass|count","Whole stock above any minimum age.","Stock entier au-dessus d'un éventuel âge minimal."],
-  ["exploitable_stock","Exploitable stock","Stock exploitable","stock","series","both","mass|count","Only if it's the main stock-size series, e.g. snow crab exploitable biomass or fishable shrimp biomass. Most stocks don't need it.",
-    "Seulement si c'est la principale série de taille du stock, p. ex. biomasse exploitable du crabe des neiges ou biomasse pêchable de la crevette. La plupart des stocks n'en ont pas besoin."],
-  ["index","Index","Indice","stock","series","both","index","Only for assessments based on an index rather than a population model (e.g. trap CPUE in kg/trap). Leave unticked if a model estimates stock size, even if it's fit to surveys.",
-    "Seulement pour les évaluations fondées sur un indice plutôt que sur un modèle de population (p. ex. CPUE au casier en kg/casier). Laissez décoché si un modèle estime la taille du stock, même s'il est ajusté à des relevés."],
-  ["limit_reference","LRP","PRL","stock","reference","stock","mass|count|index","Limit reference point.","Point de référence limite."],
-  ["upper_stock_reference","USR","PRS","stock","reference","stock","mass|count|index","Upper stock reference point.","Point de référence supérieur du stock."],
-  ["target_reference","TRP","PRC","stock","reference","stock","mass|count|index","Target reference point.","Point de référence cible."],
-  ["lower_threshold","Lower threshold","Seuil inférieur","stock","reference","component","mass|count|index","Lower threshold for components (e.g. salmon CU lower benchmark).","Seuil inférieur des composantes (p. ex. repère inférieur d'une UC de saumon)."],
-  ["upper_threshold","Upper threshold","Seuil supérieur","stock","reference","component","mass|count|index","Upper threshold for components (e.g. salmon CU upper benchmark).","Seuil supérieur des composantes (p. ex. repère supérieur d'une UC de saumon)."],
-  ["fishing_pressure","Fishing pressure","Pression de pêche","fishing_pressure","series","both","rate|proportion","F in 1/yr, or a harvest rate (catch / stock) as a proportion.","F en 1/an, ou un taux d'exploitation (prises / stock) en proportion."],
-  ["removal_reference","Removal reference","Taux de prélèvement de référence","fishing_pressure","reference","stock","rate|proportion","Removal reference (RR).","Taux de prélèvement de référence (TPR)."],
-  ["removal_threshold","Removal threshold","Seuil de prélèvement","fishing_pressure","reference","component","rate|proportion","Removal threshold for components.","Seuil de prélèvement des composantes."],
-  ["natural_mortality","M","M","fishing_pressure","context","both","rate","Instantaneous natural mortality.","Mortalité naturelle instantanée."],
-  ["recruitment","Recruitment","Recrutement","recruitment","series","both","count|mass","Recruits at a given age.","Recrues à un âge donné."],
-  ["recruitment_deviation","Recruitment deviations","Écarts de recrutement","recruitment","context","both","","Estimated recruitment deviations, on the log scale, from the stock-recruit relationship or mean recruitment.",
-    "Écarts de recrutement estimés, sur l'échelle log, par rapport à la relation stock-recrutement ou au recrutement moyen."],
-].map(([id,en,fr,panel,role,level,dims,desc_en,desc_fr]) => ({id,en,fr,panel,role,level,dims:dims.split("|"),desc_en,desc_fr}));
-const mlabel = m => L(m.en, m.fr);
-const M = Object.fromEntries(METRICS.map(m => [m.id, m]));
-const PANELS = [["catch","Catch","Prises"],["stock","Stock size","Taille du stock"],["fishing_pressure","Fishing pressure","Pression de pêche"],["recruitment","Recruitment","Recrutement"]];
-const STOCK_SERIES = ["spawning_stock","total_stock","exploitable_stock","index"];
+  { id: "catch", en: "Catch", fr: "Prises", panel: "catch", role: "series", level: "both", dims: ["mass", "count"],
+    desc_en: "Total removals. Give an interval if removals are uncertain (e.g. recreational catch).",
+    desc_fr: "Prélèvements totaux. Donnez un intervalle si les prélèvements sont incertains (p. ex. pêche récréative)." },
+  { id: "total_allowable_catch", en: "TAC", fr: "TAC", panel: "catch", role: "context", level: "both", dims: ["mass", "count"],
+    desc_en: "Total allowable catch.",
+    desc_fr: "Total autorisé des captures." },
+  { id: "msy", en: "MSY", fr: "RMD", panel: "catch", role: "context", level: "stock", dims: ["mass", "count"],
+    desc_en: "Maximum sustainable yield, if estimated.",
+    desc_fr: "Rendement maximal soutenu, s'il est estimé." },
+  { id: "spawning_stock", en: "Spawning stock", fr: "Stock reproducteur", panel: "stock", role: "series", level: "both", dims: ["mass", "count"],
+    desc_en: "SSB in mass units; spawner abundance in count units.",
+    desc_fr: "BSR en unités de masse; abondance des géniteurs en nombre." },
+  { id: "total_stock", en: "Total stock", fr: "Stock total", panel: "stock", role: "series", level: "both", dims: ["mass", "count"],
+    desc_en: "Whole stock above any minimum age.",
+    desc_fr: "Stock entier au-dessus d'un éventuel âge minimal." },
+  { id: "exploitable_stock", en: "Exploitable stock", fr: "Stock exploitable", panel: "stock", role: "series", level: "both", dims: ["mass", "count"],
+    desc_en: "Part of the stock vulnerable to the fishery (vulnerable or fishable biomass).",
+    desc_fr: "Partie du stock vulnérable à la pêche (biomasse vulnérable ou pêchable)." },
+  { id: "index", en: "Index", fr: "Indice", panel: "stock", role: "series", level: "both", dims: ["index"],
+    desc_en: "Only for assessments based on an index rather than a population model (e.g. trap CPUE in kg/trap). Leave unticked if a model estimates stock size, even if it's fit to surveys.",
+    desc_fr: "Seulement pour les évaluations fondées sur un indice plutôt que sur un modèle de population (p. ex. CPUE au casier en kg/casier). Laissez décoché si un modèle estime la taille du stock, même s'il est ajusté à des relevés." },
+  { id: "limit_reference", en: "LRP", fr: "PRL", panel: "stock", role: "reference", level: "stock", dims: ["mass", "count", "index"],
+    desc_en: "Limit reference point.",
+    desc_fr: "Point de référence limite." },
+  { id: "upper_stock_reference", en: "USR", fr: "PRS", panel: "stock", role: "reference", level: "stock", dims: ["mass", "count", "index"],
+    desc_en: "Upper stock reference point.",
+    desc_fr: "Point de référence supérieur du stock." },
+  { id: "target_reference", en: "TRP", fr: "PRC", panel: "stock", role: "reference", level: "stock", dims: ["mass", "count", "index"],
+    desc_en: "Target reference point.",
+    desc_fr: "Point de référence cible." },
+  { id: "lower_threshold", en: "Lower threshold", fr: "Seuil inférieur", panel: "stock", role: "reference", level: "component", dims: ["mass", "count", "index"],
+    desc_en: "Lower threshold for components (e.g. salmon CU lower benchmark).",
+    desc_fr: "Seuil inférieur des composantes (p. ex. repère inférieur d'une UC de saumon)." },
+  { id: "upper_threshold", en: "Upper threshold", fr: "Seuil supérieur", panel: "stock", role: "reference", level: "component", dims: ["mass", "count", "index"],
+    desc_en: "Upper threshold for components (e.g. salmon CU upper benchmark).",
+    desc_fr: "Seuil supérieur des composantes (p. ex. repère supérieur d'une UC de saumon)." },
+  { id: "fishing_pressure", en: "Fishing pressure", fr: "Pression de pêche", panel: "fishing_pressure", role: "series", level: "both", dims: ["rate", "proportion"],
+    desc_en: "F in 1/yr, or a harvest rate (catch / stock) as a proportion.",
+    desc_fr: "F en 1/an, ou un taux d'exploitation (prises / stock) en proportion." },
+  { id: "removal_reference", en: "Removal reference", fr: "Taux de prélèvement de référence", panel: "fishing_pressure", role: "reference", level: "stock", dims: ["rate", "proportion"],
+    desc_en: "Removal reference (RR).",
+    desc_fr: "Taux de prélèvement de référence (TPR)." },
+  { id: "removal_threshold", en: "Removal threshold", fr: "Seuil de prélèvement", panel: "fishing_pressure", role: "reference", level: "component", dims: ["rate", "proportion"],
+    desc_en: "Removal threshold for components.",
+    desc_fr: "Seuil de prélèvement des composantes." },
+  { id: "natural_mortality", en: "M", fr: "M", panel: "fishing_pressure", role: "context", level: "both", dims: ["rate"],
+    desc_en: "Instantaneous natural mortality.",
+    desc_fr: "Mortalité naturelle instantanée." },
+  { id: "recruitment", en: "Recruitment", fr: "Recrutement", panel: "recruitment", role: "series", level: "both", dims: ["count", "mass"],
+    desc_en: "Recruits at a given age.",
+    desc_fr: "Recrues à un âge donné." },
+  { id: "recruitment_deviation", en: "Recruitment deviations", fr: "Écarts de recrutement", panel: "recruitment", role: "context", level: "both", dims: [],
+    desc_en: "Estimated recruitment deviations, on the log scale, from the stock-recruit relationship or mean recruitment.",
+    desc_fr: "Écarts de recrutement estimés, sur l'échelle log, par rapport à la relation stock-recrutement ou au recrutement moyen." },
+];
+const METRIC_BY_ID = Object.fromEntries(METRICS.map(m => [m.id, m]));
+const metricLabel = m => tr(m.en, m.fr);
+
+// The groups metrics are listed in: [panel, English, French]
+const PANELS = [
+  ["catch", "Catch", "Prises"],
+  ["stock", "Stock size", "Taille du stock"],
+  ["fishing_pressure", "Fishing pressure", "Pression de pêche"],
+  ["recruitment", "Recruitment", "Recrutement"],
+];
+// Series a reference point (or a harvest rate) can be relative to.
+const STOCK_SERIES = ["spawning_stock", "total_stock", "exploitable_stock", "index"];
 const PRESSURE_SERIES = ["fishing_pressure"];
 
+// Units, and the kind of quantity (dim) each one measures.
 const UNITS = [
-  ["kg","mass","kg","kg"],["t","mass","t (tonnes)","t (tonnes)"],["kt","mass","kt (thousand t)","kt (milliers de t)"],
-  ["n","count","number","nombre"],["thousands","count","thousands","milliers"],["millions","count","millions","millions"],["billions","count","billions","milliards"],
-  ["1/yr","rate","1/yr","1/an"],["proportion","proportion","proportion","proportion"],
-  ["kg/tow","index","kg/tow","kg/trait"],["n/tow","index","number/tow","nombre/trait"],["kg/km2","index","kg/km²","kg/km²"],["n/km2","index","number/km²","nombre/km²"],
-  ["kg/trap","index","kg/trap","kg/casier"],["relative","index","relative","relatif"],
-].map(([id,dim,en,fr]) => ({id,dim,en,fr}));
+  { id: "kg", dim: "mass", en: "kg", fr: "kg" },
+  { id: "t", dim: "mass", en: "t (tonnes)", fr: "t (tonnes)" },
+  { id: "kt", dim: "mass", en: "kt (thousand t)", fr: "kt (milliers de t)" },
+  { id: "n", dim: "count", en: "number", fr: "nombre" },
+  { id: "thousands", dim: "count", en: "thousands", fr: "milliers" },
+  { id: "millions", dim: "count", en: "millions", fr: "millions" },
+  { id: "billions", dim: "count", en: "billions", fr: "milliards" },
+  { id: "1/yr", dim: "rate", en: "1/yr", fr: "1/an" },
+  { id: "proportion", dim: "proportion", en: "proportion", fr: "proportion" },
+  { id: "kg/tow", dim: "index", en: "kg/tow", fr: "kg/trait" },
+  { id: "n/tow", dim: "index", en: "number/tow", fr: "nombre/trait" },
+  { id: "kg/km2", dim: "index", en: "kg/km²", fr: "kg/km²" },
+  { id: "n/km2", dim: "index", en: "number/km²", fr: "nombre/km²" },
+  { id: "kg/trap", dim: "index", en: "kg/trap", fr: "kg/casier" },
+  { id: "relative", dim: "index", en: "relative", fr: "relatif" },
+];
+const unitsFor = m => UNITS.filter(u => m.dims.includes(u.dim));
 
-// [code, English label, French label]
-const V = {
-  basis: [["b_msy","B_MSY","B_RMD"],["b_msy_proxy","B_MSY proxy (describe in notes)","Approximation de B_RMD (décrire dans les notes)"],
-    ["b0","B0 (unfished)","B0 (non exploité)"],["b_recover","B_recover","B_rétablissement"],["s_msy","S_MSY","S_RMD"],["s_gen","S_gen","S_gen"],
-    ["mean","Mean over a period","Moyenne sur une période"],["percentile","Percentile over a period (incl. median)","Centile sur une période (y compris la médiane)"],
-    ["f_msy","F_MSY","F_RMD"],["u_msy","U_MSY","U_RMD"],["f_0.1","F_0.1","F_0.1"],["f_spr","F_SPR (e.g. F40%)","F_SPR (p. ex. F40%)"],["other","Other (explain in notes)","Autre (expliquer dans les notes)"]],
-  type: [["average","Average over ages","Moyenne sur les âges"],["apical","Apical (fully selected)","Apicale (pleinement sélectionnée)"],["aggregate","Aggregate (no age structure)","Agrégée (sans structure d'âge)"]],
-  interval: [["confidence","Confidence","Confiance"],["credible","Credible","Crédibilité"]],
-  method: [["age_structured","Age-structured","Structuré selon l'âge"],["length_structured","Length-structured","Structuré selon la longueur"],["stage_structured","Stage-structured","Structuré selon le stade"],
-    ["surplus_production","Surplus production","Production excédentaire"],["delay_difference","Delay-difference","Différence-délai"],["spawner_recruit","Spawner-recruit","Géniteurs-recrues"],
-    ["index_based","Index-based","Fondé sur un indice"],["other","Other","Autre"]],
-  software: [["ss3","Stock Synthesis (SS3)","Stock Synthesis (SS3)"],["wham","WHAM","WHAM"],["fims","FIMS","FIMS"],["sam","SAM","SAM"],["iscam","iSCAM","iSCAM"],
-    ["jags","JAGS custom model","Modèle personnalisé JAGS"],["stan","Stan custom model","Modèle personnalisé Stan"],
-    ["tmb","TMB / RTMB custom model","Modèle personnalisé TMB / RTMB"],
-    ["r","R custom model","Modèle personnalisé R"],["python","Python custom model","Modèle personnalisé Python"],["none","None (no model)","Aucun (pas de modèle)"]],
-  atype: [["full","Full assessment","Évaluation complète"],["update","Update (interim or indicator)","Mise à jour (intermédiaire ou des indicateurs)"]],
-  management: [["dfo","DFO","MPO"],["nafo","NAFO","OPANO"],["iccat","ICCAT","CICTA"],["nasco","NASCO","OCSAN"],
-    ["psc","Pacific Salmon Commission","Commission du saumon du Pacifique"],["iphc","IPHC","CIFP"],["other","Other","Autre"]],
-  region: [["newfoundland_labrador","Newfoundland and Labrador","Terre-Neuve-et-Labrador"],["maritimes","Maritimes","Maritimes"],["gulf","Gulf","Golfe"],["quebec","Quebec","Québec"],
-    ["ontario_prairie","Ontario and Prairie","Ontario et Prairies"],["arctic","Arctic","Arctique"],["pacific","Pacific","Pacifique"]],
-  series: [["fsar","Fisheries Science Advisory Report","Avis scientifique sur les pêches"],["sar","Science Advisory Report","Avis scientifique"],
-    ["resdoc","Research Document","Document de recherche"],["sr","Science Response","Réponse des Sciences"]],
+// Allowed codes for fields with a list of options: [code, English label, French label]
+const VALUES = {
+  basis: [
+    ["b_msy", "B_MSY", "B_RMD"],
+    ["b_msy_proxy", "B_MSY proxy (describe in notes)", "Approximation de B_RMD (décrire dans les notes)"],
+    ["b0", "B0 (unfished)", "B0 (non exploité)"],
+    ["b_recover", "B_recover", "B_rétablissement"],
+    ["s_msy", "S_MSY", "S_RMD"],
+    ["s_gen", "S_gen", "S_gen"],
+    ["mean", "Mean over a period", "Moyenne sur une période"],
+    ["percentile", "Percentile over a period (incl. median)", "Centile sur une période (y compris la médiane)"],
+    ["f_msy", "F_MSY", "F_RMD"],
+    ["u_msy", "U_MSY", "U_RMD"],
+    ["f_0.1", "F_0.1", "F_0.1"],
+    ["f_spr", "F_SPR (e.g. F40%)", "F_SPR (p. ex. F40%)"],
+    ["other", "Other (explain in notes)", "Autre (expliquer dans les notes)"],
+  ],
+  type: [ // how fishing mortality is summarized
+    ["average", "Average over ages", "Moyenne sur les âges"],
+    ["apical", "Apical (fully selected)", "Apicale (pleinement sélectionnée)"],
+    ["aggregate", "Aggregate (no age structure)", "Agrégée (sans structure d'âge)"],
+  ],
+  interval: [
+    ["confidence", "Confidence", "Confiance"],
+    ["credible", "Credible", "Crédibilité"],
+  ],
+  method: [
+    ["age_structured", "Age-structured", "Structuré selon l'âge"],
+    ["length_structured", "Length-structured", "Structuré selon la longueur"],
+    ["stage_structured", "Stage-structured", "Structuré selon le stade"],
+    ["surplus_production", "Surplus production", "Production excédentaire"],
+    ["delay_difference", "Delay-difference", "Différence-délai"],
+    ["spawner_recruit", "Spawner-recruit", "Géniteurs-recrues"],
+    ["index_based", "Index-based", "Fondé sur un indice"],
+    ["other", "Other", "Autre"],
+  ],
+  software: [
+    ["ss3", "Stock Synthesis (SS3)", "Stock Synthesis (SS3)"],
+    ["wham", "WHAM", "WHAM"],
+    ["fims", "FIMS", "FIMS"],
+    ["sam", "SAM", "SAM"],
+    ["iscam", "iSCAM", "iSCAM"],
+    ["jags", "JAGS custom model", "Modèle personnalisé JAGS"],
+    ["stan", "Stan custom model", "Modèle personnalisé Stan"],
+    ["tmb", "TMB / RTMB custom model", "Modèle personnalisé TMB / RTMB"],
+    ["r", "R custom model", "Modèle personnalisé R"],
+    ["python", "Python custom model", "Modèle personnalisé Python"],
+    ["none", "None (no model)", "Aucun (pas de modèle)"],
+    ["other", "Other", "Autre"],
+  ],
+  assessment_type: [
+    ["full", "Full assessment", "Évaluation complète"],
+    ["update", "Update (interim or indicator)", "Mise à jour (intermédiaire ou des indicateurs)"],
+  ],
+  management: [
+    ["dfo", "DFO", "MPO"],
+    ["nafo", "NAFO", "OPANO"],
+    ["iccat", "ICCAT", "CICTA"],
+    ["nasco", "NASCO", "OCSAN"],
+    ["psc", "Pacific Salmon Commission", "Commission du saumon du Pacifique"],
+    ["iphc", "IPHC", "CIFP"],
+    ["other", "Other", "Autre"],
+  ],
+  region: [
+    ["newfoundland_labrador", "Newfoundland and Labrador", "Terre-Neuve-et-Labrador"],
+    ["maritimes", "Maritimes", "Maritimes"],
+    ["gulf", "Gulf", "Golfe"],
+    ["quebec", "Quebec", "Québec"],
+    ["ontario_prairie", "Ontario and Prairie", "Ontario et Prairies"],
+    ["arctic", "Arctic", "Arctique"],
+    ["pacific", "Pacific", "Pacifique"],
+  ],
+  series: [
+    ["fsar", "Fisheries Science Advisory Report", "Avis scientifique sur les pêches"],
+    ["sar", "Science Advisory Report", "Avis scientifique"],
+    ["resdoc", "Research Document", "Document de recherche"],
+    ["sr", "Science Response", "Réponse des Sciences"],
+  ],
 };
-const opts = list => list.map(([k, en, fr]) => [k, L(en, fr)]);
-const STOCK_BASIS = ["b_msy","b_msy_proxy","b0","b_recover","s_msy","s_gen","mean","percentile","other"];
-const REMOVAL_BASIS = ["f_msy","u_msy","f_0.1","f_spr","other"];
-// Extra fields some bases need (mirrors basis_fields in ../R/fsar-data.R).
-const BASIS_FIELDS = { mean: ["period"], percentile: ["period", "percentile"],
-  f_spr: ["spr"], b_msy_proxy: ["notes"], other: ["notes"] };
-const basisNeeds = (id, f) => (BASIS_FIELDS[S.metrics[id].f.basis] || []).includes(f);
-// metric -> fields in YAML order; "yes" required, "no" optional, "if" conditional
-const MF = {
-  catch: {units:"yes", notes:"no"},
-  total_allowable_catch: {units:"yes", notes:"no"},
-  msy: {units:"yes", notes:"no"},
-  spawning_stock: {units:"yes", min_age:"no", max_age:"no", notes:"no"},
-  total_stock: {units:"yes", min_age:"no", max_age:"no", notes:"no"},
-  exploitable_stock: {units:"yes", min_age:"no", max_age:"no", notes:"no"},
-  index: {units:"yes", survey:"yes", min_age:"no", max_age:"no", notes:"no"},
-  limit_reference: {units:"yes", applies_to:"if", basis:"yes", multiplier:"yes", period:"if", percentile:"if", notes:"no"},
-  upper_stock_reference: {units:"yes", applies_to:"if", basis:"yes", multiplier:"yes", period:"if", percentile:"if", notes:"no"},
-  target_reference: {units:"yes", applies_to:"if", basis:"yes", multiplier:"yes", period:"if", percentile:"if", notes:"no"},
-  lower_threshold: {units:"yes", applies_to:"if", basis:"yes", multiplier:"yes", period:"if", percentile:"if", notes:"no"},
-  upper_threshold: {units:"yes", applies_to:"if", basis:"yes", multiplier:"yes", period:"if", percentile:"if", notes:"no"},
-  fishing_pressure: {units:"yes", type:"if", min_age:"if", max_age:"if", applies_to:"if", notes:"no"},
-  removal_reference: {units:"yes", basis:"yes", multiplier:"yes", spr:"if", notes:"no"},
-  removal_threshold: {units:"yes", basis:"yes", multiplier:"yes", spr:"if", notes:"no"},
-  natural_mortality: {units:"yes", min_age:"no", max_age:"no", notes:"no"},
-  recruitment: {units:"yes", age:"yes", notes:"no"},
-  recruitment_deviation: {age:"no", notes:"no"},
+const codesOf = list => list.map(([code]) => code);
+// [code, label] pairs for a dropdown, in the current language.
+const choices = list => list.map(([code, en, fr]) => [code, tr(en, fr)]);
+
+// Bases for stock reference points and for removal references.
+const STOCK_BASIS = ["b_msy", "b_msy_proxy", "b0", "b_recover", "s_msy", "s_gen", "mean", "percentile", "other"];
+const REMOVAL_BASIS = ["f_msy", "u_msy", "f_0.1", "f_spr", "other"];
+const basesFor = m => m.panel === "fishing_pressure" ? REMOVAL_BASIS : STOCK_BASIS;
+// Extra fields some bases need (as basis_fields in ../fsar-data/R/fsar-data.R).
+const BASIS_FIELDS = {
+  mean: ["period"],
+  percentile: ["period", "percentile"],
+  f_spr: ["spr"],
+  b_msy_proxy: ["notes"],
+  other: ["notes"],
 };
-const FIELD_LABEL = { units:["Units","Unités"], basis:["Basis","Base"],
-  multiplier:["Multiplier","Multiplicateur"], period:["Period","Période"], percentile:["Percentile","Centile"], spr:["SPR (%)","SPR (%)"],
-  applies_to:["Relative to","Par rapport à"], type:["How F is summarized","Calcul de F"], min_age:["Min age","Âge min."],
-  max_age:["Max age","Âge max."], age:["Age at recruitment","Âge au recrutement"], survey:["Survey or fishery","Relevé ou pêche"], notes:["Notes","Notes"] };
-const FL = f => L(...FIELD_LABEL[f]);
+
+// Each metric's fields, in YAML order: "yes" required, "no" optional, "if" required
+// in some cases (see requiredByMetric()). `bounds` and `ratios` are added when writing.
+const METRIC_FIELDS = {
+  catch:                 { units: "yes", notes: "no" },
+  total_allowable_catch: { units: "yes", notes: "no" },
+  msy:                   { units: "yes", notes: "no" },
+  spawning_stock:        { units: "yes", min_age: "no", max_age: "no", notes: "no" },
+  total_stock:           { units: "yes", min_age: "no", max_age: "no", notes: "no" },
+  exploitable_stock:     { units: "yes", min_age: "no", max_age: "no", notes: "no" },
+  index:                 { units: "yes", survey: "yes", min_age: "no", max_age: "no", notes: "no" },
+  limit_reference:       { units: "yes", applies_to: "if", basis: "yes", multiplier: "yes", period: "if", percentile: "if", notes: "no" },
+  upper_stock_reference: { units: "yes", applies_to: "if", basis: "yes", multiplier: "yes", period: "if", percentile: "if", notes: "no" },
+  target_reference:      { units: "yes", applies_to: "if", basis: "yes", multiplier: "yes", period: "if", percentile: "if", notes: "no" },
+  lower_threshold:       { units: "yes", applies_to: "if", basis: "yes", multiplier: "yes", period: "if", percentile: "if", notes: "no" },
+  upper_threshold:       { units: "yes", applies_to: "if", basis: "yes", multiplier: "yes", period: "if", percentile: "if", notes: "no" },
+  fishing_pressure:      { units: "yes", type: "if", min_age: "if", max_age: "if", applies_to: "if", notes: "no" },
+  removal_reference:     { units: "yes", basis: "yes", multiplier: "yes", spr: "if", notes: "no" },
+  removal_threshold:     { units: "yes", basis: "yes", multiplier: "yes", spr: "if", notes: "no" },
+  natural_mortality:     { units: "yes", min_age: "no", max_age: "no", notes: "no" },
+  recruitment:           { units: "yes", age: "yes", notes: "no" },
+  recruitment_deviation: { age: "no", notes: "no" },
+};
+const NUMBER_FIELDS = ["multiplier", "min_age", "max_age", "age", "percentile", "spr"];
+
+const FIELD_LABELS = {
+  units: ["Units", "Unités"],
+  basis: ["Basis", "Base"],
+  multiplier: ["Multiplier", "Multiplicateur"],
+  period: ["Period", "Période"],
+  percentile: ["Percentile", "Centile"],
+  spr: ["SPR (%)", "SPR (%)"],
+  applies_to: ["Relative to", "Par rapport à"],
+  type: ["How F is summarized", "Calcul de F"],
+  min_age: ["Min age", "Âge min."],
+  max_age: ["Max age", "Âge max."],
+  age: ["Age at recruitment", "Âge au recrutement"],
+  survey: ["Survey or fishery", "Relevé ou pêche"],
+  notes: ["Notes", "Notes"],
+};
+const fieldLabel = f => tr(...FIELD_LABELS[f]);
+const lowerFirst = s => s.replace(/^./, c => c.toLowerCase());
+
+// Field hints, shared by the form and the YAML template so the wording matches.
+const HINTS = {
+  multiplier: ["e.g. 0.4 for 0.4 B_MSY", "p. ex. 0.4 pour 0.4 B_RMD"],
+  removal_multiplier: ["e.g. 1 for F_MSY", "p. ex. 1 pour F_RMD"],
+  max_age: ["Blank = plus group", "Vide = groupe plus"],
+  percentile: ["50 for the median", "50 pour la médiane"],
+  spr: ["40 for F40%", "40 pour F40%"],
+  survey: ["e.g. RV summer survey", "p. ex. relevé de recherche d'été"],
+  fp_units: ["1/yr for F; proportion for a harvest rate.", "1/an pour F; proportion pour un taux d'exploitation."],
+  applies_to: ["Which series this is compared to.", "Série à laquelle ceci est comparé."],
+  fp_applies_to: ["Which stock series catch is divided by.", "Série du stock par laquelle les prises sont divisées."],
+  exploitable_notes: ["Vulnerable to what, e.g. the commercial trawl fleet, mid-year.",
+    "Vulnérable à quoi, p. ex. la flotte commerciale au chalut, en milieu d'année."],
+};
+
 // Starting units when a metric is ticked; people change them if needed.
-const DEFAULT_UNITS = { catch: "t", spawning_stock: "t", total_stock: "t", exploitable_stock: "t",
-  index: "kg/tow", fishing_pressure: "1/yr", natural_mortality: "1/yr", recruitment: "millions" };
-const NUM_FIELDS = ["multiplier","min_age","max_age","age","percentile","spr"];
-const LEVELS = [50, 55, 60, 65, 70, 75, 80, 85, 90, 95].map(p => String(p / 100)); // interval.level choices
+const DEFAULT_UNITS = {
+  catch: "t", spawning_stock: "t", total_stock: "t", exploitable_stock: "t",
+  index: "kg/tow", fishing_pressure: "1/yr", natural_mortality: "1/yr", recruitment: "millions",
+};
+// interval.level choices: "0.5" to "0.95"
+const LEVELS = [50, 55, 60, 65, 70, 75, 80, 85, 90, 95].map(p => String(p / 100));
+
+const DICTIONARY = "https://github.com/TESA-workshops/assessment-results-workshop-2027/blob/main/yaml-generator/dictionary.md";
 
 // ---------------------------------------------------------------------------
-// State
+// Language and state
 // ---------------------------------------------------------------------------
-const KEY = "fsar-yaml-draft-v2", ME_KEY = "fsar-yaml-me-v1", LANG_KEY = "fsar-yaml-lang-v1";
+const DRAFT_KEY = "fsar-yaml-draft-v2", ME_KEY = "fsar-yaml-me-v1", LANG_KEY = "fsar-yaml-lang-v1";
+
 let LANG = "en";
 try { LANG = localStorage.getItem(LANG_KEY) || ((navigator.language || "").startsWith("fr") ? "fr" : "en"); } catch {}
-function L(en, fr) { return LANG === "fr" ? fr : en; }
-const colon = () => L(": ", " : ");
+function tr(en, fr) { return LANG === "fr" ? fr : en; }
+const colon = () => tr(": ", " : ");
+
 const today = () => new Date().toISOString().slice(0, 10);
 const blankAuthor = () => ({ given: "", family: "", orcid: "" });
 const blankPub = () => ({ series: "", number: "", year: "", url: "", doi: "", title: { en: "", fr: "" }, authors: [blankAuthor()] });
-function blank() {
+const blankMetric = () => ({ on: false, f: {}, ratios: {} });
+
+// An empty form. Your name and email are remembered from last time.
+// (The field names are also what's saved in the browser, so changing them loses drafts.)
+function blankState() {
   let me = {};
   try { me = JSON.parse(localStorage.getItem(ME_KEY)) || {}; } catch {}
   return {
     me: { name: me.name || "", email: me.email || "", date: today() },
-    year_assessed: "", assessment_type: "",
-    stock: { name: { en: "", fr: "" }, species: { scientific: "", en: "", fr: "", aphia_id: "" }, area: { en: "", fr: "" },
-      region: "", management: "dfo", fish_stock_provisions: "", in_sustainability_survey: "", ram_legacy_id: "" },
-    method: { type: "", software: "", notes: "" },
+    year_assessed: "",
+    assessment_type: "",
+    stock: {
+      name: { en: "", fr: "" },
+      species: { scientific: "", en: "", fr: "", aphia_id: "" },
+      area: { en: "", fr: "" },
+      region: "", management: "dfo", fish_stock_provisions: "", in_sustainability_survey: "", ram_legacy_id: "",
+    },
+    method: { type: "", software: "", notes: "", software_notes: "" },
     meeting: { date: "", url: "", csas_process: "" },
     pubs: [blankPub()],
-    hasComp: "no", comps: [],
-    hasBounds: "yes", interval: { level: "0.95", type: "" },
-    metrics: {},
+    hasComp: "no",   // "yes" if the stock is also reported by component
+    comps: [],       // components: { id, en, fr }
+    hasBounds: "yes", // "yes" if any column has _lower / _upper
+    interval: { level: "0.95", type: "" },
+    metrics: {},     // metric id -> { on: ticked?, f: { field: value }, ci: has bounds?, ratios: { denominator: true } }
   };
 }
-let S;
-try { S = JSON.parse(localStorage.getItem(KEY)); } catch {}
-if (!S || !S.me) S = blank();
-METRICS.forEach(m => S.metrics[m.id] ||= { on: false, f: {} });
-METRICS.forEach(m => S.metrics[m.id].ratios ||= {});
+// A blank form with every metric unticked.
+function freshState() {
+  const s = blankState();
+  for (const m of METRICS) s.metrics[m.id] = blankMetric();
+  return s;
+}
 
+let state;
+try { state = JSON.parse(localStorage.getItem(DRAFT_KEY)); } catch {}
+if (!state || !state.me) state = blankState();
+for (const m of METRICS) state.metrics[m.id] ||= { on: false, f: {} };
+for (const m of METRICS) state.metrics[m.id].ratios ||= {};
+
+// With ?example in the URL the page shows the example and never saves, so it can't
+// replace a draft stored in this browser.
+const EXAMPLE_MODE = new URLSearchParams(location.search).has("example");
+let savedMessage = () => EXAMPLE_MODE ? tr("Example: changes aren't saved", "Exemple : les modifications ne sont pas enregistrées") : "";
 let saveTimer;
 function save() {
+  if (EXAMPLE_MODE) return;
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
     try {
-      localStorage.setItem(KEY, JSON.stringify(S));
-      localStorage.setItem(ME_KEY, JSON.stringify({ name: S.me.name, email: S.me.email }));
-      $("#saved").textContent = L("Draft saved", "Brouillon enregistré");
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(state));
+      localStorage.setItem(ME_KEY, JSON.stringify({ name: state.me.name, email: state.me.email }));
+      savedMessage = () => tr("Draft saved", "Brouillon enregistré");
+      $("#saved").textContent = savedMessage();
     } catch {}
   }, 300);
 }
 
-const $ = s => document.querySelector(s);
-const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const get = p => p.split(".").reduce((x, k) => x == null ? x : x[k], S);
-function set(p, v) { const ks = p.split("."); const last = ks.pop(); ks.reduce((x, k) => x[k] ??= {}, S)[last] = v; }
-const on = id => S.metrics[id].on;
-const blankish = v => v == null || String(v).trim() === "";
-const slug = s => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-const autoId = () => [slug(S.stock.name.en), S.year_assessed].filter(Boolean).join("-");
-const assessmentId = autoId;
+// Small helpers
+const $ = selector => document.querySelector(selector);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const isBlank = v => v == null || String(v).trim() === "";
+// Read or write `state` by a dotted path such as "stock.name.en".
+const getPath = path => path.split(".").reduce((x, k) => x == null ? x : x[k], state);
+function setPath(path, value) {
+  const keys = path.split(".");
+  const last = keys.pop();
+  keys.reduce((x, k) => x[k] ??= {}, state)[last] = value;
+}
+// "Morue de 4X" -> "morue-de-4x"
+const slug = s => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
+  .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+// e.g. "example-stock-2024": the folder name, from the stock name and year assessed.
+const assessmentId = () => [slug(state.stock.name.en), state.year_assessed].filter(Boolean).join("-");
 
-// Metrics shown in the list: component-only ones need components.
-const visible = m => m.level !== "component" || S.hasComp === "yes";
-const chosen = () => METRICS.filter(m => visible(m) && on(m.id));
-// Series a reference point / harvest rate could be relative to.
-function targets(id) {
-  const m = M[id];
+// ---------------------------------------------------------------------------
+// Rules: which metrics and fields apply
+// ---------------------------------------------------------------------------
+const metricState = id => state.metrics[id];
+const isTicked = id => state.metrics[id].on;
+// Component-only metrics are listed only when the stock has components.
+const isListed = m => m.level !== "component" || state.hasComp === "yes";
+const tickedMetrics = () => METRICS.filter(m => isListed(m) && isTicked(m.id));
+
+// Ticked series that a reference point (or a harvest rate) could be relative to.
+function seriesOptions(id) {
+  const m = METRIC_BY_ID[id];
   const pool = m.panel === "fishing_pressure" && m.role === "reference" ? PRESSURE_SERIES : STOCK_SERIES;
-  return pool.filter(s => on(s));
+  return pool.filter(isTicked);
 }
-function resolvedTarget(id) {
-  const t = targets(id);
-  return t.length === 1 ? t[0] : S.metrics[id].f.applies_to || "";
+// The series it's relative to: the only option, or the one chosen in `applies_to`.
+function targetSeries(id) {
+  const options = seriesOptions(id);
+  return options.length === 1 ? options[0] : metricState(id).f.applies_to || "";
 }
-// What a series can be a ratio to (mirrors ratio_denominators()): ticked reference
-// points that apply to it, then B_MSY or F_MSY. None for catch or recruitment.
-const MSY_BASIS = { stock: "b_msy", fishing_pressure: "f_msy" };
-function ratioOptions(id) {
-  const m = M[id];
-  if (m.role !== "series" || !MSY_BASIS[m.panel]) return [];
-  const refs = chosen().filter(r => r.panel === m.panel && r.role === "reference" && resolvedTarget(r.id) === id).map(r => r.id);
-  return [...refs, MSY_BASIS[m.panel]];
-}
-const denLabel = den => M[den] ? mlabel(M[den])
-  : den === "b_msy" ? L("B_MSY (or its proxy)", "B_RMD (ou son approximation)")
-  : L(...V.basis.find(([k]) => k === den).slice(1));
-const ratioOn = (id, den) => !!S.metrics[id].ratios[den];
-const ratios = id => ratioOptions(id).filter(den => ratioOn(id, den));
-// Bounds: optional for catch, M and reference points (ticked), always listed for other
-// series, ratios and MSY, never for the TAC.
-const optionalCI = id => ["catch", "natural_mortality", "recruitment_deviation"].includes(id) || M[id].role === "reference";
-const hasCI = id => S.hasBounds === "yes" && (optionalCI(id) ? !!S.metrics[id].ci : M[id].role === "series" || id === "msy");
 
-// The series whose units a metric should follow: a reference's series, or catch for the TAC.
-function unitSource(id) {
-  if (id === "total_allowable_catch" || id === "msy") return on("catch") ? "catch" : "";
-  if (M[id].role !== "reference") return "";
-  return resolvedTarget(id) || targets(id)[0] || "";
+// What a series can be a ratio to (as ratio_denominators() in R): the ticked reference
+// points that apply to it, then B_MSY or F_MSY. None for catch or recruitment.
+const MSY_DENOMINATOR = { stock: "b_msy", fishing_pressure: "f_msy" };
+function ratioOptions(id) {
+  const m = METRIC_BY_ID[id];
+  if (m.role !== "series" || !MSY_DENOMINATOR[m.panel]) return [];
+  const refs = tickedMetrics()
+    .filter(r => r.panel === m.panel && r.role === "reference" && targetSeries(r.id) === id)
+    .map(r => r.id);
+  return [...refs, MSY_DENOMINATOR[m.panel]];
+}
+function denominatorLabel(den) {
+  if (METRIC_BY_ID[den]) return metricLabel(METRIC_BY_ID[den]);
+  if (den === "b_msy") return tr("B_MSY (or its proxy)", "B_RMD (ou son approximation)");
+  return tr(...VALUES.basis.find(([code]) => code === den).slice(1));
+}
+const hasRatio = (id, den) => !!metricState(id).ratios[den];
+const tickedRatios = id => ratioOptions(id).filter(den => hasRatio(id, den));
+
+// Bounds (_lower/_upper columns): ticked per metric, never for the TAC. Series and MSY
+// start ticked; catch, M, recruitment deviations and reference points start unticked.
+const canHaveBounds = id => id !== "total_allowable_catch";
+const boundsByDefault = id => METRIC_BY_ID[id].role === "series" || id === "msy";
+function hasBoundsColumns(id) {
+  if (state.hasBounds !== "yes" || !canHaveBounds(id)) return false;
+  const ci = metricState(id).ci;
+  return ci === undefined ? boundsByDefault(id) : !!ci;
+}
+
+// The metric whose units this one follows: a reference point's series, or catch for the TAC and MSY.
+function unitsFollow(id) {
+  if (id === "total_allowable_catch" || id === "msy") return isTicked("catch") ? "catch" : "";
+  if (METRIC_BY_ID[id].role !== "reference") return "";
+  return targetSeries(id) || seriesOptions(id)[0] || "";
 }
 function defaultUnits(id) {
-  const src = unitSource(id);
-  if (src && S.metrics[src].f.units) return S.metrics[src].f.units;
+  const source = unitsFollow(id);
+  if (source && metricState(source).f.units) return metricState(source).f.units;
   if (DEFAULT_UNITS[id]) return DEFAULT_UNITS[id];
-  return M[id].panel === "fishing_pressure" ? "1/yr" : "t";
+  return METRIC_BY_ID[id].panel === "fishing_pressure" ? "1/yr" : "t";
 }
-// Fill in units for ticked metrics that don't have any yet (series first, so references can follow them).
+// Fill in units for ticked metrics that have none yet. Series come first in METRICS,
+// so reference points can follow them.
 function fillUnits() {
-  for (const m of chosen()) if (MF[m.id].units && blankish(S.metrics[m.id].f.units)) S.metrics[m.id].f.units = defaultUnits(m.id);
+  for (const m of tickedMetrics()) {
+    const f = metricState(m.id).f;
+    if (METRIC_FIELDS[m.id].units && isBlank(f.units)) f.units = defaultUnits(m.id);
+  }
 }
-// Fishing pressure in 1/yr is F (needs `type`); as a proportion it's a harvest rate (may need `applies_to`).
-const isF = id => id === "fishing_pressure" && S.metrics[id].f.units !== "proportion";
-const isHR = id => id === "fishing_pressure" && S.metrics[id].f.units === "proportion";
-function needs(id, f) {
-  const r = MF[id][f];
-  if (r === "yes") return true;
-  if (r !== "if") return false;
+
+// Fishing pressure in 1/yr is F (it needs `type`); as a proportion it's a harvest
+// rate (it may need `applies_to`).
+const isF = id => id === "fishing_pressure" && metricState(id).f.units !== "proportion";
+const isHarvestRate = id => id === "fishing_pressure" && metricState(id).f.units === "proportion";
+
+function requiredByMetric(id, f) {
+  const rule = METRIC_FIELDS[id][f];
+  if (rule === "yes") return true;
+  if (rule !== "if") return false;
   if (f === "type") return isF(id);
-  if (f === "applies_to") return targets(id).length > 1;
-  if (f === "min_age" || f === "max_age") return S.metrics[id].f.type === "average";
+  if (f === "applies_to") return seriesOptions(id).length > 1;
+  if (f === "min_age" || f === "max_age") return metricState(id).f.type === "average";
   return false;
 }
-const required = (id, f) => needs(id, f) || basisNeeds(id, f);
-function shown(id, f) {
-  if (id === "fishing_pressure" && ["type", "min_age", "max_age"].includes(f)) return isF(id);
-  if (id === "fishing_pressure" && f === "applies_to") return isHR(id) && targets(id).length > 1;
-  if (f === "applies_to") return targets(id).length > 1;
-  if (["period", "percentile", "spr"].includes(f)) return basisNeeds(id, f);
+const requiredByBasis = (id, f) => (BASIS_FIELDS[metricState(id).f.basis] || []).includes(f);
+const isRequired = (id, f) => requiredByMetric(id, f) || requiredByBasis(id, f);
+
+// Whether a field is shown in the form (and written to the YAML).
+function isFieldShown(id, f) {
+  if (id === "fishing_pressure") {
+    if (["type", "min_age", "max_age"].includes(f)) return isF(id);
+    if (f === "applies_to") return isHarvestRate(id) && seriesOptions(id).length > 1;
+  }
+  if (f === "applies_to") return seriesOptions(id).length > 1;
+  if (["period", "percentile", "spr"].includes(f)) return requiredByBasis(id, f);
   return true;
 }
 
 // ---------------------------------------------------------------------------
 // Form
 // ---------------------------------------------------------------------------
-function input(path, label, o = {}) {
-  const v = get(path) ?? "";
-  const req = o.req ? `<span class="req">*</span>` : "";
-  let ctl;
-  if (o.options) {
-    ctl = `<select id="f-${path}" data-b="${path}" data-rr><option value="">${L("Choose…", "Choisir…")}</option>${
-      o.options.map(([k, l]) => `<option value="${esc(k)}"${String(v) === String(k) ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>`;
-  } else if (o.area) {
-    ctl = `<textarea id="f-${path}" data-b="${path}" placeholder="${esc(o.ph || "")}">${esc(v)}</textarea>`;
+
+// One labelled input, bound to `path` in `state`. `spec` can have:
+//   required, options ([code, label] pairs for a dropdown), textarea, type,
+//   placeholder, numeric, wide (full row), hint (HTML shown below).
+function field(path, label, spec = {}) {
+  const value = getPath(path) ?? "";
+  const star = spec.required ? `<span class="req">*</span>` : "";
+  let control;
+  if (spec.options) {
+    const options = spec.options.map(([code, text]) =>
+      `<option value="${esc(code)}"${String(value) === String(code) ? " selected" : ""}>${esc(text)}</option>`).join("");
+    control = `<select id="f-${path}" data-b="${path}" data-rr><option value="">${tr("Choose…", "Choisir…")}</option>${options}</select>`;
+  } else if (spec.textarea) {
+    control = `<textarea id="f-${path}" data-b="${path}" placeholder="${esc(spec.placeholder || "")}">${esc(value)}</textarea>`;
   } else {
-    ctl = `<input type="${o.type || "text"}" id="f-${path}" data-b="${path}" value="${esc(v)}" placeholder="${esc(o.ph || "")}"${o.num ? ' inputmode="decimal"' : ""}>`;
+    control = `<input type="${spec.type || "text"}" id="f-${path}" data-b="${path}" value="${esc(value)}"`
+      + ` placeholder="${esc(spec.placeholder || "")}"${spec.numeric ? ' inputmode="decimal"' : ""}>`;
   }
-  return `<div class="f${o.wide ? " wide" : ""}"><label for="f-${path}">${label}${req}</label>${ctl}${o.hint ? `<div class="hint">${o.hint}</div>` : ""}</div>`;
-}
-function yesno(path, q, labels) {
-  const v = get(path);
-  const lab = labels || { yes: L("Yes", "Oui"), no: L("No", "Non") };
-  return `<div class="yesno"><span class="q">${q}</span>${["no", "yes"].map(x =>
-    `<label><input type="radio" name="${path}" data-b="${path}" value="${x}"${v === x ? " checked" : ""}> ${lab[x]}</label>`).join("")}</div>`;
+  const hint = spec.hint ? `<div class="hint">${spec.hint}</div>` : "";
+  return `<div class="f${spec.wide ? " wide" : ""}"><label for="f-${path}">${label}${star}</label>${control}${hint}</div>`;
 }
 
-function renderPub(pub, i) {
-  const p = `pubs.${i}`;
-  return `<div class="sub">
-    <div class="subhead">${L(`Publication ${i + 1}`, `Publication ${i + 1}`)}
-      ${S.pubs.length > 1 ? `<button class="btn small ghost" data-act="rm-pub" data-i="${i}" title="${L("Remove publication", "Retirer la publication")}">✕</button>` : ""}</div>
+// A yes/no question; `required` marks it with a star.
+function yesNo(path, question, required = false) {
+  const value = getPath(path) || "";
+  const labels = { yes: tr("Yes", "Oui"), no: tr("No", "Non") };
+  const star = required ? `<span class="req">*</span>` : "";
+  return `<div class="yesno"><span class="q">${question}${star}</span>${["no", "yes"].map(a =>
+    `<label><input type="radio" name="${path}" data-b="${path}" value="${a}"${value === a ? " checked" : ""}> ${labels[a]}</label>`).join("")}</div>`;
+}
+
+const link = (url, text) => `<a href="${url}" target="_blank" rel="noopener">${text}</a>`;
+const removeButton = (act, data, title) => `<button class="btn small ghost" data-act="${act}" ${data} title="${title}">✕</button>`;
+// A card in the form. `section` matches SECTIONS (for the to-do badge).
+const card = (section, title, body) =>
+  `<section class="card" id="sec-${section}"><h2>${title}${badge(section)}</h2>${body}</section>`;
+const lede = text => `<p class="lede">${text}</p>`;
+
+function renderForm() {
+  $("#form").innerHTML = [
+    aboutYouCard(), assessmentCard(), stockCard(), methodCard(), publicationsCard(), columnsCard(),
+  ].join("");
+}
+
+function aboutYouCard() {
+  return card("me", tr("About you", "À propos de vous"), `
+    ${lede(tr("The person filling in this file, in case there are questions about it.",
+              "La personne qui remplit ce fichier, au cas où il y aurait des questions."))}
     <div class="grid">
-      ${input(p + ".series", L("Series", "Série"), { req: true, options: opts(V.series) })}
-      ${input(p + ".number", L("Number", "Numéro"), { req: true, ph: L("e.g. 2025/001", "p. ex. 2025/001") })}
-      ${input(p + ".year", L("Year published", "Année de publication"), { req: true, num: true })}
-      ${input(p + ".title.en", L("Title (English)", "Titre (anglais)"), { req: true, wide: true })}
-      ${input(p + ".title.fr", L("Title (French)", "Titre (français)"), { req: true, wide: true,
-        hint: L("If the document has only one title, paste it in both fields.",
-          "Si le document n'a qu'un titre, collez-le dans les deux champs.") })}
-      ${input(p + ".url", "URL", { ph: "https://csas-sccs.dfo-mpo.gc.ca/…" })}
-      ${input(p + ".doi", "DOI", { ph: "https://doi.org/…" })}
+      ${field("me.name", tr("Your name", "Votre nom"), { required: true })}
+      ${field("me.email", tr("Email", "Courriel"), { required: true, type: "email" })}
     </div>
-    <div class="f" style="margin-top:12px"><label>${L("Authors", "Auteurs")}</label></div>
-    ${pub.authors.map((a, j) => `<div class="row author">
-      ${input(`${p}.authors.${j}.given`, L("Given name", "Prénom"))}
-      ${input(`${p}.authors.${j}.family`, L("Family name", "Nom de famille"))}
-      ${input(`${p}.authors.${j}.orcid`, "ORCID", { ph: "0000-0000-0000-0000" })}
-      <button class="btn small ghost" data-act="rm-author" data-p="${i}" data-i="${j}" title="${L("Remove author", "Retirer l'auteur")}">✕</button>
-    </div>`).join("")}
-    <button class="btn small" data-act="add-author" data-p="${i}">${L("+ Add author", "+ Ajouter un auteur")}</button>
+    <div class="hint" style="margin-top:8px">${tr("Date entered", "Date de saisie")}${colon()}${esc(state.me.date || today())}</div>`);
+}
+
+function assessmentCard() {
+  return card("assessment", tr("Assessment", "Évaluation"), `<div class="grid">
+      ${field("year_assessed", tr("Year assessed", "Année de l'évaluation"),
+        { required: true, numeric: true, placeholder: tr("e.g. 2024", "p. ex. 2024") })}
+      ${field("assessment_type", tr("Assessment type", "Type d'évaluation"),
+        { required: true, options: choices(VALUES.assessment_type) })}
+    </div>`);
+}
+
+function stockCard() {
+  const eg = (en, fr) => tr(`e.g. ${en}`, `p. ex. ${fr}`);
+  const worms = link("https://www.marinespecies.org", "WoRMS");
+  return card("stock", "Stock", `<div class="grid">
+      ${field("stock.name.en", tr("Major stock name (English)", "Nom du grand stock (anglais)"),
+        { required: true, placeholder: eg("4X5Y Atlantic Cod", "4X5Y Atlantic Cod") })}
+      ${field("stock.name.fr", tr("Major stock name (French)", "Nom du grand stock (français)"),
+        { required: true, placeholder: eg("Morue franche de 4X5Y", "Morue franche de 4X5Y"),
+          hint: tr("If the stock has a name in only one language, paste it in both fields.",
+                   "Si le stock n'a de nom que dans une langue, collez-le dans les deux champs.") })}
+      ${field("stock.region", tr("DFO region", "Région du MPO"), { required: true, options: choices(VALUES.region) })}
+      ${field("stock.area.en", tr("Area (English)", "Zone (anglais)"), { placeholder: eg("NAFO 4RST", "NAFO 4RST") })}
+      ${field("stock.area.fr", tr("Area (French)", "Zone (français)"), { placeholder: eg("OPANO 4RST", "OPANO 4RST") })}
+      ${field("stock.management", tr("Managed by", "Géré par"), { options: choices(VALUES.management) })}
+      ${field("stock.species.scientific", tr("Species (scientific name)", "Espèce (nom scientifique)"),
+        { required: true, placeholder: eg("Gadus morhua", "Gadus morhua") })}
+      ${field("stock.species.en", tr("Common name (English)", "Nom commun (anglais)"), { placeholder: eg("Atlantic cod", "Atlantic cod") })}
+      ${field("stock.species.fr", tr("Common name (French)", "Nom commun (français)"), { placeholder: eg("Morue franche", "Morue franche") })}
+      ${field("stock.species.aphia_id", "AphiaID",
+        { numeric: true, placeholder: eg("126436", "126436"), hint: tr(`From ${worms}`, `Tiré de ${worms}`) })}
+      ${field("stock.ram_legacy_id", tr("RAM Legacy ID", "Identifiant RAM Legacy"),
+        { placeholder: eg("DFO-GULF-WITFLOUN4RST", "DFO-GULF-WITFLOUN4RST") })}
+    </div>
+    ${yesNo("stock.fish_stock_provisions", tr("Prescribed under the Fish Stocks provisions?",
+                                               "Visé par les dispositions relatives aux stocks de poissons?"), true)}
+    <div class="hint">${tr(
+      `Prescribed stocks are listed in Schedule IX of the ${link("https://laws-lois.justice.gc.ca/eng/regulations/SOR-93-53/", "Fishery (General) Regulations")}. `
+        + `See also the ${link("https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/guidelines-lignes-directrices-eng.htm", "DFO guidelines")}.`,
+      `Les stocks visés figurent à l'annexe IX du ${link("https://laws-lois.justice.gc.ca/fra/reglements/DORS-93-53/", "Règlement de pêche (dispositions générales)")}.`)}</div>
+    ${yesNo("stock.in_sustainability_survey", tr("In the Sustainability Survey for Fisheries?",
+                                                  "Dans le Sondage sur la durabilité des pêches?"), true)}
+    <div class="hint">${tr(
+      `See the ${link("https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html", "Sustainability Survey for Fisheries")} for the list of stocks.`,
+      `Voir le ${link("https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-fra.html", "Sondage sur la durabilité des pêches")} pour la liste des stocks.`)}</div>
+    ${yesNo("hasComp", tr("Is the stock also reported by component (e.g. CUs, herring sections, fishing areas)?",
+                          "Le stock est-il aussi présenté par composante (p. ex. UC, sections de hareng, zones de pêche)?"))}
+    ${state.hasComp === "yes" ? componentsBlock() : ""}`);
+}
+
+function componentsBlock() {
+  const rows = state.comps.map((c, i) => `<div class="row comp">
+        ${field(`comps.${i}.id`, tr("ID", "Identifiant"), { hint: `<span id="comp-hint-${i}">${componentIdHint(c)}</span>` })}
+        ${field(`comps.${i}.en`, tr("Name (English)", "Nom (anglais)"), { required: true })}
+        ${field(`comps.${i}.fr`, tr("Name (French)", "Nom (français)"), { required: true })}
+        ${removeButton("rm-comp", `data-i="${i}"`, tr("Remove component", "Retirer la composante"))}
+      </div>`).join("");
+  return `<div class="sub">
+      ${rows}
+      <button class="btn small" data-act="add-comp">${tr("+ Add component", "+ Ajouter une composante")}</button>
+      <div class="hint" style="margin-top:6px">${tr(
+        "The ID is what goes in the <code>component</code> column of <code>component_timeseries.csv</code>.",
+        "L'identifiant est ce qui va dans la colonne <code>component</code> de <code>component_timeseries.csv</code>.")}</div>
+    </div>`;
+}
+
+function methodCard() {
+  return card("method", tr("Method", "Méthode"), `<div class="grid">
+      ${field("method.type", tr("Model type", "Type de modèle"), { required: true, options: choices(VALUES.method) })}
+      ${field("method.software", tr("Software", "Logiciel"), { required: true, options: choices(VALUES.software) })}
+      ${state.method.type === "other"
+        ? field("method.notes", tr("Describe the model type", "Décrivez le type de modèle"), { required: true, wide: true, textarea: true })
+        : ""}
+      ${state.method.software === "other"
+        ? field("method.software_notes", tr("Describe the software", "Décrivez le logiciel"), { required: true, wide: true, textarea: true })
+        : ""}
+    </div>`);
+}
+
+function publicationsCard() {
+  return card("pubs", tr("Meeting and publications", "Réunion et publications"), `
+    ${lede(tr("The peer-review meeting, and each document from it (e.g. the FSAR or SAR and its Research Document).",
+              "La réunion d'examen par les pairs et chaque document qui en découle (p. ex. l'ASP ou l'AS et son document de recherche)."))}
+    <div class="grid">
+      ${field("meeting.date", tr("Meeting date", "Date de la réunion"), { type: "date" })}
+      ${field("meeting.url", tr("Meeting page URL", "URL de la page de la réunion"), { placeholder: "https://csas-sccs.dfo-mpo.gc.ca/…" })}
+      ${field("meeting.csas_process", tr("CSAS process URL (dmapps)", "URL du processus du SCCS (dmapps)"),
+        { placeholder: "https://dmapps/en/csas-sccs/processes/…" })}
+    </div>
+    ${state.pubs.map(publicationBlock).join("")}
+    <button class="btn small" data-act="add-pub" style="margin-top:8px">${tr("+ Add publication", "+ Ajouter une publication")}</button>`);
+}
+
+function publicationBlock(pub, i) {
+  const p = `pubs.${i}`;
+  const authors = pub.authors.map((a, j) => `<div class="row author">
+      ${field(`${p}.authors.${j}.given`, tr("Given name", "Prénom"))}
+      ${field(`${p}.authors.${j}.family`, tr("Family name", "Nom de famille"))}
+      ${field(`${p}.authors.${j}.orcid`, "ORCID", { placeholder: "0000-0000-0000-0000" })}
+      ${pub.authors.length > 1 ? removeButton("rm-author", `data-p="${i}" data-i="${j}"`, tr("Remove author", "Retirer l'auteur")) : "<span></span>"}
+    </div>`).join("");
+  return `<div class="sub">
+    <div class="subhead">${tr(`Publication ${i + 1}`, `Publication ${i + 1}`)}
+      ${state.pubs.length > 1 ? removeButton("rm-pub", `data-i="${i}"`, tr("Remove publication", "Retirer la publication")) : ""}</div>
+    <div class="grid">
+      ${field(p + ".series", tr("Series", "Série"), { required: true, options: choices(VALUES.series) })}
+      ${field(p + ".number", tr("Number", "Numéro"), { required: true, placeholder: tr("e.g. 2025/001", "p. ex. 2025/001") })}
+      ${field(p + ".year", tr("Year published", "Année de publication"), { required: true, numeric: true })}
+      ${field(p + ".title.en", tr("Title (English)", "Titre (anglais)"), { required: true, wide: true })}
+      ${field(p + ".title.fr", tr("Title (French)", "Titre (français)"), { required: true, wide: true,
+        hint: tr("If the document has only one title, paste it in both fields.",
+                 "Si le document n'a qu'un titre, collez-le dans les deux champs.") })}
+      ${field(p + ".url", "URL", { required: true, placeholder: "https://csas-sccs.dfo-mpo.gc.ca/…" })}
+      ${field(p + ".doi", "DOI", { placeholder: "https://doi.org/…" })}
+    </div>
+    <div class="f" style="margin-top:12px"><label>${tr("Authors", "Auteurs")}</label>
+      <div class="hint">${tr("If DFO is the author, enter DFO as the family name and leave the given name blank.",
+                             "Si l'auteur est le MPO, inscrivez MPO comme nom de famille et laissez le prénom vide.")}</div></div>
+    ${authors}
+    <button class="btn small" data-act="add-author" data-p="${i}">${tr("+ Add author", "+ Ajouter un auteur")}</button>
   </div>`;
 }
 
-function renderForm() {
-  let h = "";
-
-  h += `<section class="card"><h2>${L("About you", "À propos de vous")}</h2>
-    <p class="lede">${L("The person filling in this file, in case there are questions about it.", "La personne qui remplit ce fichier, au cas où il y aurait des questions.")}</p>
-    <div class="grid">
-      ${input("me.name", L("Your name", "Votre nom"), { req: true })}
-      ${input("me.email", L("Email", "Courriel"), { req: true, type: "email" })}
-      ${input("me.date", L("Date entered", "Date de saisie"), { req: true, type: "date" })}
-    </div></section>`;
-
-  h += `<section class="card"><h2>${L("Assessment", "Évaluation")}</h2><div class="grid">
-      ${input("year_assessed", L("Year assessed", "Année de l'évaluation"), { req: true, num: true, ph: L("e.g. 2024", "p. ex. 2024") })}
-      ${input("assessment_type", L("Assessment type", "Type d'évaluation"), { req: true, options: opts(V.atype) })}
-    </div></section>`;
-
-  h += `<section class="card"><h2>Stock</h2><div class="grid">
-      ${input("stock.name.en", L("Major stock name (English)", "Nom du grand stock (anglais)"), { req: true, ph: L("e.g. 4X5Y Atlantic Cod", "p. ex. 4X5Y Atlantic Cod") })}
-      ${input("stock.name.fr", L("Major stock name (French)", "Nom du grand stock (français)"), { req: true, ph: L("e.g. Morue franche de 4X5Y", "p. ex. Morue franche de 4X5Y") })}
-      ${input("stock.region", L("DFO region", "Région du MPO"), { req: true, options: opts(V.region) })}
-      ${input("stock.area.en", L("Area (English)", "Zone (anglais)"), { ph: L("e.g. NAFO 4RST", "p. ex. NAFO 4RST") })}
-      ${input("stock.area.fr", L("Area (French)", "Zone (français)"), { ph: L("e.g. OPANO 4RST", "p. ex. OPANO 4RST") })}
-      ${input("stock.management", L("Managed by", "Géré par"), { options: opts(V.management) })}
-      ${input("stock.species.scientific", L("Species (scientific name)", "Espèce (nom scientifique)"), { req: true, ph: L("e.g. Gadus morhua", "p. ex. Gadus morhua") })}
-      ${input("stock.species.en", L("Common name (English)", "Nom commun (anglais)"), { ph: L("e.g. Atlantic cod", "p. ex. Atlantic cod") })}
-      ${input("stock.species.fr", L("Common name (French)", "Nom commun (français)"), { ph: L("e.g. Morue franche", "p. ex. Morue franche") })}
-      ${input("stock.species.aphia_id", "AphiaID", { num: true, ph: L("e.g. 126436", "p. ex. 126436"),
-        hint: L(`From <a href="https://www.marinespecies.org" target="_blank" rel="noopener">WoRMS</a>`, `Tiré de <a href="https://www.marinespecies.org" target="_blank" rel="noopener">WoRMS</a>`) })}
-      ${input("stock.ram_legacy_id", L("RAM Legacy ID", "Identifiant RAM Legacy"), { ph: L("e.g. DFO-GULF-WITFLOUN4RST", "p. ex. DFO-GULF-WITFLOUN4RST") })}
-    </div>
-    ${yesno("stock.fish_stock_provisions", L("Prescribed under the Fish Stocks provisions?", "Visé par les dispositions relatives aux stocks de poissons?"))}
-    <div class="hint">${L(`Prescribed stocks are listed in Schedule IX of the <a href="https://laws-lois.justice.gc.ca/eng/regulations/SOR-93-53/" target="_blank" rel="noopener">Fishery (General) Regulations</a>. See also the <a href="https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/guidelines-lignes-directrices-eng.htm" target="_blank" rel="noopener">DFO guidelines</a>.`,
-      `Les stocks visés figurent à l'annexe IX du <a href="https://laws-lois.justice.gc.ca/fra/reglements/DORS-93-53/" target="_blank" rel="noopener">Règlement de pêche (dispositions générales)</a>.`)}</div>
-    ${yesno("stock.in_sustainability_survey", L("In the Sustainability Survey for Fisheries?", "Dans le Sondage sur la durabilité des pêches?"))}
-    <div class="hint">${L(`See the <a href="https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html" target="_blank" rel="noopener">Sustainability Survey for Fisheries</a> for the list of stocks.`,
-      `Voir le <a href="https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-fra.html" target="_blank" rel="noopener">Sondage sur la durabilité des pêches</a> pour la liste des stocks.`)}</div>
-    ${yesno("hasComp", L("Is the stock also reported by component (e.g. CUs, herring sections, fishing areas)?",
-      "Le stock est-il aussi présenté par composante (p. ex. UC, sections de hareng, zones de pêche)?"))}
-    ${S.hasComp === "yes" ? `<div class="sub">
-      ${S.comps.map((c, i) => `<div class="row comp">
-        ${input(`comps.${i}.id`, L("ID", "Identifiant"), { ph: slug(c.en).replace(/-/g, "_") || L("north", "nord") })}
-        ${input(`comps.${i}.en`, L("Name (English)", "Nom (anglais)"), { req: true })}
-        ${input(`comps.${i}.fr`, L("Name (French)", "Nom (français)"), { req: true })}
-        <button class="btn small ghost" data-act="rm-comp" data-i="${i}" title="${L("Remove component", "Retirer la composante")}">✕</button>
-      </div>`).join("")}
-      <button class="btn small" data-act="add-comp">${L("+ Add component", "+ Ajouter une composante")}</button>
-      <div class="hint" style="margin-top:6px">${L("The ID is what goes in the <code>component</code> column of <code>component_timeseries.csv</code>.",
-        "L'identifiant est ce qui va dans la colonne <code>component</code> de <code>component_timeseries.csv</code>.")}</div>
-    </div>` : ""}
-  </section>`;
-
-  h += `<section class="card"><h2>${L("Method", "Méthode")}</h2><div class="grid">
-      ${input("method.type", L("Model type", "Type de modèle"), { req: true, options: opts(V.method) })}
-      ${input("method.software", L("Software", "Logiciel"), { req: true, options: opts(V.software) })}
-      ${S.method.type === "other" ? input("method.notes", L("Describe the model type", "Décrivez le type de modèle"), { req: true, wide: true, area: true }) : ""}
-    </div></section>`;
-
-  h += `<section class="card"><h2>${L("Meeting and publications", "Réunion et publications")}</h2>
-    <p class="lede">${L("The peer-review meeting, and each document from it (e.g. the FSAR or SAR and its Research Document).",
-      "La réunion d'examen par les pairs et chaque document qui en découle (p. ex. l'ASP ou l'AS et son document de recherche).")}</p>
-    <div class="grid">
-      ${input("meeting.date", L("Meeting date", "Date de la réunion"), { type: "date" })}
-      ${input("meeting.url", L("Meeting page URL", "URL de la page de la réunion"), { ph: "https://csas-sccs.dfo-mpo.gc.ca/…" })}
-      ${input("meeting.csas_process", L("CSAS process URL (dmapps)", "URL du processus du SCCS (dmapps)"), { ph: "https://dmapps/en/csas-sccs/processes/…" })}
-    </div>
-    ${S.pubs.map(renderPub).join("")}
-    <button class="btn small" data-act="add-pub" style="margin-top:8px">${L("+ Add publication", "+ Ajouter une publication")}</button>
-  </section>`;
-
-  // Metrics
-  h += `<section class="card"><h2>${L("Columns in your CSV", "Colonnes de votre CSV")}</h2>
-    <p class="lede">${L("Tick each time series you have. Each one is a column in your CSV, and needs a few details here.",
-      "Cochez chaque série chronologique que vous avez. Chacune est une colonne de votre CSV et demande quelques détails ici.")}</p>
-    ${yesno("hasBounds", L("Do any columns have uncertainty intervals (<code>_lower</code> / <code>_upper</code>)?",
-      "Des colonnes ont-elles des intervalles d'incertitude (<code>_lower</code> / <code>_upper</code>)?"))}
-    <div class="hint">${L("If any do, say yes. Stock size, fishing pressure, recruitment and ratio columns then get <code>_lower</code> / <code>_upper</code>; for catch, M, recruitment deviations and reference points you choose below.",
-      "Si c'est le cas, répondez oui. Les colonnes de taille du stock, de pression de pêche, de recrutement et de rapports ont alors <code>_lower</code> / <code>_upper</code>; pour les prises, M, les écarts de recrutement et les points de référence, vous choisissez plus bas.")}</div>
-    ${S.hasBounds === "yes" ? `<div class="sub"><div class="grid">
-      ${input("interval.level", L("Interval level", "Niveau de l'intervalle"), { req: true, options: LEVELS.map(v => [v, L(`${Math.round(v * 100)}%`, `${Math.round(v * 100)} %`)]) })}
-      ${input("interval.type", L("Interval type", "Type d'intervalle"), { req: true, options: opts(V.interval) })}
-    </div></div>` : ""}`;
+function columnsCard() {
+  const percent = v => tr(`${Math.round(v * 100)}%`, `${Math.round(v * 100)} %`);
+  const interval = state.hasBounds !== "yes" ? "" : `<div class="sub"><div class="grid">
+      ${field("interval.level", tr("Interval level", "Niveau de l'intervalle"), { required: true, options: LEVELS.map(v => [v, percent(v)]) })}
+      ${field("interval.type", tr("Interval type", "Type d'intervalle"), { required: true, options: choices(VALUES.interval) })}
+    </div></div>`;
+  let panels = "";
   for (const [panel, en, fr] of PANELS) {
-    h += `<div class="panel-name">${L(en, fr)}</div>`;
-    for (const m of METRICS.filter(m => m.panel === panel && visible(m))) h += renderMetric(m);
+    panels += `<div class="panel-name">${tr(en, fr)}</div>`;
+    if (panel === "stock") {
+      panels += `<div class="panel-lede">${tr("Report every stock-size series the assessment estimates.",
+                                             "Déclarez chaque série de taille du stock que l'évaluation estime.")}</div>`;
+    }
+    for (const m of METRICS.filter(m => m.panel === panel && isListed(m))) panels += metricBlock(m);
   }
-  h += `</section>`;
-
-  $("#form").innerHTML = h;
+  return card("metrics", tr("Columns in your CSV", "Colonnes de votre CSV"), `
+    ${lede(tr("Tick each time series you have. Each one is a column in your CSV, and needs a few details here.",
+              "Cochez chaque série chronologique que vous avez. Chacune est une colonne de votre CSV et demande quelques détails ici."))}
+    ${yesNo("hasBounds", tr("Do any columns have uncertainty intervals (<code>_lower</code> / <code>_upper</code>)?",
+                            "Des colonnes ont-elles des intervalles d'incertitude (<code>_lower</code> / <code>_upper</code>)?"))}
+    <div class="hint">${tr(
+      "If any do, say yes. Then tick or untick \"has an interval\" on each column below: "
+        + "stock size, fishing pressure, recruitment and MSY start ticked; catch, M, recruitment deviations and reference points start unticked.",
+      "Si c'est le cas, répondez oui. Cochez ou décochez ensuite « a un intervalle » pour chaque colonne plus bas : "
+        + "la taille du stock, la pression de pêche, le recrutement et le RMD sont cochés au départ; les prises, M, les écarts de recrutement et les points de référence ne le sont pas.")}
+      ${tr("The columns hold the interval bounds themselves. If you have a CV, convert it to an interval using the error distribution. "
+             + "For a lognormal 95% interval: <code>x * exp(±1.96 * sqrt(log(1 + CV^2)))</code>.",
+           "Les colonnes contiennent les bornes de l'intervalle. Si vous avez un CV, convertissez-le en intervalle selon la distribution de l'erreur. "
+             + "Pour un intervalle lognormal à 95 % : <code>x * exp(±1.96 * sqrt(log(1 + CV^2)))</code>.")}</div>
+    ${interval}${panels}`);
 }
 
-function renderMetric(m) {
-  const st = S.metrics[m.id];
-  let body = "";
-  if (st.on) {
-    const fields = Object.keys(MF[m.id]).filter(f => shown(m.id, f));
-    const tick = (path, checked, label) =>
-      `<label><input type="checkbox" data-b="${path}"${checked ? " checked" : ""}> ${label}</label>`;
-    let extras = "";
-    if (S.hasBounds === "yes" && optionalCI(m.id)) {
-      extras += `<div class="ticks">${tick(`metrics.${m.id}.ci`, st.ci,
-        L(`${mlabel(m)} has an interval`, `${mlabel(m)} a un intervalle`) + ` <code>${m.id}_lower</code>, <code>${m.id}_upper</code>`)}</div>`;
-    }
-    // Ratio ticks: a reference point offers series/reference under itself; a series
-    // offers only series/B_MSY or series/F_MSY. Either way the tick is stored on the series.
-    const ratioTick = (series, den, label) => tick(`metrics.${series}.ratios.${den}`, ratioOn(series, den),
-      (S.hasBounds === "yes" ? L(`Has a ratio time series to ${label}, with its own interval`, `A une série de rapports à ${label}, avec son propre intervalle`)
-        : L(`Has a ratio time series to ${label}`, `A une série de rapports à ${label}`)) + ` <code>${series}/${den}</code>`) +
-      (S.hasBounds === "yes" && ratioOn(series, den) ? `<div class="hint">${L(
-        "Take the ratio's interval from the model (e.g. delta method, likelihood profile, bootstrap or posterior), so it reflects uncertainty in both the series and the reference point.",
-        "Tirez l'intervalle du rapport du modèle (p. ex. méthode delta, profil de vraisemblance, bootstrap ou loi a posteriori), afin qu'il tienne compte de l'incertitude de la série et du point de référence.")}</div>` : "");
-    if (m.role === "series" && MSY_BASIS[m.panel]) {
-      extras += `<div class="ticks">${ratioTick(m.id, MSY_BASIS[m.panel], denLabel(MSY_BASIS[m.panel]))}</div>`;
-    }
-    if (m.role === "reference") {
-      const series = resolvedTarget(m.id);
-      extras += series
-        ? `<div class="ticks">${ratioTick(series, m.id, mlabel(m))}</div>`
-        : targets(m.id).length ? `<div class="hint">${L("Choose what it applies to, to add a ratio time series.", "Choisissez à quoi il s'applique pour ajouter une série de rapports.")}</div>` : "";
-    }
-    if (extras) extras = `<div class="extras">${extras}</div>`;
-    body = `<div class="mbody"><div class="grid">${fields.map(f => metricField(m, f)).join("")}</div>${extras}</div>`;
-  }
-  return `<div class="metric${st.on ? " on" : ""}">
-    <label class="mhead"><input type="checkbox" data-b="metrics.${m.id}.on"${st.on ? " checked" : ""}>
-      <span class="mname">${esc(mlabel(m))}</span><span class="mcode">${m.id}</span>
-      <span class="mdesc">${esc(L(m.desc_en, m.desc_fr))}</span></label>${body}</div>`;
+// One metric: a tick box, and its fields once ticked.
+function metricBlock(m) {
+  const ms = metricState(m.id);
+  const desc = esc(tr(m.desc_en, m.desc_fr));
+  return `<div class="metric${ms.on ? " on" : ""}">
+    <label class="mhead" title="${ms.on ? desc : ""}"><input type="checkbox" id="f-metrics.${m.id}.on" data-b="metrics.${m.id}.on"${ms.on ? " checked" : ""}>
+      <span class="mname">${esc(metricLabel(m))}</span><span class="mcode">${m.id}</span>
+      <span class="mdesc">${desc}</span></label>${ms.on ? metricBody(m) : ""}</div>`;
 }
+
+function metricBody(m) {
+  const ms = metricState(m.id);
+  // "Relative to" comes first: it sets the units and the ratio.
+  const fields = Object.keys(METRIC_FIELDS[m.id])
+    .filter(f => isFieldShown(m.id, f))
+    .sort((a, b) => (b === "applies_to") - (a === "applies_to"));
+  const tick = (path, checked, label) =>
+    `<label><input type="checkbox" data-b="${path}"${checked ? " checked" : ""}> ${label}</label>`;
+
+  let extras = "";
+  if (state.hasBounds === "yes" && canHaveBounds(m.id)) {
+    extras += `<div class="ticks">${tick(`metrics.${m.id}.ci`, hasBoundsColumns(m.id),
+      tr(`${metricLabel(m)} has an interval`, `${metricLabel(m)} a un intervalle`) + ` <code>${m.id}_lower</code>, <code>${m.id}_upper</code>`)}</div>`;
+  }
+  // A ratio is ticked where its denominator is: under the reference point it divides by,
+  // or under the series for B_MSY / F_MSY (which have no block of their own). The tick
+  // then appears where the user is, rather than above them. It's stored on the series.
+  const ratioTick = (series, den) => tick(`metrics.${series}.ratios.${den}`, hasRatio(series, den),
+    tr(`Has a ratio time series to ${denominatorLabel(den)}`, `A une série de rapports à ${denominatorLabel(den)}`) + ` <code>${series}/${den}</code>`);
+  const intervalHint = series => state.hasBounds === "yes" && tickedRatios(series).length ? `<div class="hint">${tr(
+      "Each ratio has its own interval. Take it from the model (e.g. delta method, likelihood profile, bootstrap or posterior), "
+        + "so it reflects uncertainty in both the series and the reference point.",
+      "Chaque rapport a son propre intervalle. Tirez-le du modèle (p. ex. méthode delta, profil de vraisemblance, bootstrap ou loi a posteriori), "
+        + "afin qu'il tienne compte de l'incertitude de la série et du point de référence.")}</div>` : "";
+  const msyDen = MSY_DENOMINATOR[m.panel];
+  if (m.role === "series" && ratioOptions(m.id).includes(msyDen)) {
+    extras += `<div class="ticks">${ratioTick(m.id, msyDen)}</div>`;
+    if (hasRatio(m.id, msyDen)) extras += intervalHint(m.id);
+  }
+  if (m.role === "reference") {
+    const series = targetSeries(m.id);
+    if (series && ratioOptions(series).includes(m.id)) {
+      extras += `<div class="ticks">${ratioTick(series, m.id)}</div>`;
+      if (hasRatio(series, m.id)) extras += intervalHint(series);
+    } else if (seriesOptions(m.id).length) {
+      extras += `<div class="hint">${tr("Choose what it's relative to, to add a ratio time series.",
+                                        "Choisissez à quoi il se rapporte pour ajouter une série de rapports.")}</div>`;
+    }
+  }
+  if (extras) extras = `<div class="extras">${extras}</div>`;
+  return `<div class="mbody"><div class="grid">${fields.map(f => metricField(m, f)).join("")}</div>${extras}</div>`;
+}
+
+const unlockedUnits = new Set(); // reference points whose units the user chose to set by hand
 
 function metricField(m, f) {
   const path = `metrics.${m.id}.f.${f}`;
-  const o = { req: required(m.id, f) };
+  const ms = metricState(m.id);
+  const spec = { required: isRequired(m.id, f) };
+
   if (f === "units") {
-    o.options = UNITS.filter(u => m.dims.includes(u.dim)).map(u => [u.id, L(u.en, u.fr)]);
-    if (m.role === "reference" && resolvedTarget(m.id)) o.hint = L("Same units as", "Mêmes unités que") + ` <code>${resolvedTarget(m.id)}</code>.`;
-    if (m.id === "fishing_pressure") o.hint = L("1/yr for F; proportion for a harvest rate.", "1/an pour F; proportion pour un taux d'exploitation.");
+    spec.options = unitsFor(m).map(u => [u.id, tr(u.en, u.fr)]);
+    const target = m.role === "reference" ? targetSeries(m.id) : "";
+    const targetUnits = target && metricState(target).f.units;
+    // A reference point in the same units as its series just says so, unless unlocked.
+    if (target && targetUnits && ms.f.units === targetUnits && !unlockedUnits.has(m.id)) {
+      const u = UNITS.find(u => u.id === targetUnits);
+      return `<div class="f"><label>${fieldLabel(f)}</label><div class="ro">${esc(u ? tr(u.en, u.fr) : targetUnits)}${tr(", same as ", ", comme ")}${esc(metricLabel(METRIC_BY_ID[target]))}
+        · <button class="linkbtn" data-act="unlock-units" data-i="${m.id}">${tr("change", "modifier")}</button></div></div>`;
+    }
+    if (target) spec.hint = tr("Same units as", "Mêmes unités que") + ` <code>${target}</code>.`;
+    if (m.id === "fishing_pressure") spec.hint = tr(...HINTS.fp_units);
   }
-  if (f === "basis") o.options = opts(V.basis.filter(([k]) => (m.panel === "fishing_pressure" ? REMOVAL_BASIS : STOCK_BASIS).includes(k)));
-  if (f === "type") o.options = opts(V.type);
+  if (f === "basis") spec.options = choices(VALUES.basis.filter(([code]) => basesFor(m).includes(code)));
+  if (f === "type") spec.options = choices(VALUES.type);
   if (f === "applies_to") {
-    o.options = targets(m.id).map(t => [t, mlabel(M[t])]);
-    o.hint = m.id === "fishing_pressure" ? L("Which stock series catch is divided by.", "Série du stock par laquelle les prises sont divisées.")
-      : L("Which series this is compared to.", "Série à laquelle ceci est comparé.");
+    spec.options = seriesOptions(m.id).map(s => [s, metricLabel(METRIC_BY_ID[s])]);
+    spec.hint = tr(...(m.id === "fishing_pressure" ? HINTS.fp_applies_to : HINTS.applies_to));
   }
-  if (f === "multiplier") { o.num = true; o.ph = L("e.g. 0.4", "p. ex. 0.4"); o.hint = L("e.g. 0.4 for 0.4 B_MSY", "p. ex. 0.4 pour 0.4 B_RMD"); }
-  if (f === "min_age" || f === "max_age" || f === "age") o.num = true;
-  if (f === "max_age" && m.id !== "fishing_pressure") o.hint = L("Blank = plus group", "Vide = groupe plus");
-  if (f === "survey") o.ph = L("e.g. RV summer survey", "p. ex. relevé de recherche d'été");
+  if (f === "multiplier") {
+    spec.numeric = true;
+    spec.placeholder = tr("e.g. 0.4", "p. ex. 0.4");
+    spec.hint = tr(...(m.panel === "fishing_pressure" ? HINTS.removal_multiplier : HINTS.multiplier));
+  }
+  if (f === "min_age" || f === "max_age" || f === "age") spec.numeric = true;
+  if (f === "max_age" && m.id !== "fishing_pressure") spec.hint = tr(...HINTS.max_age);
+  if (f === "survey") spec.placeholder = tr(...HINTS.survey);
   if (f === "notes") {
-    o.wide = true; o.area = true;
-    if (S.metrics[m.id].f.basis === "b_msy_proxy") o.ph = L("What the proxy is, e.g. mean SSB over 1983–2018.", "Ce qu'est l'approximation, p. ex. BSR moyenne de 1983 à 2018.");
-    if (S.metrics[m.id].f.basis === "other") o.ph = L("Explain the basis.", "Expliquez la base.");
+    spec.wide = true;
+    spec.textarea = true;
+    if (m.id === "exploitable_stock") spec.placeholder = tr(...HINTS.exploitable_notes);
+    if (ms.f.basis === "b_msy_proxy") spec.placeholder = tr("What the proxy is, e.g. mean SSB over 1983–2018.", "Ce qu'est l'approximation, p. ex. BSR moyenne de 1983 à 2018.");
+    if (ms.f.basis === "other") spec.placeholder = tr("Explain the basis.", "Expliquez la base.");
   }
-  if (f === "percentile") { o.num = true; o.ph = L("e.g. 25", "p. ex. 25"); o.hint = L("50 for the median", "50 pour la médiane"); }
-  if (f === "spr") { o.num = true; o.ph = L("e.g. 40", "p. ex. 40"); o.hint = L("40 for F40%", "40 pour F40%"); }
-  if (f === "period") {
-    const base = `metrics.${m.id}.f.period_`;
-    return `<div class="f"><label for="f-${base}from">${L("Period (first and last year)", "Période (première et dernière année)")}<span class="req">*</span></label>
+  if (f === "percentile") {
+    spec.numeric = true;
+    spec.placeholder = tr("e.g. 25", "p. ex. 25");
+    spec.hint = tr(...HINTS.percentile);
+  }
+  if (f === "spr") {
+    spec.numeric = true;
+    spec.placeholder = tr("e.g. 40", "p. ex. 40");
+    spec.hint = tr(...HINTS.spr);
+  }
+  if (f === "period") return periodField(m);
+  return field(path, fieldLabel(f), spec);
+}
+
+// `period` is two years, entered as two inputs (period_from and period_to in state).
+function periodField(m) {
+  const base = `metrics.${m.id}.f.period_`;
+  const f = metricState(m.id).f;
+  return `<div class="f"><label for="f-${base}from">${tr("Period (first and last year)", "Période (première et dernière année)")}<span class="req">*</span></label>
       <div style="display:flex;gap:6px;align-items:center">
-        <input type="text" inputmode="numeric" id="f-${base}from" data-b="${base}from" value="${esc(S.metrics[m.id].f.period_from || "")}" placeholder="1985">
-        –<input type="text" inputmode="numeric" id="f-${base}to" data-b="${base}to" value="${esc(S.metrics[m.id].f.period_to || "")}" placeholder="2009">
-      </div><div class="hint">${L(`Years the ${S.metrics[m.id].f.basis} is taken over`, "Années sur lesquelles porte le calcul")}</div></div>`;
-  }
-  return input(path, FL(f), o);
+        <input type="text" inputmode="numeric" id="f-${base}from" data-b="${base}from" value="${esc(f.period_from || "")}" placeholder="1985">
+        –<input type="text" inputmode="numeric" id="f-${base}to" data-b="${base}to" value="${esc(f.period_to || "")}" placeholder="2009">
+      </div><div class="hint">${tr(`Years the ${f.basis} is taken over`, "Années sur lesquelles porte le calcul")}</div></div>`;
 }
 
 // ---------------------------------------------------------------------------
-// Checks (a light version of validate_assessment() in ../R/fsar-data.R)
+// To-do list: what's missing or wrong, as [path, message] pairs
+// (a light version of validate_assessment() in ../fsar-data/R/fsar-data.R)
 // ---------------------------------------------------------------------------
-function issues() {
+function todoItems() {
   const out = [];
-  const need = (path, what) => { if (blankish(get(path))) out.push([path, what]); };
-  const isNum = v => blankish(v) || /^-?\d*\.?\d+(e-?\d+)?$/i.test(String(v).trim());
-  const isInt = v => blankish(v) || /^\d+$/.test(String(v).trim());
+  const add = (path, message) => out.push([path, message]);
+  const need = (path, what) => { if (isBlank(getPath(path))) add(path, what); };
+  const isNumber = v => isBlank(v) || /^-?\d*\.?\d+(e-?\d+)?$/i.test(String(v).trim());
+  const isWhole = v => isBlank(v) || /^\d+$/.test(String(v).trim());
+  const is4DigitYear = v => /^\d{4}$/.test(String(v).trim());
 
-  need("me.name", L("Your name", "Votre nom"));
-  need("me.email", L("Your email", "Votre courriel"));
-  if (!blankish(S.me.email) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.me.email.trim())) out.push(["me.email", L("Your email doesn't look right", "Votre courriel semble incorrect")]);
-  need("me.date", L("Date entered", "Date de saisie"));
-  need("year_assessed", L("Year assessed", "Année de l'évaluation"));
-  if (!blankish(S.year_assessed) && !/^\d{4}$/.test(S.year_assessed.trim())) out.push(["year_assessed", L("Year assessed should be a 4-digit year", "L'année de l'évaluation doit compter 4 chiffres")]);
-  need("assessment_type", L("Assessment type", "Type d'évaluation"));
-  need("stock.name.en", L("Major stock name (English)", "Nom du grand stock (anglais)"));
-  need("stock.name.fr", L("Major stock name (French)", "Nom du grand stock (français)"));
-  need("stock.species.scientific", L("Species", "Espèce"));
-  if (!isInt(S.stock.species.aphia_id)) out.push(["stock.species.aphia_id", L("AphiaID must be a whole number", "L'AphiaID doit être un nombre entier")]);
-  need("stock.region", L("DFO region", "Région du MPO"));
-  if (S.hasComp === "yes") {
-    if (!S.comps.length) out.push(["hasComp", L("Add at least one component", "Ajoutez au moins une composante")]);
+  need("me.name", tr("Your name", "Votre nom"));
+  need("me.email", tr("Your email", "Votre courriel"));
+  if (!isBlank(state.me.email) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.me.email.trim())) {
+    add("me.email", tr("Your email doesn't look right", "Votre courriel semble incorrect"));
+  }
+  need("year_assessed", tr("Year assessed", "Année de l'évaluation"));
+  if (!isBlank(state.year_assessed) && !is4DigitYear(state.year_assessed)) {
+    add("year_assessed", tr("Year assessed should be a 4-digit year", "L'année de l'évaluation doit compter 4 chiffres"));
+  }
+  need("assessment_type", tr("Assessment type", "Type d'évaluation"));
+  need("stock.name.en", tr("Major stock name (English)", "Nom du grand stock (anglais)"));
+  need("stock.name.fr", tr("Major stock name (French)", "Nom du grand stock (français)"));
+  need("stock.species.scientific", tr("Species", "Espèce"));
+  need("stock.fish_stock_provisions", tr("Prescribed under the Fish Stocks provisions?", "Visé par les dispositions relatives aux stocks de poissons?"));
+  need("stock.in_sustainability_survey", tr("In the Sustainability Survey for Fisheries?", "Dans le Sondage sur la durabilité des pêches?"));
+  if (!isWhole(state.stock.species.aphia_id)) {
+    add("stock.species.aphia_id", tr("AphiaID must be a whole number", "L'AphiaID doit être un nombre entier"));
+  }
+  need("stock.region", tr("DFO region", "Région du MPO"));
+
+  if (state.hasComp === "yes") {
+    if (!state.comps.length) add("hasComp", tr("Add at least one component", "Ajoutez au moins une composante"));
     const seen = new Set();
-    S.comps.forEach((c, i) => {
-      const id = compId(c);
-      if (!id) out.push([`comps.${i}.id`, L(`Component ${i + 1}: ID`, `Composante ${i + 1} : identifiant`)]);
-      else if (!/^[A-Za-z0-9_.-]+$/.test(id)) out.push([`comps.${i}.id`, L(`Component ${i + 1}: ID can't have spaces`, `Composante ${i + 1} : l'identifiant ne peut pas contenir d'espaces`)]);
-      else if (seen.has(id)) out.push([`comps.${i}.id`, L(`Component ID "${id}" is used twice`, `L'identifiant « ${id} » est utilisé deux fois`)]);
+    state.comps.forEach((c, i) => {
+      const id = componentId(c), n = i + 1;
+      if (!id) add(`comps.${i}.id`, tr(`Component ${n}: ID`, `Composante ${n} : identifiant`));
+      else if (!/^[A-Za-z0-9_.-]+$/.test(id)) add(`comps.${i}.id`, tr(`Component ${n}: ID can't have spaces`, `Composante ${n} : l'identifiant ne peut pas contenir d'espaces`));
+      else if (seen.has(id)) add(`comps.${i}.id`, tr(`Component ID "${id}" is used twice`, `L'identifiant « ${id} » est utilisé deux fois`));
       seen.add(id);
-      need(`comps.${i}.en`, L(`Component ${i + 1}: English name`, `Composante ${i + 1} : nom anglais`));
-      need(`comps.${i}.fr`, L(`Component ${i + 1}: French name`, `Composante ${i + 1} : nom français`));
+      need(`comps.${i}.en`, tr(`Component ${n}: English name`, `Composante ${n} : nom anglais`));
+      need(`comps.${i}.fr`, tr(`Component ${n}: French name`, `Composante ${n} : nom français`));
     });
   }
-  need("method.type", L("Model type", "Type de modèle"));
-  need("method.software", L("Software", "Logiciel"));
-  if (S.method.type === "other") need("method.notes", L("Describe the model type", "Décrivez le type de modèle"));
-  S.pubs.forEach((pub, i) => {
-    const p = `pubs.${i}`, n = L(`Publication ${i + 1}: `, `Publication ${i + 1} : `);
-    need(p + ".series", n + L("series", "série"));
-    need(p + ".number", n + L("number", "numéro"));
-    need(p + ".year", n + L("year published", "année de publication"));
-    if (!blankish(pub.year) && !/^\d{4}$/.test(pub.year.trim())) out.push([p + ".year", n + L("year should have 4 digits", "l'année doit compter 4 chiffres")]);
-    need(p + ".title.en", n + L("English title", "titre anglais"));
-    need(p + ".title.fr", n + L("French title", "titre français"));
+
+  need("method.type", tr("Model type", "Type de modèle"));
+  need("method.software", tr("Software", "Logiciel"));
+  if (state.method.type === "other") need("method.notes", tr("Describe the model type", "Décrivez le type de modèle"));
+  if (state.method.software === "other") need("method.software_notes", tr("Describe the software", "Décrivez le logiciel"));
+
+  state.pubs.forEach((pub, i) => {
+    const p = `pubs.${i}`, n = tr(`Publication ${i + 1}: `, `Publication ${i + 1} : `);
+    need(p + ".series", n + tr("series", "série"));
+    need(p + ".number", n + tr("number", "numéro"));
+    need(p + ".year", n + tr("year published", "année de publication"));
+    if (!isBlank(pub.year) && !is4DigitYear(pub.year)) add(p + ".year", n + tr("year should have 4 digits", "l'année doit compter 4 chiffres"));
+    need(p + ".url", n + "URL");
+    need(p + ".title.en", n + tr("English title", "titre anglais"));
+    need(p + ".title.fr", n + tr("French title", "titre français"));
     pub.authors.forEach((a, j) => {
-      if ((a.given || a.orcid) && blankish(a.family)) out.push([`${p}.authors.${j}.family`, n + L(`author ${j + 1} family name`, `nom de famille de l'auteur ${j + 1}`)]);
+      if ((a.given || a.orcid) && isBlank(a.family)) {
+        add(`${p}.authors.${j}.family`, n + tr(`author ${j + 1} family name`, `nom de famille de l'auteur ${j + 1}`));
+      }
     });
   });
 
-  if (S.hasBounds === "yes") { need("interval.level", L("Interval level", "Niveau de l'intervalle")); need("interval.type", L("Interval type", "Type d'intervalle")); }
+  if (state.hasBounds === "yes") {
+    need("interval.level", tr("Interval level", "Niveau de l'intervalle"));
+    need("interval.type", tr("Interval type", "Type d'intervalle"));
+  }
 
-  const ms = chosen();
-  if (!ms.length) out.push(["metrics.catch.on", L("Tick at least one column", "Cochez au moins une colonne")]);
-  for (const m of ms) {
-    const fs = S.metrics[m.id].f;
-    for (const f of Object.keys(MF[m.id])) {
-      if (!shown(m.id, f)) continue;
-      const path = `metrics.${m.id}.f.${f}`;
-      const req = required(m.id, f);
-      if (f === "period") {
-        const a = (fs.period_from || "").trim(), b = (fs.period_to || "").trim();
-        const p0 = `metrics.${m.id}.f.period_from`;
-        if (!a || !b) out.push([a ? `metrics.${m.id}.f.period_to` : p0, mlabel(m) + colon() + L("period (first and last year)", "période (première et dernière année)")]);
-        else if (!/^\d{4}$/.test(a) || !/^\d{4}$/.test(b) || +a > +b) out.push([p0, mlabel(m) + colon() + L("period should be two years, first then last", "la période doit compter deux années, la première puis la dernière")]);
+  const ticked = tickedMetrics();
+  if (!ticked.length) add("metrics.catch.on", tr("Tick at least one column", "Cochez au moins une colonne"));
+  for (const m of ticked) {
+    const f = metricState(m.id).f;
+    const prefix = metricLabel(m) + colon();
+    for (const name of Object.keys(METRIC_FIELDS[m.id])) {
+      if (!isFieldShown(m.id, name)) continue;
+      const path = `metrics.${m.id}.f.${name}`;
+      if (name === "period") {
+        const first = (f.period_from || "").trim(), last = (f.period_to || "").trim();
+        const fromPath = `metrics.${m.id}.f.period_from`;
+        if (!first || !last) {
+          add(first ? `metrics.${m.id}.f.period_to` : fromPath, prefix + tr("period (first and last year)", "période (première et dernière année)"));
+        } else if (!is4DigitYear(first) || !is4DigitYear(last) || +first > +last) {
+          add(fromPath, prefix + tr("period should be two years, first then last", "la période doit compter deux années, la première puis la dernière"));
+        }
         continue;
       }
-      const v = fs[f];
-      if (req && blankish(v)) out.push([path, mlabel(m) + colon() + FL(f).toLowerCase()]);
-      if (["multiplier", "percentile", "spr"].includes(f) && !isNum(v)) out.push([path, mlabel(m) + colon() + FL(f).toLowerCase() + L(" must be a number", " doit être un nombre")]);
-      if (["min_age", "max_age", "age"].includes(f) && !isInt(v)) out.push([path, mlabel(m) + colon() + FL(f).toLowerCase() + L(" must be a whole number", " doit être un nombre entier")]);
+      const v = f[name];
+      if (isRequired(m.id, name) && isBlank(v)) add(path, prefix + lowerFirst(fieldLabel(name)));
+      if (["multiplier", "percentile", "spr"].includes(name) && !isNumber(v)) add(path, prefix + lowerFirst(fieldLabel(name)) + tr(" must be a number", " doit être un nombre"));
+      if (["min_age", "max_age", "age"].includes(name) && !isWhole(v)) add(path, prefix + lowerFirst(fieldLabel(name)) + tr(" must be a whole number", " doit être un nombre entier"));
     }
-    if (fs.applies_to && !targets(m.id).includes(fs.applies_to) && targets(m.id).length > 1) out.push([`metrics.${m.id}.f.applies_to`, mlabel(m) + colon() + L("pick a series that's ticked", "choisissez une série cochée")]);
-    const t = (m.role === "reference" && m.id !== "total_allowable_catch") ? resolvedTarget(m.id) : "";
-    if (t && fs.units && S.metrics[t].f.units && fs.units !== S.metrics[t].f.units) {
-      out.push([`metrics.${m.id}.f.units`, mlabel(m) + colon() + L(`units (${fs.units}) don't match ${M[t].en} (${S.metrics[t].f.units})`, `les unités (${fs.units}) ne correspondent pas à ${M[t].fr} (${S.metrics[t].f.units})`)]);
+    const options = seriesOptions(m.id);
+    if (f.applies_to && !options.includes(f.applies_to) && options.length > 1) {
+      add(`metrics.${m.id}.f.applies_to`, prefix + tr("pick a series that's ticked", "choisissez une série cochée"));
+    }
+    const target = m.role === "reference" && m.id !== "total_allowable_catch" ? targetSeries(m.id) : "";
+    const targetUnits = target && metricState(target).f.units;
+    if (target && f.units && targetUnits && f.units !== targetUnits) {
+      add(`metrics.${m.id}.f.units`, prefix + tr(`units (${f.units}) don't match ${METRIC_BY_ID[target].en} (${targetUnits})`,
+        `les unités (${f.units}) ne correspondent pas à ${METRIC_BY_ID[target].fr} (${targetUnits})`));
     }
   }
   return out;
 }
-const compId = c => (c.id || "").trim() || slug(c.en).replace(/-/g, "_");
+
+// A component's ID: the one typed in, or one made from its English name.
+const componentId = c => (c.id || "").trim() || slug(c.en).replace(/-/g, "_");
+function componentIdHint(c) {
+  if ((c.id || "").trim()) return "";
+  const id = componentId(c);
+  return id ? tr(`Will be <code>${esc(id)}</code> if left blank`, `Sera <code>${esc(id)}</code> si laissé vide`)
+    : tr("Made from the English name if left blank", "Tiré du nom anglais si laissé vide");
+}
+
+// Form sections, in page order: [section, English, French]
+const SECTIONS = [
+  ["me", "About you", "À propos de vous"],
+  ["assessment", "Assessment", "Évaluation"],
+  ["stock", "Stock", "Stock"],
+  ["method", "Method", "Méthode"],
+  ["pubs", "Meeting and publications", "Réunion et publications"],
+  ["metrics", "Columns in your CSV", "Colonnes de votre CSV"],
+];
+// The section a to-do item's path belongs to.
+function sectionOf(path) {
+  const key = path.split(".")[0];
+  if (key === "year_assessed" || key === "assessment_type") return "assessment";
+  if (key === "hasComp" || key === "comps") return "stock";
+  if (key === "meeting") return "pubs";
+  if (key === "hasBounds" || key === "interval") return "metrics";
+  return key;
+}
+const badge = section => `<span class="badge" data-badge="${section}"></span>`;
 
 // ---------------------------------------------------------------------------
-// YAML
+// YAML output
 // ---------------------------------------------------------------------------
-function q(v) {
+
+// A value as YAML text, quoted if it would otherwise be read as something else
+// (a number, true/false, a date-like or symbol-led string, ...).
+function yamlValue(v) {
   const s = String(v).trim();
-  const risky = s === "" || /^[-?:,\[\]{}#&*!|>'"%@`]/.test(s) || /: |\s#|\n/.test(s) ||
-    /^(true|false|yes|no|on|off|null|y|n|~)$/i.test(s) || /^[-+]?(\d[\d_]*)?\.?\d+([eE][-+]?\d+)?$/.test(s) || /:$/.test(s);
-  return risky ? JSON.stringify(s) : s;
+  const needsQuotes = s === ""
+    || /^[-?:,\[\]{}#&*!|>'"%@`]/.test(s)                     // starts with a YAML symbol
+    || /: |\s#|\n/.test(s) || /:$/.test(s)                     // looks like a key or a comment
+    || /^(true|false|yes|no|on|off|null|y|n|~)$/i.test(s)      // would be read as true/false/null
+    || /^[-+]?(\d[\d_]*)?\.?\d+([eE][-+]?\d+)?$/.test(s);       // would be read as a number
+  return needsQuotes ? JSON.stringify(s) : s;
 }
-const num = v => String(Number(String(v).trim()));
-function yaml() {
-  const L = [];
-  const put = (ind, k, v, raw) => { if (!blankish(v)) L.push(`${"  ".repeat(ind)}${k}: ${raw ? String(v).trim() : q(v)}`); };
-  // A nested block, written only if something in it is filled in.
-  const block = (ind, k, kv) => {
-    if (kv.every(([, v]) => blankish(v))) return;
-    L.push(`${"  ".repeat(ind)}${k}:`); kv.forEach(([k2, v, raw]) => put(ind + 1, k2, v, raw));
+const numberText = v => String(Number(String(v).trim()));
+
+// assessment.yaml for the current form. Blank fields are left out.
+function buildYaml() {
+  const lines = [];
+  const pad = depth => "  ".repeat(depth);
+  // `raw` writes the value as is (numbers, dates, true/false).
+  const put = (depth, key, value, raw) => {
+    if (!isBlank(value)) lines.push(`${pad(depth)}${key}: ${raw ? String(value).trim() : yamlValue(value)}`);
   };
-  const st = S.stock, sp = st.species;
-  L.push("entered_by:");
-  put(1, "name", S.me.name); put(1, "email", S.me.email); put(1, "date", S.me.date, true);
-  L.push("");
-  put(0, "year_assessed", S.year_assessed, true);
-  put(0, "assessment_type", S.assessment_type);
-  L.push("", "stock:", "  name:");
-  put(2, "en", st.name.en); put(2, "fr", st.name.fr);
-  block(1, "species", [["scientific", sp.scientific], ["en", sp.en], ["fr", sp.fr], ["aphia_id", sp.aphia_id, true]]);
-  block(1, "area", [["en", st.area.en], ["fr", st.area.fr]]);
-  put(1, "region", st.region); put(1, "management", st.management);
-  if (st.fish_stock_provisions) put(1, "fish_stock_provisions", st.fish_stock_provisions === "yes" ? "true" : "false", true);
-  if (st.in_sustainability_survey) put(1, "in_sustainability_survey", st.in_sustainability_survey === "yes" ? "true" : "false", true);
-  put(1, "ram_legacy_id", st.ram_legacy_id);
-  if (S.hasComp === "yes" && S.comps.length) {
-    L.push("", "components:");
-    S.comps.forEach(c => { L.push(`  ${q(compId(c) || "?")}:`, "    name:"); put(3, "en", c.en); put(3, "fr", c.fr); });
-  }
-  L.push("", "method:");
-  put(1, "type", S.method.type); put(1, "software", S.method.software);
-  if (S.method.type === "other") put(1, "notes", S.method.notes);
-  const mt = S.meeting;
-  if (![mt.date, mt.url, mt.csas_process].every(blankish)) L.push("");
-  block(0, "meeting", [["date", mt.date, true], ["url", mt.url], ["csas_process", mt.csas_process]]);
-  L.push("", "publications:");
-  S.pubs.forEach(p => {
-    const at = L.length;
-    put(2, "series", p.series); put(2, "number", p.number); put(2, "year", p.year, true);
-    put(2, "url", p.url); put(2, "doi", p.doi);
-    block(2, "title", [["en", p.title.en], ["fr", p.title.fr]]);
-    const au = p.authors.filter(a => a.given || a.family || a.orcid);
-    if (au.length) {
-      L.push("    authors:");
-      au.forEach(a => {
-        const kv = [["given", a.given], ["family", a.family], ["orcid", a.orcid]].filter(([, v]) => !blankish(v));
-        kv.forEach(([k, v], j) => L.push(`      ${j ? "  " : "- "}${k}: ${q(v)}`));
-      });
+  // A nested block, written only if something in it is filled in.
+  const block = (depth, key, pairs) => {
+    if (pairs.every(([, v]) => isBlank(v))) return;
+    lines.push(`${pad(depth)}${key}:`);
+    pairs.forEach(([k, v, raw]) => put(depth + 1, k, v, raw));
+  };
+  const trueFalse = yn => yn === "yes" ? "true" : "false";
+  const { stock, method, meeting } = state;
+  const species = stock.species;
+
+  lines.push("entered_by:");
+  put(1, "name", state.me.name);
+  put(1, "email", state.me.email);
+  put(1, "date", state.me.date || today(), true);
+  lines.push("");
+  put(0, "year_assessed", state.year_assessed, true);
+  put(0, "assessment_type", state.assessment_type);
+
+  lines.push("", "stock:", "  name:");
+  put(2, "en", stock.name.en);
+  put(2, "fr", stock.name.fr);
+  block(1, "species", [["scientific", species.scientific], ["en", species.en], ["fr", species.fr], ["aphia_id", species.aphia_id, true]]);
+  block(1, "area", [["en", stock.area.en], ["fr", stock.area.fr]]);
+  put(1, "region", stock.region);
+  put(1, "management", stock.management);
+  if (stock.fish_stock_provisions) put(1, "fish_stock_provisions", trueFalse(stock.fish_stock_provisions), true);
+  if (stock.in_sustainability_survey) put(1, "in_sustainability_survey", trueFalse(stock.in_sustainability_survey), true);
+  put(1, "ram_legacy_id", stock.ram_legacy_id);
+
+  if (state.hasComp === "yes" && state.comps.length) {
+    lines.push("", "components:");
+    for (const c of state.comps) {
+      lines.push(`  ${yamlValue(componentId(c) || "?")}:`, "    name:"); // "?" stands for a blank ID
+      put(3, "en", c.en);
+      put(3, "fr", c.fr);
     }
-    if (L.length === at) L.push("    series:");
-    L[at] = "  - " + L[at].slice(4); // the first key starts the list item
-  });
-  if (S.hasBounds === "yes") {
-    L.push("", "interval:"); put(1, "level", S.interval.level, true); put(1, "type", S.interval.type);
   }
-  L.push("", "metrics:");
-  for (const m of chosen()) {
-    L.push(`  ${m.id}:`);
-    const fs = S.metrics[m.id].f;
-    for (const f of Object.keys(MF[m.id])) {
-      if (!shown(m.id, f)) continue;
-      if (f === "notes") { // the CSV columns it has, just before the free text
-        if (hasCI(m.id)) L.push("    bounds: true");
-        if (ratios(m.id).length) L.push(`    ratios: [${ratios(m.id).join(", ")}]`);
+
+  lines.push("", "method:");
+  put(1, "type", method.type);
+  put(1, "software", method.software);
+  if (method.type === "other") put(1, "notes", method.notes);
+  if (method.software === "other") put(1, "software_notes", method.software_notes);
+
+  if (![meeting.date, meeting.url, meeting.csas_process].every(isBlank)) lines.push("");
+  block(0, "meeting", [["date", meeting.date, true], ["url", meeting.url], ["csas_process", meeting.csas_process]]);
+
+  lines.push("", "publications:");
+  for (const pub of state.pubs) {
+    const first = lines.length;
+    put(2, "series", pub.series);
+    put(2, "number", pub.number);
+    put(2, "year", pub.year, true);
+    put(2, "url", pub.url);
+    put(2, "doi", pub.doi);
+    block(2, "title", [["en", pub.title.en], ["fr", pub.title.fr]]);
+    const authors = pub.authors.filter(a => a.given || a.family || a.orcid);
+    if (authors.length) {
+      lines.push("    authors:");
+      for (const a of authors) {
+        const pairs = [["given", a.given], ["family", a.family], ["orcid", a.orcid]].filter(([, v]) => !isBlank(v));
+        pairs.forEach(([k, v], j) => lines.push(`      ${j ? "  " : "- "}${k}: ${yamlValue(v)}`));
       }
-      if (f === "period") { if (fs.period_from && fs.period_to) L.push(`    period: [${num(fs.period_from)}, ${num(fs.period_to)}]`); continue; }
-      const v = fs[f];
-      if (blankish(v)) continue;
-      put(2, f, NUM_FIELDS.includes(f) && !isNaN(Number(v)) ? num(v) : v, NUM_FIELDS.includes(f));
+    }
+    if (lines.length === first) lines.push("    series:"); // an empty publication
+    lines[first] = "  - " + lines[first].slice(4);      // its first line starts the list item
+  }
+
+  if (state.hasBounds === "yes") {
+    lines.push("", "interval:");
+    put(1, "level", state.interval.level, true);
+    put(1, "type", state.interval.type);
+  }
+
+  lines.push("", "metrics:");
+  for (const m of tickedMetrics()) {
+    lines.push(`  ${m.id}:`);
+    const f = metricState(m.id).f;
+    for (const name of Object.keys(METRIC_FIELDS[m.id])) {
+      if (!isFieldShown(m.id, name)) continue;
+      if (name === "notes") { // the CSV columns it has go just before the free text
+        if (hasBoundsColumns(m.id)) lines.push("    bounds: true");
+        if (tickedRatios(m.id).length) lines.push(`    ratios: [${tickedRatios(m.id).join(", ")}]`);
+      }
+      if (name === "period") {
+        if (f.period_from && f.period_to) lines.push(`    period: [${numberText(f.period_from)}, ${numberText(f.period_to)}]`);
+        continue;
+      }
+      const v = f[name];
+      if (isBlank(v)) continue;
+      const isNumber = NUMBER_FIELDS.includes(name);
+      put(2, name, isNumber && !isNaN(Number(v)) ? numberText(v) : v, isNumber);
     }
   }
-  return L.join("\n") + "\n";
+  return lines.join("\n") + "\n";
 }
 
-// Columns for one file, in canonical order: each metric (with its bounds), then its ratios.
+// CSV columns for one file, in order: each metric (with its bounds), then its ratios.
 // `skip` is the level that doesn't belong in this file.
 function fileColumns(skip) {
-  const ok = id => !M[id] || M[id].level !== skip;
-  const withBounds = (col, id) => hasCI(id) ? [col, col + "_lower", col + "_upper"] : [col];
-  return chosen().filter(m => ok(m.id)).flatMap(m => [
+  const belongs = id => !METRIC_BY_ID[id] || METRIC_BY_ID[id].level !== skip;
+  const withBounds = (col, id) => hasBoundsColumns(id) ? [col, col + "_lower", col + "_upper"] : [col];
+  return tickedMetrics().filter(m => belongs(m.id)).flatMap(m => [
     ...withBounds(m.id, m.id),
-    ...ratios(m.id).filter(ok).flatMap(den => withBounds(`${m.id}/${den}`, m.id)), // ratios follow their series
+    ...tickedRatios(m.id).filter(belongs).flatMap(den => withBounds(`${m.id}/${den}`, m.id)),
   ]);
 }
 function csvColumns() {
-  const stock = ["year", ...fileColumns("component")];
-  const comp = S.hasComp === "yes" ? ["component", "year", ...fileColumns("stock")] : null;
-  return { stock, comp };
+  return {
+    stock: ["year", ...fileColumns("component")],
+    comp: state.hasComp === "yes" ? ["component", "year", ...fileColumns("stock")] : null,
+  };
 }
 
 // ---------------------------------------------------------------------------
-// Side panel
+// YAML template: a blank assessment.yaml with every key the form writes, and the
+// allowed codes and what's required in comments.
+//
+// Metrics are commented out. In a commented-out block, lines to uncomment start
+// with "# " (at the block's indentation) and help lines start with "## ", so
+// toggling the comment on a block (Ctrl+/) leaves valid YAML.
 // ---------------------------------------------------------------------------
+
+// Conditions for "if" fields that don't come from a basis (as the `condition` column
+// of ../fsar-data/vocab/metric_fields.csv).
+const IF_TEXT = {
+  applies_to: ["there is more than one stock-size series", "il y a plus d'une série de taille du stock"],
+  "fishing_pressure.applies_to": ["units are proportion and there is more than one stock-size series",
+    "les unités sont proportion et il y a plus d'une série de taille du stock"],
+  type: ["units are 1/yr", "les unités sont 1/yr"],
+  min_age: ["type is average", "type est average"],
+  max_age: ["type is average", "type est average"],
+};
+const COMMENT_COLUMN = 23; // where inline comments start
+const LINE_WIDTH = 80;
+
+// Splits text into lines of at most `width` characters. A "|" between codes stays
+// at the end of the line before it.
+function wrapText(text, width) {
+  const words = [];
+  for (const w of text.split(" ")) {
+    if (w === "|" && words.length) words[words.length - 1] += " |";
+    else words.push(w);
+  }
+  const out = [];
+  let line = "";
+  for (const w of words) {
+    if (line && (line + " " + w).length > width) {
+      out.push(line);
+      line = w;
+    } else {
+      line = line ? line + " " + w : w;
+    }
+  }
+  if (line) out.push(line);
+  return out;
+}
+
+function buildTemplate() {
+  const out = [];
+  const bar = list => list.join(" | ");
+  const codes = key => bar(codesOf(VALUES[key]));
+  const join = (...parts) => parts.filter(Boolean).join("; ");
+  const REQUIRED = tr("required", "obligatoire");
+  const requiredIf = condition => (tr("required if ", "obligatoire si ") + condition).replace(/ si il/, " s'il");
+  const eg = x => tr("e.g. ", "p. ex. ") + x;
+  const DATE = tr("YYYY-MM-DD", "AAAA-MM-JJ");
+
+  // Where lines go: LIVE lines are plain YAML; COMMENTED lines start with "# " after `indent`.
+  const LIVE = { indent: "", commented: false };
+  const COMPONENTS = { indent: "", commented: true };
+  const METRIC = { indent: "  ", commented: true };
+
+  // Comment-only lines, wrapped.
+  const help = (where, depth, text) => {
+    const lead = where.commented ? where.indent + "## " + "  ".repeat(depth) : "  ".repeat(depth) + "# ";
+    for (const line of wrapText(text, LINE_WIDTH - lead.length)) out.push(lead + line);
+  };
+  // A key, with its note inline if it fits, or on the lines above if not.
+  const key = (where, depth, name, note = "", value = "") => {
+    const head = where.indent + (where.commented ? "# " : "") + "  ".repeat(depth) + name + ":" + (value === "" ? "" : " " + value);
+    const inline = (head.length < COMMENT_COLUMN ? head.padEnd(COMMENT_COLUMN) : head + " ") + "# " + note;
+    if (!note) {
+      out.push(head);
+    } else if (inline.length <= LINE_WIDTH) {
+      out.push(inline);
+    } else {
+      help(where, depth, note);
+      out.push(head);
+    }
+  };
+  const bullet = text => wrapText(text, LINE_WIDTH - 4).forEach((line, i) => out.push((i ? "#   " : "# - ") + line));
+
+  // Header
+  out.push(tr("# assessment.yaml template, made by the DFO stock assessment output form",
+              "# Modèle assessment.yaml créé par le formulaire de résultats d'évaluation du MPO"));
+  if (/^https?:$/.test(location.protocol)) out.push("# " + location.origin + location.pathname);
+  out.push("#");
+  bullet(tr(`Fill in the value after each colon. Text values don't need quotes unless they start with a symbol or contain ": ".`,
+            "Remplissez la valeur après chaque deux-points. Le texte n'a pas besoin de guillemets, sauf s'il commence par un symbole ou contient « : »."));
+  bullet(tr("Leave a value blank, or delete the line, if it doesn't apply.",
+            "Laissez une valeur vide, ou supprimez la ligne, si elle ne s'applique pas."));
+  bullet(tr(`"required" fields must be filled in. Fields with a list of options take exactly one of the codes shown.`,
+            "Les champs « obligatoire » doivent être remplis. Les champs avec une liste d'options prennent exactement un des codes indiqués."));
+  bullet(tr("Lines starting with # are comments and are ignored.",
+            "Les lignes qui commencent par # sont des commentaires et sont ignorées."));
+  bullet(tr(`To check the file, open the form and use "Load existing YAML file". (The form doesn't keep comments if you download the file again from it.)`,
+            "Pour vérifier le fichier, ouvrez le formulaire et utilisez « Charger un fichier YAML existant ». (Le formulaire ne conserve pas les commentaires si vous téléchargez de nouveau le fichier à partir de celui-ci.)"));
+  bullet(tr("What each CSV column means: ", "Signification de chaque colonne du CSV (en anglais) : ") + DICTIONARY);
+  out.push("");
+
+  key(LIVE, 0, "entered_by", tr("who filled in this file", "qui a rempli ce fichier"));
+  key(LIVE, 1, "name", REQUIRED);
+  key(LIVE, 1, "email", REQUIRED);
+  key(LIVE, 1, "date", join(REQUIRED, DATE), today());
+  out.push("");
+  key(LIVE, 0, "year_assessed", join(REQUIRED, eg("2024")));
+  key(LIVE, 0, "assessment_type", join(REQUIRED, codes("assessment_type"))
+    + tr(" (update: an interim or indicator update)", " (update : mise à jour intermédiaire ou des indicateurs)"));
+  out.push("");
+
+  out.push("stock:");
+  key(LIVE, 1, "name", tr("required in both languages (use the same text if there is only one name); the major stock name",
+                          "obligatoire dans les deux langues (utilisez le même texte s'il n'y a qu'un nom); le nom du grand stock"));
+  key(LIVE, 2, "en");
+  key(LIVE, 2, "fr");
+  out.push("  species:");
+  key(LIVE, 2, "scientific", join(REQUIRED, eg("Gadus morhua")));
+  key(LIVE, 2, "en", tr("common name, e.g. Atlantic cod", "nom commun anglais, p. ex. Atlantic cod"));
+  key(LIVE, 2, "fr", tr("e.g. Morue franche", "nom commun français, p. ex. Morue franche"));
+  key(LIVE, 2, "aphia_id", tr("WoRMS AphiaID (a whole number), e.g. 126436", "AphiaID de WoRMS (nombre entier), p. ex. 126436"));
+  key(LIVE, 1, "area", eg(tr("NAFO 4RST", "OPANO 4RST")));
+  key(LIVE, 2, "en");
+  key(LIVE, 2, "fr");
+  key(LIVE, 1, "region", join(REQUIRED, codes("region")));
+  key(LIVE, 1, "management", codes("management"));
+  key(LIVE, 1, "fish_stock_provisions", tr("required; true | false (prescribed under Schedule IX of the Fishery (General) Regulations)",
+                                           "obligatoire; true | false (visé à l'annexe IX du Règlement de pêche (dispositions générales))"));
+  key(LIVE, 1, "in_sustainability_survey", tr("required; true | false (in the Sustainability Survey for Fisheries)",
+                                              "obligatoire; true | false (dans le Sondage sur la durabilité des pêches)"));
+  key(LIVE, 1, "ram_legacy_id", eg("DFO-GULF-WITFLOUN4RST"));
+  out.push("");
+
+  help(COMPONENTS, 0, tr("Only if you also have component_timeseries.csv. Add one entry per component.",
+                         "Seulement si vous avez aussi component_timeseries.csv. Ajoutez une entrée par composante."));
+  key(COMPONENTS, 0, "components");
+  key(COMPONENTS, 1, "north", tr("the ID used in the component column (no spaces)", "l'identifiant de la colonne component (sans espaces)"));
+  key(COMPONENTS, 2, "name", tr("required in both languages", "obligatoire dans les deux langues"));
+  key(COMPONENTS, 3, "en");
+  key(COMPONENTS, 3, "fr");
+  out.push("");
+
+  out.push("method:");
+  key(LIVE, 1, "type", join(REQUIRED, codes("method")) + tr(" (other: describe it in notes)", " (other : décrivez-le dans notes)"));
+  key(LIVE, 1, "software", join(REQUIRED, codes("software")) + tr(" (other: describe it in software_notes)", " (other : décrivez-le dans software_notes)"));
+  key(LIVE, 1, "notes", requiredIf(tr("type is other", "type est other")));
+  key(LIVE, 1, "software_notes", requiredIf(tr("software is other", "software est other")));
+  out.push("");
+
+  key(LIVE, 0, "meeting", tr("the peer-review meeting (all optional)", "la réunion d'examen par les pairs (facultatif)"));
+  key(LIVE, 1, "date", DATE);
+  key(LIVE, 1, "url");
+  key(LIVE, 1, "csas_process", tr("dmapps process URL", "URL du processus dans dmapps"));
+  out.push("");
+
+  key(LIVE, 0, "publications", tr(`one entry per document (e.g. the SAR and its Research Document); copy the lines from "- series:" down for each one`,
+                                  "une entrée par document (p. ex. l'avis scientifique et son document de recherche); copiez les lignes à partir de « - series: » pour chacun"));
+  key(LIVE, 1, "- series", join(REQUIRED, codes("series")));
+  key(LIVE, 2, "number", join(REQUIRED, eg("2025/001")));
+  key(LIVE, 2, "year", tr("required; year published", "obligatoire; année de publication"));
+  key(LIVE, 2, "url", REQUIRED);
+  key(LIVE, 2, "doi");
+  key(LIVE, 2, "title", tr("required in both languages (use the same text if there is only one title)",
+                           "obligatoire dans les deux langues (même texte s'il n'y a qu'un titre)"));
+  key(LIVE, 3, "en");
+  key(LIVE, 3, "fr");
+  key(LIVE, 2, "authors", tr("one entry per author, in order", "une entrée par auteur, dans l'ordre"));
+  key(LIVE, 3, "- given");
+  key(LIVE, 4, "family", tr("required for each author; if DFO is the author, give family: DFO and no given name",
+                            "obligatoire pour chaque auteur; si l'auteur est le MPO, inscrivez family: MPO sans prénom"));
+  key(LIVE, 4, "orcid", eg("0000-0000-0000-0000"));
+  out.push("");
+
+  key(LIVE, 0, "interval", tr("leave blank if no column has _lower / _upper", "laissez vide si aucune colonne n'a _lower / _upper"));
+  key(LIVE, 1, "level", bar(LEVELS));
+  key(LIVE, 1, "type", codes("interval"));
+  out.push("");
+
+  out.push("metrics:");
+  help(METRIC, 0, tr("One entry for each metric column in your CSVs. Uncomment the ones you have: select the block and press Ctrl+/ (Cmd+/ on a Mac) in most editors.",
+                     "Une entrée pour chaque colonne de mesure de vos CSV. Décommentez celles que vous avez : sélectionnez le bloc et appuyez sur Ctrl+/ (Cmd+/ sur un Mac) dans la plupart des éditeurs."));
+
+  // The note after one metric field: whether it's required, then a hint.
+  const metricNote = (m, f) => {
+    let condition = "";
+    const rule = METRIC_FIELDS[m.id][f];
+    if (rule === "yes") {
+      condition = REQUIRED;
+    } else if (rule === "if" && (IF_TEXT[`${m.id}.${f}`] || IF_TEXT[f])) {
+      condition = requiredIf(tr(...(IF_TEXT[`${m.id}.${f}`] || IF_TEXT[f])));
+    } else if (METRIC_FIELDS[m.id].basis) { // e.g. "required if basis is mean or percentile"
+      const bases = Object.keys(BASIS_FIELDS).filter(b => BASIS_FIELDS[b].includes(f) && basesFor(m).includes(b));
+      if (bases.length) condition = requiredIf(tr("basis is ", "basis est ") + bases.join(tr(" or ", " ou ")));
+    }
+    const hintText = key => lowerFirst(tr(...HINTS[key])).replace(/\.$/, "");
+    const units = bar(unitsFor(m).map(u => u.id));
+    let hint = "";
+    if (f === "units") {
+      if (m.role === "reference") hint = tr("same units as the series it is compared to: ", "mêmes unités que la série à laquelle il est comparé : ") + units;
+      else if (m.id === "fishing_pressure") hint = `${units} (${hintText("fp_units")})`;
+      else hint = units;
+    }
+    if (f === "survey") hint = hintText("survey");
+    if (f === "max_age" && m.id !== "fishing_pressure") hint = hintText("max_age");
+    if (f === "age" && m.id === "recruitment") hint = lowerFirst(fieldLabel("age"));
+    if (f === "applies_to") hint = hintText(m.id === "fishing_pressure" ? "fp_applies_to" : "applies_to") + colon() + bar(STOCK_SERIES);
+    if (f === "basis") hint = bar(codesOf(VALUES.basis).filter(code => basesFor(m).includes(code)));
+    if (f === "multiplier") hint = hintText(m.panel === "fishing_pressure" ? "removal_multiplier" : "multiplier");
+    if (f === "period") hint = tr("[first, last], e.g. [1985, 2009]", "[première, dernière], p. ex. [1985, 2009]");
+    if (f === "percentile") hint = hintText("percentile");
+    if (f === "spr") hint = hintText("spr");
+    if (f === "type") hint = codes("type");
+    if (f === "notes" && m.id === "exploitable_stock") hint = hintText("exploitable_notes");
+    return join(condition, hint);
+  };
+
+  for (const [panel, en, fr] of PANELS) {
+    out.push("");
+    help(METRIC, 0, `---- ${tr(en, fr)} ----`);
+    if (panel === "stock") help(METRIC, 0, tr("Report every stock-size series the assessment estimates.",
+                                              "Déclarez chaque série de taille du stock estimée par l'évaluation."));
+    for (const m of METRICS.filter(m => m.panel === panel)) {
+      out.push("");
+      const where = m.level === "component" ? tr("Only in component_timeseries.csv. ", "Seulement dans component_timeseries.csv. ") : "";
+      help(METRIC, 0, where + tr(m.desc_en, m.desc_fr));
+      key(METRIC, 0, m.id);
+      for (const f of Object.keys(METRIC_FIELDS[m.id])) {
+        if (f === "notes") { // the CSV columns it has go just before the free text, as in buildYaml()
+          if (m.id !== "total_allowable_catch") {
+            key(METRIC, 1, "bounds", tr(`true if the CSV has ${m.id}_lower and _upper`, `true si le CSV a ${m.id}_lower et _upper`));
+          }
+          if (m.role === "series" && MSY_DENOMINATOR[m.panel]) {
+            const msy = MSY_DENOMINATOR[m.panel];
+            const dens = [...METRICS.filter(r => r.panel === m.panel && r.role === "reference").map(r => r.id), msy];
+            key(METRIC, 1, "ratios", tr(
+              `ratio columns, e.g. [${dens[0]}, ${msy}] for ${m.id}/${dens[0]} and ${m.id}/${msy}; any of: `,
+              `colonnes de rapport, p. ex. [${dens[0]}, ${msy}] pour ${m.id}/${dens[0]} et ${m.id}/${msy}; parmi : `) + bar(dens), "[]");
+          }
+        }
+        key(METRIC, 1, f, metricNote(m, f));
+      }
+    }
+  }
+  return out.join("\n") + "\n";
+}
+
+// ---------------------------------------------------------------------------
+// Side panel, header and intro
+// ---------------------------------------------------------------------------
+let previewOpen = false;
+document.addEventListener("toggle", e => { if (e.target.matches?.("details.preview")) previewOpen = e.target.open; }, true);
+
+const leftToFill = n => tr(`${n} thing${n > 1 ? "s" : ""} left to fill in`, `${n} élément${n > 1 ? "s" : ""} à remplir`);
+const csvButtonLabel = cols => cols.comp ? tr("Download blank CSVs", "Télécharger les CSV vides") : tr("Download blank CSV", "Télécharger le CSV vide");
+
 function renderSide() {
-  const is = issues();
-  const id = assessmentId() || "assessment";
+  const todo = todoItems();
   const cols = csvColumns();
-  $("#side").innerHTML = (loadErrors ? `
+  $("#side").innerHTML = (loadErrors ? loadErrorsBox() : "") + fileBox(todo, cols) + columnsBox(cols) + previewBox();
+  updateBadges(todo);
+  renderNextSteps(todo, cols);
+}
+
+function loadErrorsBox() {
+  return `
     <div class="box bad">
-      <h3>${L(`Couldn't load ${esc(loadErrors.name)}`, `Impossible de charger ${esc(loadErrors.name)}`)}</h3>
-      <div class="hint">${L("Nothing in the form was changed. Fix these in the file and load it again:",
-        "Rien n'a été modifié dans le formulaire. Corrigez ces points dans le fichier et chargez-le de nouveau :")}</div>
+      <h3>${tr(`Couldn't load ${esc(loadErrors.name)}`, `Impossible de charger ${esc(loadErrors.name)}`)}</h3>
+      <div class="hint">${tr("Nothing in the form was changed. Fix these in the file and load it again:",
+                             "Rien n'a été modifié dans le formulaire. Corrigez ces points dans le fichier et chargez-le de nouveau :")}</div>
       <ul class="todo">${loadErrors.list.map(msg => `<li>${esc(msg)}</li>`).join("")}</ul>
-      <div class="actions"><button class="btn small" data-act="dismiss-load">${L("Dismiss", "Fermer")}</button></div>
-    </div>` : "") + `
-    <div class="box">
-      <h3>${esc(id)}</h3>
-      ${is.length
-        ? `<div class="status todo">${L(`${is.length} thing${is.length > 1 ? "s" : ""} left to fill in`, `${is.length} élément${is.length > 1 ? "s" : ""} à remplir`)}</div>
-           <ul class="todo">${is.map(([p, msg]) => `<li><a data-go="${esc(p)}">${esc(msg)}</a></li>`).join("")}</ul>`
-        : `<div class="status ok">✓ ${L("Ready to download", "Prêt à télécharger")}</div>`}
-      <div class="actions">
-        <button class="btn primary" data-act="download">${L("Download", "Télécharger")} assessment.yaml</button>
-        <button class="btn" data-act="copy">${L("Copy", "Copier")}</button>
-      </div>
-      <div class="hint">${L(`Save it in a folder named <code>${esc(id)}</code>, next to your CSV${cols.comp ? "s" : ""}.`,
-        `Enregistrez-le dans un dossier nommé <code>${esc(id)}</code>, avec ${cols.comp ? "vos fichiers CSV" : "votre fichier CSV"}.`)}</div>
-    </div>
-    <div class="box">
-      <h3>${L("Your CSV columns", "Colonnes de votre CSV")}</h3>
-      <div class="cols-name">stock_timeseries.csv</div>
-      <div class="cols">${cols.stock.join(",")}</div>
-      ${cols.comp ? `<div class="cols-name">component_timeseries.csv</div><div class="cols">${cols.comp.join(",")}</div>` : ""}
-      <div class="hint">${L(`One row per year${cols.comp ? " (per component)" : ""}. Leave blank cells for missing values; no units or text in cells.`,
-        `Une ligne par année${cols.comp ? " (par composante)" : ""}. Laissez vides les valeurs manquantes; pas d'unités ni de texte dans les cellules.`)}
-      ${cols.comp ? L("Leave out any component column you don't have.", "Omettez les colonnes de composante que vous n'avez pas.") : ""}
-      ${chosen().some(m => m.role === "reference" || m.id === "msy") ? L("Reference points (and MSY) go in every year's row: repeat a constant value, or change it in the years it changes.",
-        "Les points de référence (et le RMD) figurent sur chaque ligne : répétez une valeur constante, ou modifiez-la les années où elle change.") : ""}
-      ${S.hasBounds === "yes" ? L(`<code>_lower</code> and <code>_upper</code> columns hold the ${Math.round(S.interval.level * 100) || "…"}% interval.`,
-        `Les colonnes <code>_lower</code> et <code>_upper</code> contiennent l'intervalle à ${Math.round(S.interval.level * 100) || "…"} %.`) : ""}
-      ${ratioHint([...cols.stock, ...(cols.comp || [])])}
-      ${L(`See the <a href="${DICTIONARY}" target="_blank" rel="noopener">column dictionary</a> for what each column means.`,
-        `Voir le <a href="${DICTIONARY}" target="_blank" rel="noopener">dictionnaire des colonnes</a> (en anglais) pour la signification de chaque colonne.`)}</div>
-      <div class="actions"><button class="btn small" data-act="csv">${cols.comp ? L("Download blank CSVs", "Télécharger les CSV vides") : L("Download blank CSV", "Télécharger le CSV vide")}</button></div>
-    </div>
-    <div class="box">
-      <h3>${L("Preview", "Aperçu")}</h3>
-      <pre class="code">${esc(yaml())}</pre>
+      <div class="actions"><button class="btn small" data-act="dismiss-load">${tr("Dismiss", "Fermer")}</button></div>
     </div>`;
 }
 
-const DICTIONARY = "https://github.com/TESA-workshops/assessment-results-workshop-2027/blob/main/yaml-generator/dictionary.md";
+const folderName = () => assessmentId() ? `<code>${esc(assessmentId())}</code>`
+  : tr("fill in the stock name and year assessed", "remplissez le nom du stock et l'année de l'évaluation");
+const draftHint = todo => todo.length ? tr("You can download it before it's finished and load it again later to carry on.",
+  "Vous pouvez le télécharger avant de l'avoir terminé, puis le charger de nouveau plus tard pour continuer.") : "";
+
+// assessment.yaml: its folder, whether it's ready, and the to-do list by section.
+function fileBox(todo, cols) {
+  const id = assessmentId();
+  const status = todo.length ? `<div class="status todo">${leftToFill(todo.length)}</div>`
+    : `<div class="status ok">✓ ${tr("Ready to download", "Prêt à télécharger")}</div>`;
+  const saveIn = id ? tr(`Save it in a folder named <code>${esc(id)}</code>, next to your CSV${cols.comp ? "s" : ""}.`,
+    `Enregistrez-le dans un dossier nommé <code>${esc(id)}</code>, avec ${cols.comp ? "vos fichiers CSV" : "votre fichier CSV"}.`) : "";
+  const sections = SECTIONS.map(([section, en, fr]) => {
+    const mine = todo.filter(([path]) => sectionOf(path) === section);
+    const items = mine.length ? `<ul>${mine.map(([path, msg]) => `<li><button data-go="${esc(path)}">${esc(msg)}</button></li>`).join("")}</ul>` : "";
+    return `<li><button class="sec" data-sec="${section}">${esc(tr(en, fr))}</button>
+      <span class="sec-n${mine.length ? "" : " ok"}">· ${mine.length ? tr(`${mine.length} left`, `${mine.length} à remplir`) : "✓"}</span>
+      ${items}</li>`;
+  }).join("");
+  return `
+    <div class="box">
+      <h3>${tr("Folder", "Dossier")}${colon()}${folderName()}</h3>
+      ${status}
+      <div class="actions">
+        <button class="btn primary" data-act="download">${tr("Download", "Télécharger")} assessment.yaml</button>
+        <button class="btn" data-act="copy">${tr("Copy", "Copier")}</button>
+      </div>
+      <div class="hint">${draftHint(todo)} ${saveIn}</div>
+      <ul class="todo">${sections}</ul>
+    </div>`;
+}
+
+function columnsBox(cols) {
+  const chips = list => `<div class="cols">${list.map(c => `<code>${esc(c)}</code>`).join("")}</div>`;
+  const level = Math.round(state.interval.level * 100) || "…";
+  const notes = [
+    tr(`One row per year${cols.comp ? " (per component)" : ""}. Leave blank cells for missing values; no units or text in cells.`,
+       `Une ligne par année${cols.comp ? " (par composante)" : ""}. Laissez vides les valeurs manquantes; pas d'unités ni de texte dans les cellules.`),
+    cols.comp ? tr("Leave out any component column you don't have.", "Omettez les colonnes de composante que vous n'avez pas.") : "",
+    tickedMetrics().some(m => m.role === "reference" || m.id === "msy")
+      ? tr("Reference points (and MSY) go in every year's row: repeat a constant value, or change it in the years it changes.",
+           "Les points de référence (et le RMD) figurent sur chaque ligne : répétez une valeur constante, ou modifiez-la les années où elle change.") : "",
+    state.hasBounds === "yes"
+      ? tr(`<code>_lower</code> and <code>_upper</code> columns hold the ${level}% interval.`,
+           `Les colonnes <code>_lower</code> et <code>_upper</code> contiennent l'intervalle à ${level} %.`) : "",
+    ratioHint([...cols.stock, ...(cols.comp || [])]),
+    tr(`See the ${link(DICTIONARY, "column dictionary")} for what each column means.`,
+       `Voir le ${link(DICTIONARY, "dictionnaire des colonnes")} (en anglais) pour la signification de chaque colonne.`),
+  ];
+  return `
+    <div class="box">
+      <h3>${tr("Your CSV columns", "Colonnes de votre CSV")}</h3>
+      <div class="cols-name">stock_timeseries.csv</div>
+      ${chips(cols.stock)}
+      ${cols.comp ? `<div class="cols-name">component_timeseries.csv</div>${chips(cols.comp)}` : ""}
+      <div class="hint">${notes.join(" ")}</div>
+      <div class="actions">
+        <button class="btn small" data-act="csv">${csvButtonLabel(cols)}</button>
+        <button class="btn small" data-act="copy-cols">${tr("Copy column names", "Copier les noms de colonnes")}</button>
+      </div>
+    </div>`;
+}
+
+function previewBox() {
+  return `
+    <div class="box">
+      <details class="preview"${previewOpen ? " open" : ""}><summary>${tr("Show YAML", "Afficher le YAML")}</summary>
+      <pre class="code">${esc(buildYaml())}</pre></details>
+    </div>`;
+}
 
 // Explains ratio columns using the first one this assessment actually has.
 function ratioHint(cols) {
   const col = cols.find(c => c.includes("/") && !/_(lower|upper)$/.test(c));
   if (!col) return "";
   const [series, den] = col.split("/");
-  return L(`A column like <code>${col}</code> is a ratio: ${esc(mlabel(M[series]))} divided by ${esc(denLabel(den))}.`,
-    `Une colonne comme <code>${col}</code> est le rapport entre ${esc(mlabel(M[series]))} et ${esc(denLabel(den))}.`);
+  return tr(`A column like <code>${col}</code> is a ratio: ${esc(metricLabel(METRIC_BY_ID[series]))} divided by ${esc(denominatorLabel(den))}.`,
+    `Une colonne comme <code>${col}</code> est le rapport entre ${esc(metricLabel(METRIC_BY_ID[series]))} et ${esc(denominatorLabel(den))}.`);
 }
 
-// Header and intro text, and the language buttons.
+// The "3 left" / "✓" badge on each form card.
+function updateBadges(todo) {
+  document.querySelectorAll("[data-badge]").forEach(b => {
+    const n = todo.filter(([path]) => sectionOf(path) === b.dataset.badge).length;
+    b.className = "badge" + (n ? "" : " ok");
+    b.textContent = n ? tr(`${n} left`, `${n} à remplir`) : "✓";
+  });
+}
+
+// The "Next steps" card at the end of the form.
+function renderNextSteps(todo, cols) {
+  const id = assessmentId();
+  const s = cols.comp ? "s" : "";
+  const status = todo.length ? `<span class="status todo">${leftToFill(todo.length)}.</span> `
+    : `<span class="status ok">✓ ${tr("Ready to download.", "Prêt à télécharger.")}</span> `;
+  $("#finish").innerHTML = `<h2>${tr("Next steps", "Étapes suivantes")}</h2>
+    <p class="lede">${status}
+      ${tr(`Download <code>assessment.yaml</code> and the blank CSV${s}, fill in the CSV${s} (one row per year), and put the files together in a folder named ${id ? folderName() : "after the stock and year assessed"}.`,
+           `Téléchargez <code>assessment.yaml</code> et ${cols.comp ? "les CSV vides" : "le CSV vide"}, remplissez ${cols.comp ? "les CSV" : "le CSV"} (une ligne par année), puis placez les fichiers ensemble dans un dossier nommé ${id ? folderName() : "d'après le stock et l'année de l'évaluation"}.`)}
+      ${draftHint(todo)}</p>
+    <div class="actions">
+        <button class="btn primary" data-act="download">${tr("Download", "Télécharger")} assessment.yaml</button>
+        <button class="btn" data-act="csv">${csvButtonLabel(cols)}</button>
+      </div>`;
+}
+
+// Header buttons and the intro text, in the current language.
 function renderChrome() {
   document.documentElement.lang = LANG;
   document.querySelectorAll("[data-lang]").forEach(b => b.classList.toggle("on", b.dataset.lang === LANG));
-  $("#btn-load").textContent = L("Load existing YAML file", "Charger un fichier YAML existant");
-  $("#btn-example").textContent = L("Load example", "Charger l'exemple");
-  $("#btn-reset").textContent = L("Start over", "Recommencer");
-  $("#intro").innerHTML = L(
-    `To submit your stock assessment output data, you'll need two files: a <strong>YAML file</strong> (<code>assessment.yaml</code>) with
-    metadata about the assessment and a description of the time series you're sharing, and a <strong>CSV file</strong> with the time series
-    values themselves (one row per year). This form builds the YAML file for you: work through the sections below, then download it.
-    As you choose which time series to include, the panel on the right lists the columns your CSV needs and lets you download a blank CSV
-    with those columns, ready to fill in. See the <a href="${DICTIONARY}" target="_blank" rel="noopener">column dictionary</a> for what each column means.
-    Required fields are marked <span class="req">*</span>. Your draft is saved in this browser, so you can close the page and come back.`,
-    `Pour soumettre les données issues de votre évaluation de stock, vous aurez besoin de deux fichiers : un <strong>fichier YAML</strong> (<code>assessment.yaml</code>)
-    contenant les métadonnées de l'évaluation et la description des séries chronologiques que vous partagez, et un <strong>fichier CSV</strong> contenant les
-    valeurs des séries elles-mêmes (une ligne par année). Ce formulaire crée le fichier YAML pour vous : remplissez les sections ci-dessous, puis téléchargez-le.
-    Au fur et à mesure que vous choisissez les séries à inclure, le panneau de droite indique les colonnes nécessaires à votre CSV et permet de télécharger
-    un CSV vide avec ces colonnes, prêt à remplir. Voir le <a href="${DICTIONARY}" target="_blank" rel="noopener">dictionnaire des colonnes</a> (en anglais) pour la signification de chaque colonne.
-    Les champs obligatoires sont marqués <span class="req">*</span>. Votre brouillon est enregistré dans ce navigateur : vous pouvez fermer la page et y revenir.`);
+  document.title = $("#h1").textContent = tr("DFO stock assessment output YAML/CSV generator", "Générateur YAML/CSV des résultats d'évaluation de stock du MPO");
+  $("#saved").textContent = savedMessage();
+  $("#btn-load").textContent = tr("Load existing YAML file", "Charger un fichier YAML existant");
+  $("#btn-template").textContent = tr("Download YAML template", "Télécharger un modèle YAML");
+  $("#btn-example").textContent = tr("Open example in a new tab", "Ouvrir l'exemple dans un nouvel onglet");
+  $("#btn-example").href = "?example&lang=" + LANG;
+  $("#btn-reset").textContent = tr("Start over", "Recommencer");
+  $("#intro").innerHTML = tr(
+    `Stock assessment output data are submitted as two files: <code>assessment.yaml</code>, which describes the assessment and its
+    time series, and a CSV with the time series values.
+    <ol class="steps">
+      <li>Fill in this form. Required fields are marked <span class="req">*</span>. Your draft is saved in this browser.</li>
+      <li>Download <code>assessment.yaml</code> and the blank CSV from the panel on the right.</li>
+      <li>Fill in the CSV (one row per year) and put both files in a folder named after the assessment.</li>
+    </ol>
+    The ${link(DICTIONARY, "column dictionary")} describes each CSV column.
+    Prefer editing YAML directly? <button class="linkbtn" data-act="template">Download a template</button> with every field
+    and its options, then use <b>Load existing YAML file</b> to check it.`,
+    `Les données issues d'une évaluation de stock sont soumises en deux fichiers : <code>assessment.yaml</code>, qui décrit l'évaluation et
+    ses séries chronologiques, et un CSV contenant les valeurs des séries.
+    <ol class="steps">
+      <li>Remplissez ce formulaire. Les champs obligatoires sont marqués <span class="req">*</span>. Votre brouillon est enregistré dans ce navigateur.</li>
+      <li>Téléchargez <code>assessment.yaml</code> et le CSV vide à partir du panneau de droite.</li>
+      <li>Remplissez le CSV (une ligne par année) et placez les deux fichiers dans un dossier nommé d'après l'évaluation.</li>
+    </ol>
+    Le ${link(DICTIONARY, "dictionnaire des colonnes")} (en anglais) décrit chaque colonne du CSV.
+    Vous préférez modifier le YAML directement? <button class="linkbtn" data-act="template">Téléchargez un modèle</button> avec chaque
+    champ et ses options, puis utilisez <b>Charger un fichier YAML existant</b> pour le vérifier.`);
 }
-function render() { fillUnits(); renderChrome(); renderForm(); renderSide(); }
+
+function render() {
+  fillUnits();
+  renderChrome();
+  renderForm();
+  renderSide();
+}
+// Re-render without jumping the page.
+function rerender() {
+  const y = window.scrollY;
+  render();
+  window.scrollTo(0, y);
+}
 
 // ---------------------------------------------------------------------------
 // Events
 // ---------------------------------------------------------------------------
+
+// Typing, ticking or choosing in an input with data-b updates `state`.
 function onEdit(e) {
   const t = e.target;
   // Checkboxes and radios are handled on "change", everything else on "input".
   if ((t.type === "checkbox" || t.type === "radio") !== (e.type === "change")) return;
-  const p = t.dataset.b;
-  if (!p) return;
+  const path = t.dataset.b;
+  if (!path) return;
   if (t.type === "radio" && !t.checked) return;
-  const unitsOf = p.match(/^metrics\.(\w+)\.f\.units$/);
-  const old = unitsOf && get(p);
-  set(p, t.type === "checkbox" ? t.checked : t.value);
-  // References that were following this series' units keep following them.
-  if (unitsOf) for (const m of chosen()) {
-    if (unitSource(m.id) === unitsOf[1] && S.metrics[m.id].f.units === old) S.metrics[m.id].f.units = t.value;
+
+  const unitsOf = path.match(/^metrics\.(\w+)\.f\.units$/)?.[1];
+  const oldUnits = unitsOf && getPath(path);
+  setPath(path, t.type === "checkbox" ? t.checked : t.value);
+
+  if (path === "hasComp" && t.value === "yes" && !state.comps.length) state.comps.push({ id: "", en: "", fr: "" });
+  const comp = path.match(/^comps\.(\d+)\.(id|en)$/);
+  if (comp) {
+    const hint = $(`#comp-hint-${comp[1]}`);
+    if (hint) hint.innerHTML = componentIdHint(state.comps[+comp[1]]);
+  }
+  // Metrics that were following this series' units keep following them.
+  if (unitsOf) {
+    for (const m of tickedMetrics()) {
+      if (unitsFollow(m.id) === unitsOf && metricState(m.id).f.units === oldUnits) metricState(m.id).f.units = t.value;
+    }
   }
   save();
-  // Structural changes re-render the form; typing only refreshes the side panel.
-  if (t.type === "checkbox" || t.type === "radio" || t.tagName === "SELECT") {
-    const y = window.scrollY; render(); window.scrollTo(0, y);
-  } else renderSide();
+  // Choices can change what's shown, so they redraw the form; typing only refreshes the side panel.
+  if (t.type === "checkbox" || t.type === "radio" || t.tagName === "SELECT") rerender();
+  else renderSide();
 }
 document.addEventListener("input", onEdit);
 document.addEventListener("change", onEdit);
@@ -875,242 +1685,329 @@ document.addEventListener("change", onEdit);
 function download(name, text, type = "text/yaml") {
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([text], { type }));
-  a.download = name; a.click();
+  a.download = name;
+  a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+// Copies text, and says "Copied" on the button for a moment.
+function copy(text, button, label) {
+  navigator.clipboard?.writeText(text).then(() => {
+    button.textContent = tr("Copied", "Copié");
+    setTimeout(() => button.textContent = label, 1200);
+  });
 }
 
 document.addEventListener("click", e => {
-  const go = e.target.closest("[data-go]");
-  if (go) {
-    const el = document.getElementById("f-" + go.dataset.go) || document.querySelector(`[name="${go.dataset.go}"]`);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-      el.focus({ preventScroll: true });
-      el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
-    }
-    return;
-  }
-  const lb = e.target.closest("[data-lang]");
-  if (lb) {
-    LANG = lb.dataset.lang;
+  const go = e.target.closest("[data-go]");       // a to-do item: jump to its field
+  if (go) return goToField(go.dataset.go);
+  const sec = e.target.closest("[data-sec]");     // a to-do section: jump to its card
+  if (sec) return document.getElementById("sec-" + sec.dataset.sec)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const lang = e.target.closest("[data-lang]");   // EN / FR
+  if (lang) {
+    LANG = lang.dataset.lang;
     try { localStorage.setItem(LANG_KEY, LANG); } catch {}
-    const y = window.scrollY; render(); window.scrollTo(0, y);
-    return;
+    return rerender();
   }
-  const b = e.target.closest("[data-act]");
-  if (!b) return;
-  const act = b.dataset.act;
-  if (act === "load") { $("#file").click(); return; }
-  if (act === "dismiss-load") { loadErrors = null; renderSide(); return; }
-  if (act === "add-pub") S.pubs.push(blankPub());
-  if (act === "rm-pub") S.pubs.splice(+b.dataset.i, 1);
-  if (act === "add-author") S.pubs[+b.dataset.p].authors.push(blankAuthor());
-  if (act === "rm-author") S.pubs[+b.dataset.p].authors.splice(+b.dataset.i, 1);
-  if (act === "add-comp") S.comps.push({ id: "", en: "", fr: "" });
-  if (act === "rm-comp") S.comps.splice(+b.dataset.i, 1);
-  if (act === "download") { download("assessment.yaml", yaml()); return; }
-  if (act === "copy") {
-    navigator.clipboard?.writeText(yaml()).then(() => { b.textContent = L("Copied", "Copié"); setTimeout(() => b.textContent = L("Copy", "Copier"), 1200); });
-    return;
-  }
-  if (act === "csv") {
-    const c = csvColumns();
-    download("stock_timeseries.csv", c.stock.join(",") + "\n", "text/csv");
-    if (c.comp) setTimeout(() => download("component_timeseries.csv", c.comp.join(",") + "\n", "text/csv"), 300);
-    return;
-  }
-  if (act === "reset") {
-    if (!confirm(L("Clear the form and start a new assessment? Your name and email are kept.",
-      "Effacer le formulaire et commencer une nouvelle évaluation? Votre nom et votre courriel sont conservés."))) return;
-    S = blank(); METRICS.forEach(m => S.metrics[m.id] = { on: false, f: {}, ratios: {} });
-  }
-  if (act === "example") {
-    if (hasDraft() && !confirm(L("Replace your draft with the example? What you've entered will be lost.",
-      "Remplacer votre brouillon par l'exemple? Ce que vous avez saisi sera perdu."))) return;
-    S = example();
-  }
-  save(); render();
+  const button = e.target.closest("[data-act]");
+  if (button) onAction(button.dataset.act, button);
 });
 
-// True if the form holds anything beyond a blank form or the example (your name,
-// email and date don't count, since they're kept on "Start over" anyway).
-function hasDraftOf(s) {
-  const fresh = blank();
-  METRICS.forEach(m => fresh.metrics[m.id] = { on: false, f: {}, ratios: {} });
-  const strip = x => JSON.stringify({ ...x, me: null });
-  return strip(s) !== strip(fresh) && strip(s) !== strip(example());
+function goToField(path) {
+  const el = document.getElementById("f-" + path) || document.querySelector(`[name="${path}"]`);
+  if (!el) return;
+  el.scrollIntoView({ behavior: "smooth", block: "center" });
+  el.focus({ preventScroll: true });
+  el.classList.remove("flash");
+  void el.offsetWidth; // restart the animation
+  el.classList.add("flash");
 }
-const hasDraft = () => hasDraftOf(S);
 
-function example() {
-  const s = blank();
+// What each data-act button does. Actions that change the form end with save and redraw.
+function onAction(act, button) {
+  const i = +button.dataset.i, p = +button.dataset.p;
+  switch (act) {
+    // Actions that don't change the form
+    case "load": $("#file").click(); return;
+    case "template": download("assessment.yaml", buildTemplate()); return;
+    case "download": download("assessment.yaml", buildYaml()); return;
+    case "copy": copy(buildYaml(), button, tr("Copy", "Copier")); return;
+    case "copy-cols": {
+      const c = csvColumns();
+      copy(c.stock.join(",") + (c.comp ? "\n" + c.comp.join(",") : ""), button, tr("Copy column names", "Copier les noms de colonnes"));
+      return;
+    }
+    case "csv": {
+      const c = csvColumns();
+      download("stock_timeseries.csv", c.stock.join(",") + "\n", "text/csv");
+      if (c.comp) setTimeout(() => download("component_timeseries.csv", c.comp.join(",") + "\n", "text/csv"), 300);
+      return;
+    }
+    case "dismiss-load": loadErrors = null; renderSide(); return;
+
+    // Actions that change the form
+    case "add-pub": state.pubs.push(blankPub()); break;
+    case "rm-pub": state.pubs.splice(i, 1); break;
+    case "add-author": state.pubs[p].authors.push(blankAuthor()); break;
+    case "rm-author": state.pubs[p].authors.splice(i, 1); break;
+    case "add-comp": state.comps.push({ id: "", en: "", fr: "" }); break;
+    case "rm-comp": state.comps.splice(i, 1); break;
+    case "unlock-units": unlockedUnits.add(button.dataset.i); break;
+    case "reset":
+      if (!confirm(tr("Clear the form and start a new assessment? Your name and email are kept.",
+                      "Effacer le formulaire et commencer une nouvelle évaluation? Votre nom et votre courriel sont conservés."))) return;
+      state = freshState();
+      break;
+  }
+  save();
+  rerender();
+}
+
+// ---------------------------------------------------------------------------
+// The example (?example in the URL, or "Open example in a new tab")
+// ---------------------------------------------------------------------------
+function exampleState() {
+  const s = freshState();
   Object.assign(s, {
     me: { name: s.me.name || "Jane Doe", email: s.me.email || "jane.doe@dfo-mpo.gc.ca", date: today() },
-    year_assessed: "2024", assessment_type: "full",
-    stock: { name: { en: "Example stock", fr: "Stock exemple" },
+    year_assessed: "2024",
+    assessment_type: "full",
+    stock: {
+      name: { en: "Example stock", fr: "Stock exemple" },
       species: { scientific: "Gadus morhua", en: "Atlantic cod", fr: "Morue franche", aphia_id: "126436" },
-      area: { en: "NAFO 4X5Y", fr: "OPANO 4X5Y" }, region: "maritimes", management: "dfo",
-      fish_stock_provisions: "yes", in_sustainability_survey: "yes", ram_legacy_id: "DFO-MAR-EXAMPLE" },
-    method: { type: "age_structured", software: "ss3", notes: "" },
+      area: { en: "NAFO 4X5Y", fr: "OPANO 4X5Y" },
+      region: "maritimes", management: "dfo",
+      fish_stock_provisions: "yes", in_sustainability_survey: "yes", ram_legacy_id: "DFO-MAR-EXAMPLE",
+    },
+    method: { type: "age_structured", software: "ss3", notes: "", software_notes: "" },
     meeting: { date: "2024-05-09", url: "https://csas-sccs.example/meetings/placeholder", csas_process: "https://dmapps/en/csas-sccs/processes/0/view/" },
     pubs: [
-      { series: "sar", number: "2025/001", year: "2025", url: "https://csas-sccs.example/publications/placeholder", doi: "https://doi.org/10.xxxx/placeholder",
-        title: { en: "Stock Assessment of an Example Stock in 2024", fr: "Évaluation d'un stock exemple en 2024" }, authors: [blankAuthor()] },
-      { series: "resdoc", number: "2025/010", year: "2025", url: "", doi: "",
+      { series: "fsar", number: "2025/001", year: "2025", url: "https://csas-sccs.example/publications/placeholder", doi: "https://doi.org/10.xxxx/placeholder",
+        title: { en: "Stock Assessment of an Example Stock in 2024", fr: "Évaluation d'un stock exemple en 2024" },
+        authors: [{ given: "", family: "DFO", orcid: "" }] },
+      { series: "resdoc", number: "2025/010", year: "2025", url: "https://csas-sccs.example/publications/placeholder-resdoc", doi: "",
         title: { en: "Assessment Model for an Example Stock in 2024", fr: "Modèle d'évaluation d'un stock exemple en 2024" },
         authors: [{ given: "Jane", family: "Doe", orcid: "0000-0000-0000-0000" }, { given: "Alex", family: "Roe", orcid: "" }] },
     ],
-    hasBounds: "yes", interval: { level: "0.95", type: "confidence" },
+    hasBounds: "yes",
+    interval: { level: "0.95", type: "confidence" },
   });
-  METRICS.forEach(m => s.metrics[m.id] = { on: false, f: {}, ratios: {} });
-  const turn = (id, f, ci = false, ratios = {}) => s.metrics[id] = { on: true, f, ci, ratios };
-  turn("catch", { units: "t", notes: "Bounds reflect uncertainty in recreational removals." }, true);
-  turn("total_allowable_catch", { units: "t" });
-  turn("msy", { units: "t" });
-  turn("spawning_stock", { units: "t" }, true, { limit_reference: true, b_msy: true });
-  turn("limit_reference", { units: "t", basis: "b_msy", multiplier: "0.4", notes: "B_MSY re-estimated for the post-1990 productivity regime." });
-  turn("upper_stock_reference", { units: "t", basis: "b_msy", multiplier: "0.8" });
-  turn("fishing_pressure", { units: "1/yr", type: "average", min_age: "5", max_age: "8" }, true, { f_msy: true });
-  turn("removal_reference", { units: "1/yr", basis: "f_msy", multiplier: "1" });
-  turn("natural_mortality", { units: "1/yr" });
-  turn("recruitment", { units: "millions", age: "1" }, true);
+  const tick = (id, f, ci = false, ratios = {}) => s.metrics[id] = { on: true, f, ci, ratios };
+  tick("catch", { units: "t", notes: "Bounds reflect uncertainty in recreational removals." }, true);
+  tick("total_allowable_catch", { units: "t" });
+  tick("msy", { units: "t" }, true);
+  tick("spawning_stock", { units: "t" }, true, { limit_reference: true, b_msy: true });
+  tick("limit_reference", { units: "t", basis: "b_msy", multiplier: "0.4", notes: "B_MSY re-estimated for the post-1990 productivity regime." });
+  tick("upper_stock_reference", { units: "t", basis: "b_msy", multiplier: "0.8" });
+  tick("fishing_pressure", { units: "1/yr", type: "average", min_age: "5", max_age: "8" }, true, { f_msy: true });
+  tick("removal_reference", { units: "1/yr", basis: "f_msy", multiplier: "1" });
+  tick("natural_mortality", { units: "1/yr" });
+  tick("recruitment", { units: "millions", age: "1" }, true);
   return s;
 }
 
-// ---------------------------------------------------------------------------
-// Load an existing assessment.yaml. The file is read into the form, written out
-// again, and the two compared: a file is loaded only if the form holds all of it
-// exactly and it has nothing left to fill in. Otherwise nothing changes.
-// ---------------------------------------------------------------------------
-let loadErrors = null; // { name, list } after a rejected file
+// True if the form holds anything beyond a blank form or the example (your name,
+// email and date don't count, since they're kept on "Start over" anyway).
+function hasDraft(s) {
+  const withoutMe = x => JSON.stringify({ ...x, me: null });
+  return withoutMe(s) !== withoutMe(freshState()) && withoutMe(s) !== withoutMe(exampleState());
+}
 
-// Form state from parsed YAML. Anything that doesn't fit shows up in the round trip.
-function fromYaml(y) {
-  const s = blank();
-  METRICS.forEach(m => s.metrics[m.id] = { on: false, f: {}, ratios: {} });
-  const str = v => v == null ? "" : typeof v === "object" ? JSON.stringify(v) : String(v);
-  const obj = v => v && typeof v === "object" && !Array.isArray(v) ? v : {};
-  const yn = v => v === true ? "yes" : v === false ? "no" : str(v);
-  const en_fr = v => ({ en: str(obj(v).en), fr: str(obj(v).fr) });
-  const eb = obj(y.entered_by), st = obj(y.stock), sp = obj(st.species);
-  s.me = { name: str(eb.name), email: str(eb.email), date: str(eb.date) };
-  s.year_assessed = str(y.year_assessed);
-  s.assessment_type = str(y.assessment_type);
-  s.stock = { name: en_fr(st.name), area: en_fr(st.area),
-    species: { scientific: str(sp.scientific), en: str(sp.en), fr: str(sp.fr), aphia_id: str(sp.aphia_id) },
-    region: str(st.region), management: str(st.management), ram_legacy_id: str(st.ram_legacy_id),
-    fish_stock_provisions: yn(st.fish_stock_provisions), in_sustainability_survey: yn(st.in_sustainability_survey) };
+// ---------------------------------------------------------------------------
+// Loading an existing assessment.yaml
+//
+// The file is read into the form, written out again, and the two compared: it's
+// loaded only if the form holds all of it exactly. Otherwise nothing changes and
+// the problems are listed. A file can be unfinished (e.g. a downloaded draft or
+// the template); what's left to fill in then shows in the to-do list.
+// ---------------------------------------------------------------------------
+let loadErrors = null; // { name, list } after a file was rejected
+
+// Removes null values, then mappings and list items left empty, so a blank field or
+// block means the same as a missing one (as prune_blank() in ../fsar-data/R/fsar-data.R).
+function pruneBlank(x) {
+  const isEmpty = v => v == null || (typeof v === "object" && Object.keys(v).length === 0);
+  if (Array.isArray(x)) return x.map(pruneBlank).filter(v => !isEmpty(v));
+  if (x && typeof x === "object") {
+    return Object.fromEntries(Object.entries(x).map(([k, v]) => [k, pruneBlank(v)]).filter(([, v]) => !isEmpty(v)));
+  }
+  return x;
+}
+
+// Form state from parsed YAML. Anything that doesn't fit shows up in the comparison.
+function stateFromYaml(y) {
+  const s = freshState();
+  const text = v => v == null ? "" : typeof v === "object" ? JSON.stringify(v) : String(v);
+  const mapping = v => v && typeof v === "object" && !Array.isArray(v) ? v : {};
+  const list = v => Array.isArray(v) ? v : [];
+  const yesNoText = v => v === true ? "yes" : v === false ? "no" : text(v);
+  const enFr = v => ({ en: text(mapping(v).en), fr: text(mapping(v).fr) });
+
+  const enteredBy = mapping(y.entered_by), stock = mapping(y.stock), species = mapping(stock.species);
+  s.me = { name: text(enteredBy.name), email: text(enteredBy.email), date: text(enteredBy.date) };
+  s.year_assessed = text(y.year_assessed);
+  s.assessment_type = text(y.assessment_type);
+  s.stock = {
+    name: enFr(stock.name),
+    area: enFr(stock.area),
+    species: { scientific: text(species.scientific), en: text(species.en), fr: text(species.fr), aphia_id: text(species.aphia_id) },
+    region: text(stock.region), management: text(stock.management), ram_legacy_id: text(stock.ram_legacy_id),
+    fish_stock_provisions: yesNoText(stock.fish_stock_provisions),
+    in_sustainability_survey: yesNoText(stock.in_sustainability_survey),
+  };
   s.hasComp = "components" in y ? "yes" : "no";
-  s.comps = Object.entries(obj(y.components)).map(([id, c]) => ({ id, ...en_fr(obj(c).name) }));
-  const me = obj(y.method), mt = obj(y.meeting);
-  s.method = { type: str(me.type), software: str(me.software), notes: str(me.notes) };
-  s.meeting = { date: str(mt.date), url: str(mt.url), csas_process: str(mt.csas_process) };
-  s.pubs = (Array.isArray(y.publications) ? y.publications : []).map(p => {
-    p = obj(p);
-    const au = (Array.isArray(p.authors) ? p.authors : []).map(a => ({ given: str(obj(a).given), family: str(obj(a).family), orcid: str(obj(a).orcid) }));
-    return { series: str(p.series), number: str(p.number), year: str(p.year), url: str(p.url), doi: str(p.doi),
-      title: en_fr(p.title), authors: au.length ? au : [blankAuthor()] };
+  s.comps = Object.entries(mapping(y.components)).map(([id, c]) => ({ id: id === "?" ? "" : id, ...enFr(mapping(c).name) }));
+
+  const method = mapping(y.method), meeting = mapping(y.meeting);
+  s.method = { type: text(method.type), software: text(method.software), notes: text(method.notes),
+    software_notes: text(method.software_notes) };
+  s.meeting = { date: text(meeting.date), url: text(meeting.url), csas_process: text(meeting.csas_process) };
+  s.pubs = list(y.publications).map(p => {
+    p = mapping(p);
+    const authors = list(p.authors).map(a => ({ given: text(mapping(a).given), family: text(mapping(a).family), orcid: text(mapping(a).orcid) }));
+    return { series: text(p.series), number: text(p.number), year: text(p.year), url: text(p.url), doi: text(p.doi),
+      title: enFr(p.title), authors: authors.length ? authors : [blankAuthor()] };
   });
   if (!s.pubs.length) s.pubs = [blankPub()];
+
   s.hasBounds = "interval" in y ? "yes" : "no";
-  if (s.hasBounds === "yes") s.interval = { level: str(obj(y.interval).level), type: str(obj(y.interval).type) };
+  if (s.hasBounds === "yes") s.interval = { level: text(mapping(y.interval).level), type: text(mapping(y.interval).type) };
+
   const unknown = [];
-  for (const [id, v] of Object.entries(obj(y.metrics))) {
-    if (!M[id]) { unknown.push(id); continue; }
-    const md = obj(v), f = {};
-    for (const [k, x] of Object.entries(md)) {
+  for (const [id, entry] of Object.entries(mapping(y.metrics))) {
+    if (!METRIC_BY_ID[id]) { unknown.push(id); continue; }
+    const fields = {};
+    for (const [k, v] of Object.entries(mapping(entry))) {
       if (k === "bounds" || k === "ratios") continue;
-      if (k === "period" && Array.isArray(x) && x.length === 2) { f.period_from = str(x[0]); f.period_to = str(x[1]); }
-      else f[k] = str(x);
+      if (k === "period" && Array.isArray(v) && v.length === 2) {
+        fields.period_from = text(v[0]);
+        fields.period_to = text(v[1]);
+      } else {
+        fields[k] = text(v);
+      }
     }
-    const r = {};
-    (Array.isArray(md.ratios) ? md.ratios : []).forEach(den => r[str(den)] = true);
-    s.metrics[id] = { on: true, f, ci: md.bounds === true, ratios: r };
+    const ratios = {};
+    for (const den of list(mapping(entry).ratios)) ratios[text(den)] = true;
+    s.metrics[id] = { on: true, f: fields, ci: mapping(entry).bounds === true, ratios };
   }
   return { s, unknown };
 }
 
 // Codes that aren't in the vocabulary (the form's dropdowns can't show them).
-function vocabErrors() {
+function codeErrors() {
   const out = [];
-  const codes = k => V[k].map(([c]) => c);
-  const check = (path, v, ok) => {
-    if (!blankish(v) && !ok.includes(String(v))) out.push(L(`\`${path}: ${v}\` isn't allowed; use one of: ${ok.join(", ")}`,
-      `« ${path} : ${v} » n'est pas permis; utilisez l'un de : ${ok.join(", ")}`));
+  const check = (path, value, allowed) => {
+    if (!isBlank(value) && !allowed.includes(String(value))) {
+      out.push(tr(`\`${path}: ${value}\` isn't allowed; use one of: ${allowed.join(", ")}`,
+        `« ${path} : ${value} » n'est pas permis; utilisez l'un de : ${allowed.join(", ")}`));
+    }
   };
-  check("assessment_type", S.assessment_type, codes("atype"));
-  check("stock.region", S.stock.region, codes("region"));
-  check("stock.management", S.stock.management, codes("management"));
-  check("method.type", S.method.type, codes("method"));
-  check("method.software", S.method.software, codes("software"));
-  S.pubs.forEach((p, i) => check(`publications[${i + 1}].series`, p.series, codes("series")));
-  if (S.hasBounds === "yes") {
-    check("interval.level", S.interval.level, LEVELS);
-    check("interval.type", S.interval.type, codes("interval"));
+  check("assessment_type", state.assessment_type, codesOf(VALUES.assessment_type));
+  check("stock.region", state.stock.region, codesOf(VALUES.region));
+  check("stock.management", state.stock.management, codesOf(VALUES.management));
+  check("method.type", state.method.type, codesOf(VALUES.method));
+  check("method.software", state.method.software, codesOf(VALUES.software));
+  state.pubs.forEach((p, i) => check(`publications[${i + 1}].series`, p.series, codesOf(VALUES.series)));
+  if (state.hasBounds === "yes") {
+    check("interval.level", state.interval.level, LEVELS);
+    check("interval.type", state.interval.type, codesOf(VALUES.interval));
   }
-  for (const m of chosen()) {
-    const f = S.metrics[m.id].f, p = `metrics.${m.id}.`;
-    check(p + "units", f.units, UNITS.filter(u => m.dims.includes(u.dim)).map(u => u.id));
-    if (MF[m.id].basis) check(p + "basis", f.basis, m.panel === "fishing_pressure" ? REMOVAL_BASIS : STOCK_BASIS);
-    if (MF[m.id].type) check(p + "type", f.type, codes("type"));
+  for (const m of tickedMetrics()) {
+    const f = metricState(m.id).f, p = `metrics.${m.id}.`;
+    check(p + "units", f.units, unitsFor(m).map(u => u.id));
+    if (METRIC_FIELDS[m.id].basis) check(p + "basis", f.basis, basesFor(m));
+    if (METRIC_FIELDS[m.id].type) check(p + "type", f.type, codesOf(VALUES.type));
   }
   return out;
 }
 
-// Differences between the uploaded YAML (a) and the form's YAML (b), as messages.
-function roundTrip(a, b, path = "", out = []) {
-  const isObj = v => v !== null && typeof v === "object";
-  if (isObj(a) && isObj(b) && Array.isArray(a) === Array.isArray(b)) {
-    if (/(^|\.)ratios$/.test(path)) { a = a.map(String).sort(); b = b.map(String).sort(); } // order doesn't matter
+// Differences between the loaded YAML (a) and the form's YAML (b), as messages.
+function compareYaml(a, b, path = "", out = []) {
+  const isObject = v => v !== null && typeof v === "object";
+  if (isObject(a) && isObject(b) && Array.isArray(a) === Array.isArray(b)) {
+    if (/(^|\.)ratios$/.test(path)) { // order doesn't matter
+      a = a.map(String).sort();
+      b = b.map(String).sort();
+    }
     for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) {
       const p = Array.isArray(a) ? `${path}[${+k + 1}]` : path ? `${path}.${k}` : k;
-      if (!(k in b)) { if (a[k] != null) out.push(L(`\`${p}\`: the form can't hold this`, `« ${p} » : le formulaire ne peut pas le contenir`)); }
-      else if (!(k in a) || a[k] == null) {
-        out.push(/\.bounds$/.test(p)
-          ? L(`\`${p}\` is missing: with \`interval:\` set, the form gives every stock size, fishing pressure and recruitment series (and msy) bounds`,
-              `« ${p} » manque : avec « interval: », le formulaire donne des bornes à chaque série de taille du stock, de pression de pêche et de recrutement (et au RMD)`)
-          : L(`\`${p}\` is missing (the form would write ${JSON.stringify(b[k])})`, `« ${p} » manque (le formulaire écrirait ${JSON.stringify(b[k])})`));
-      } else roundTrip(a[k], b[k], p, out);
+      const inA = k in a && a[k] != null;
+      if (!(k in b)) {
+        if (a[k] != null) out.push(tr(`\`${p}\`: the form can't hold this`, `« ${p} » : le formulaire ne peut pas le contenir`));
+      } else if (!inA && b[k] == null) {
+        continue; // both blank
+      } else if (!inA) {
+        out.push(tr(`\`${p}\` is missing (the form would write ${JSON.stringify(b[k])})`,
+                    `« ${p} » manque (le formulaire écrirait ${JSON.stringify(b[k])})`));
+      } else {
+        compareYaml(a[k], b[k], p, out);
+      }
     }
-  } else if (isObj(a) || isObj(b) || String(a).trim() !== String(b).trim()) {
-    out.push(L(`\`${path}: ${JSON.stringify(a)}\` doesn't fit the form (it would write ${JSON.stringify(b)})`,
+  } else if (isObject(a) || isObject(b) || String(a).trim() !== String(b).trim()) {
+    out.push(tr(`\`${path}: ${JSON.stringify(a)}\` doesn't fit the form (it would write ${JSON.stringify(b)})`,
       `« ${path} : ${JSON.stringify(a)} » ne convient pas au formulaire (il écrirait ${JSON.stringify(b)})`));
   }
   return out;
 }
 
-// Returns problems with the file; if there are none, S holds the loaded file.
+// Reads a YAML file into the form. Returns its problems; if there are none, `state`
+// now holds the file.
 function loadYaml(text) {
-  if (typeof jsyaml === "undefined") return [L("The YAML reader didn't load. Check your internet connection and reload the page.",
-    "Le lecteur YAML n'a pas été chargé. Vérifiez votre connexion Internet et rechargez la page.")];
-  let y;
+  if (typeof jsyaml === "undefined") {
+    return [tr("The YAML reader didn't load. Check your internet connection and reload the page.",
+               "Le lecteur YAML n'a pas été chargé. Vérifiez votre connexion Internet et rechargez la page.")];
+  }
   // CORE_SCHEMA keeps dates as text (as the form has them).
-  try { y = jsyaml.load(text, { schema: jsyaml.CORE_SCHEMA }); }
-  catch (e) { return [L("It isn't valid YAML: ", "Ce n'est pas du YAML valide : ") + e.message]; }
-  if (!y || typeof y !== "object" || Array.isArray(y)) return [L("It doesn't look like an assessment.yaml.", "Cela ne ressemble pas à un assessment.yaml.")];
-  const { s, unknown } = fromYaml(y);
-  const old = S;
-  S = s;
-  const out = unknown.map(id => L(`\`metrics.${id}\` isn't a metric the form knows`, `« metrics.${id} » n'est pas une mesure connue du formulaire`));
-  out.push(...vocabErrors());
+  const parse = t => pruneBlank(jsyaml.load(t, { schema: jsyaml.CORE_SCHEMA }));
+  let y;
+  try { y = parse(text); }
+  catch (e) { return [tr("It isn't valid YAML: ", "Ce n'est pas du YAML valide : ") + e.message]; }
+  if (!y || typeof y !== "object" || Array.isArray(y)) {
+    return [tr("It doesn't look like an assessment.yaml.", "Cela ne ressemble pas à un assessment.yaml.")];
+  }
+
+  const { s, unknown } = stateFromYaml(y);
+  const old = state;
+  state = s;
+  const out = unknown.map(id => tr(`\`metrics.${id}\` isn't a metric the form knows`, `« metrics.${id} » n'est pas une mesure connue du formulaire`));
+  out.push(...codeErrors());
   const known = { ...y }; // unknown metrics are reported above
-  if (unknown.length) { known.metrics = { ...y.metrics }; unknown.forEach(id => delete known.metrics[id]); }
-  out.push(...roundTrip(known, jsyaml.load(yaml(), { schema: jsyaml.CORE_SCHEMA })));
-  S.me.date = today(); // entered now
-  out.push(...issues().map(([, msg]) => msg));
-  if (out.length) S = old;
+  if (unknown.length) {
+    known.metrics = { ...y.metrics };
+    unknown.forEach(id => delete known.metrics[id]);
+  }
+  // entered_by.date is reset to today, so the file's date (or none) is not compared.
+  const written = parse(buildYaml());
+  for (const doc of [known, written]) {
+    if (doc.entered_by && typeof doc.entered_by === "object") {
+      doc.entered_by = { ...doc.entered_by };
+      delete doc.entered_by.date;
+      if (!Object.keys(doc.entered_by).length) delete doc.entered_by;
+    }
+  }
+  out.push(...compareYaml(known, written));
+  state.me.date = today(); // entered now
+  if (out.length) state = old;
   return [...new Set(out)];
 }
 
 async function onLoadFile(file) {
-  const old = S;
+  const old = state;
   const problems = loadYaml(await file.text());
-  if (problems.length) loadErrors = { name: file.name, list: problems };
-  else if (hasDraftOf(old) && !confirm(L(`Replace your draft with ${file.name}? What you've entered will be lost.`,
-    `Remplacer votre brouillon par ${file.name}? Ce que vous avez saisi sera perdu.`))) S = old;
-  else { loadErrors = null; save(); }
+  if (problems.length) {
+    loadErrors = { name: file.name, list: problems };
+  } else if (hasDraft(old) && !confirm(tr(`Replace your draft with ${file.name}? What you've entered will be lost.`,
+                                          `Remplacer votre brouillon par ${file.name}? Ce que vous avez saisi sera perdu.`))) {
+    state = old;
+  } else {
+    loadErrors = null;
+    save();
+  }
   render();
-  if (!problems.length && S !== old) $("#saved").textContent = L(`Loaded ${file.name}`, `${file.name} chargé`);
+  if (!problems.length && state !== old) {
+    const n = todoItems().length;
+    savedMessage = () => tr(`Loaded ${file.name}`, `${file.name} chargé`) + (n ? tr(` · ${n} left to fill in`, ` · ${n} à remplir`) : "");
+    $("#saved").textContent = savedMessage();
+  }
 }
 $("#file").addEventListener("change", e => {
   const file = e.target.files[0];
@@ -1118,8 +2015,11 @@ $("#file").addEventListener("change", e => {
   if (file) onLoadFile(file);
 });
 
+// ---------------------------------------------------------------------------
+// Start
+// ---------------------------------------------------------------------------
 const params = new URLSearchParams(location.search);
-if (params.has("example")) S = example();
+if (EXAMPLE_MODE) state = exampleState();
 if (["en", "fr"].includes(params.get("lang"))) LANG = params.get("lang");
 render();
 </script>
