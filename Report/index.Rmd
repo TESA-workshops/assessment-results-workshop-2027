@@ -1,14 +1,19 @@
 ---
 english_title: |
-  Title Here (*Latin Species Name*)
+  Proceedings of the Technical Expertise in Stock
+Assessment (TESA) National Workshop on 'Developing an open database of Canadian fisheries stock assessment outputs', 12-14 January 2027,
+Halifax, NS
 french_title: |
   Titre ici (*Nom latin de l'espèce*)
 
 author: |
-  First M. Last^1^,
-  Alex B. Smith^2^,
-  Suzanne A. Tremblay^3^, and
-  Jean C. Deschoses^4^
+  Catarina Wor^1^,
+  Jacob Burbank^2^,
+  Dan  Ricard^2^, 
+  Zhipens Wu^1^,
+  Sean Anderson^1^,
+  Tom Bird^3^, and
+  Robyn Forrest^1^
 
 english_address: |
   ^1^Pacific Biological Station\
@@ -21,12 +26,17 @@ english_address: |
      343 Université Avenue\
      Moncton, New Brunswick, E1C 9B6, Canada\
   \
-  ^3^Northwest Atlantic Fisheries Centre\
+  ^3^Institute of Ocean Sciences
+     Fisheries and Oceans Canada
+     9860 West Saanich Road, P.O. Box 6000
+    Sidney, BC V8L 4B2
+  \
+  ^4^Northwest Atlantic Fisheries Centre\
      Fisheries and Oceans Canada\
      80 E. White Hills Rd., P.O. Box 5667\
      St. John's, Newfoundland and Labrador, A1C 5X1, Canada\
   \
-  ^4^Maurice-Lamontagne Institute\
+  ^5^Maurice-Lamontagne Institute\
      Fisheries and Oceans Canada\
      850 Rte de la Mer\
      Mont-Joli, Quebec, G5H 3Z4
@@ -41,12 +51,17 @@ french_address: |
      343 avenue Université\
      Moncton, Nouveau Brunswick, E1C 9B6, Canada\
   \
-  ^3^Centre des pêches de l'Atlantique nord-ouest\
+  ^3^Institut des sciences de la mer
+     Pêches et Océans Canada
+     9860, chemin West Saanich, C.P. 6000
+     Sidney (Colombie-Britannique) V8L 4B2
+  \
+  ^4^Centre des pêches de l'Atlantique nord-ouest\
      Pêches et Océans Canada\
      80 rue E. White Hills, Case postale 5667\
      St. John's, Terre-Neuve et Labrador, A1C 5X1, Canada\
   \
-  ^4^Institut Maurice-Lamontagne\
+  ^5^Institut Maurice-Lamontagne\
      Pêches et Océans Canada\
      850 Rte de la Mer\
      Mont-Joli, Québec, G5H 3Z4, Canada

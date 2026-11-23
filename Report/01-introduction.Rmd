@@ -2,6 +2,8 @@
 
 Introduction is not mandatory, but when available, it begins on page 1.
 
+follow the format of EAFM workshop template https://waves-vagues.dfo-mpo.gc.ca/library-bibliotheque/41336173.pdf
+
 # OTHER HEADINGS AS APPROPRIATE
 
 Research Documents explain technical information and data to support the advice. Other headings may include Methods, Results, and Discussion. These headings are optional and context dependent.
