@@ -29,48 +29,45 @@ If the stock is also reported by component (e.g. salmon CUs, herring sections or
 - Units go in `assessment.yaml` (the form asks for them), not in the column name. A column's units also apply to its `_lower` and `_upper` columns.
 - Reference points are given every year. If one doesn't change, repeat the same value down the column. If it does, change it in the years it changes.
 
-In the tables below, **series** are the main lines in each panel of the FSAR figure and **context** columns are drawn alongside them.
-
 ## Catch
 
-| Column | Label | Role | Units | Description |
-|---|---|---|---|---|
-| `catch` | Catch | series | mass, count | Total removals in each year. Give an interval if removals are uncertain (e.g. recreational catch). |
-| `total_allowable_catch` | TAC | context | mass, count | Total allowable catch. Never has an interval. |
-| `msy` | MSY | context | mass, count | Maximum sustainable yield, if estimated. Repeat it each year like a reference point. |
+| Column | Label | Units | Description |
+|---|---|---|---|
+| `catch` | Catch | mass, count | Total removals in each year. Give an interval if removals are uncertain (e.g. recreational catch). |
+| `total_allowable_catch` | TAC | mass, count | Total allowable catch. Never has an interval. |
+| `msy` | MSY | mass, count | Maximum sustainable yield, if estimated. Repeat it each year like a reference point. |
 
 ## Stock size
 
 Include every stock-size series the assessment estimates.
 The column name says which part of the stock it is; the units say whether it's biomass or numbers.
 
-| Column | Label | Role | Units | Description |
-|---|---|---|---|---|
-| `spawning_stock` | Spawning stock | series | mass, count | Spawning (mature) part of the stock: SSB in mass units, spawner abundance in count units. Ages can go in `min_age` / `max_age`. |
-| `total_stock` | Total stock | series | mass, count | Whole stock, above any minimum age given in `min_age`. |
-| `exploitable_stock` | Exploitable stock | series | mass, count | Part of the stock vulnerable to the fishery (e.g. snow crab exploitable biomass). Say in `notes` what it's vulnerable to, such as which fleet and when in the year. |
-| `index` | Index | series | index | Survey or fishery index of stock size, from the source named in `survey`. Use this only if status is judged from an index rather than a population model. If a model is fit to the surveys, give its estimated stock size instead. One index per assessment. |
-| `limit_reference` | LRP | reference point | same as its series | Limit reference point. `basis` and `multiplier` say what it is (e.g. 0.4 B_MSY). |
-| `upper_stock_reference` | USR | reference point | same as its series | Upper stock reference point. |
-| `target_reference` | TRP | reference point | same as its series | Target reference point. |
+| Column | Label | Units | Description |
+|---|---|---|---|
+| `spawning_stock` | Spawning stock | mass, count | Spawning (mature) part of the stock: SSB in mass units, spawner abundance in count units. Ages can go in `min_age` / `max_age`. |
+| `total_stock` | Total stock | mass, count | Whole stock, above any minimum age given in `min_age`. |
+| `exploitable_stock` | Exploitable stock | mass, count | Part of the stock vulnerable to the fishery (e.g. snow crab exploitable biomass). Say in `notes` what it's vulnerable to, such as which fleet and when in the year. |
+| `index` | Index | index | Survey or fishery index of stock size, from the source named in `survey`. Use this only if status is judged from an index rather than a population model. If a model is fit to the surveys, give its estimated stock size instead. One index per assessment. |
+| `limit_reference` | LRP | same as its series | Limit reference point. `basis` and `multiplier` say what it is (e.g. 0.4 B_MSY). |
+| `upper_stock_reference` | USR | same as its series | Upper stock reference point. |
+| `target_reference` | TRP | same as its series | Target reference point. |
 
 If you give more than one stock-size series, `applies_to` on each reference point says which one it's compared to.
-That's the series shown in the FSAR figure.
 
 ## Fishing pressure
 
-| Column | Label | Role | Units | Description |
-|---|---|---|---|---|
-| `fishing_pressure` | Fishing pressure | series | `1/yr`, `proportion` | Either instantaneous fishing mortality (F) in `1/yr`, or a harvest rate as a `proportion`. For F, `type` says how it's summarized over ages. For a harvest rate, `applies_to` says which stock-size series catch is divided by (often `exploitable_stock`). |
-| `removal_reference` | RR | reference point | same as `fishing_pressure` | Removal reference (e.g. F_MSY, F_0.1, F40%). |
-| `natural_mortality` | M | context | `1/yr` | Instantaneous natural mortality. Ages can go in `min_age` / `max_age`. |
+| Column | Label | Units | Description |
+|---|---|---|---|
+| `fishing_pressure` | Fishing pressure | `1/yr`, `proportion` | Either instantaneous fishing mortality (F) in `1/yr`, or a harvest rate as a `proportion`. For F, `type` says how it's summarized over ages. For a harvest rate, `applies_to` says which stock-size series catch is divided by (often `exploitable_stock`). |
+| `removal_reference` | RR | same as `fishing_pressure` | Removal reference point (e.g. F_MSY, F_0.1, F40%). |
+| `natural_mortality` | M | `1/yr` | Instantaneous natural mortality. Ages can go in `min_age` / `max_age`. |
 
 ## Recruitment
 
-| Column | Label | Role | Units | Description |
-|---|---|---|---|---|
-| `recruitment` | Recruitment | series | count, mass | Recruits in each year, at the age given in `age` (e.g. millions of age-1 fish). |
-| `recruitment_deviation` | Recruitment deviations | context | none | Recruitment deviations on the log scale, e.g. log(R) − log(expected R), from the stock-recruit curve or mean recruitment. Has no `units`. |
+| Column | Label | Units | Description |
+|---|---|---|---|
+| `recruitment` | Recruitment | count, mass | Recruits in each year, at the age given in `age` (e.g. millions of age-1 fish). |
+| `recruitment_deviation` | Recruitment deviations | none | Recruitment deviations on the log scale, e.g. log(R) − log(expected R), from the stock-recruit curve or mean recruitment. Has no `units`. |
 
 ## Intervals (`_lower`, `_upper`)
 
@@ -125,7 +122,7 @@ components:
       fr: Section nord
 ```
 
-The component file takes the same series and context columns as the stock file, but not reference points or `msy`, which belong to the stock.
+The component file takes the same columns as the stock file, except the reference points (`limit_reference`, `upper_stock_reference`, `target_reference`, `removal_reference`) and `msy`, which belong to the stock.
 Components have thresholds instead of reference points:
 
 | Column | Label | Units | Description |
