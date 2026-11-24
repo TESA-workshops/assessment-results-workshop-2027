@@ -95,6 +95,13 @@ Take the ratio and its interval from the model rather than dividing one column b
 The series and reference point usually have correlated errors, so dividing their separate intervals makes status look more uncertain than it is.
 That's why we ask for the ratios, with their intervals, as separate columns.
 
+In R, read and write the CSV in one of these ways so the `/` stays in column names and missing values are left blank:
+
+- readr: `read_csv("stock_timeseries.csv")` and `write_csv(df, "stock_timeseries.csv", na = "")`
+- base R: `read.csv("stock_timeseries.csv", check.names = FALSE)` and `write.csv(df, "stock_timeseries.csv", row.names = FALSE, na = "")`
+
+Refer to these columns with backticks, e.g. ``df$`spawning_stock/b_msy` ``.
+
 ## Components
 
 Skip this section if your stock isn't reported by component.
