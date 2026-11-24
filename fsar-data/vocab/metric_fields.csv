@@ -32,26 +32,28 @@ index,max_age,no,
 index,bounds,if,its column has _lower/_upper
 index,ratios,if,there are ratio columns for it
 index,notes,no,
+status_score,units,yes,
+status_score,notes,no,
 limit_reference,units,yes,
 limit_reference,applies_to,if,more than one stock series
-limit_reference,basis,yes,
-limit_reference,multiplier,yes,
+limit_reference,basis,if,applies_to isn't status_score
+limit_reference,multiplier,if,applies_to isn't status_score
 limit_reference,period,if,basis is mean or percentile
 limit_reference,percentile,if,basis is percentile
 limit_reference,bounds,if,its column has _lower/_upper
 limit_reference,notes,no,
 upper_stock_reference,units,yes,
 upper_stock_reference,applies_to,if,more than one stock series
-upper_stock_reference,basis,yes,
-upper_stock_reference,multiplier,yes,
+upper_stock_reference,basis,if,applies_to isn't status_score
+upper_stock_reference,multiplier,if,applies_to isn't status_score
 upper_stock_reference,period,if,basis is mean or percentile
 upper_stock_reference,percentile,if,basis is percentile
 upper_stock_reference,bounds,if,its column has _lower/_upper
 upper_stock_reference,notes,no,
 target_reference,units,yes,
 target_reference,applies_to,if,more than one stock series
-target_reference,basis,yes,
-target_reference,multiplier,yes,
+target_reference,basis,if,applies_to isn't status_score
+target_reference,multiplier,if,applies_to isn't status_score
 target_reference,period,if,basis is mean or percentile
 target_reference,percentile,if,basis is percentile
 target_reference,bounds,if,its column has _lower/_upper

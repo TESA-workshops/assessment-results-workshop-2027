@@ -48,11 +48,13 @@ Include the stock-size series the assessment estimates.
 | `total_stock` | Total stock | mass, count | Whole stock, above any minimum age given in `min_age`. |
 | `exploitable_stock` | Exploitable stock | mass, count | Part of the stock vulnerable to the fishery. Say in `notes` what it's vulnerable to, such as which fleet and when in the year. |
 | `index` | Index | index | Survey or fishery index of stock size, from the source named in `survey`. Use this only if status is judged from an index rather than a population model. If a model is fit to the surveys, give its estimated stock size instead. One index per assessment. |
+| `status_score` | Composite status score | `score` | Use this only if status is judged from a score that combines several indicators (e.g. a snow crab stock health index). Describe the scoring in `notes`. Stock file only. Has no interval or ratios. |
 | `limit_reference` | LRP | same as its series | Limit reference point. `basis` and `multiplier` say what it is (e.g. 0.4 B_MSY). |
 | `upper_stock_reference` | USR | same as its series | Upper stock reference point. |
 | `target_reference` | TRP | same as its series | Target reference point. |
 
-If you give more than one stock-size series, `applies_to` (in the YAML file) on each reference point says which one it's compared to.
+If you give more than one series in this table, `applies_to` (in the YAML file) on each reference point says which one it's compared to.
+For `status_score`, the zone boundaries are the reference points. Put the score at each boundary in the `limit_reference` and `upper_stock_reference` columns (e.g. 2 and 5), repeated each year. They take `score` units and no `basis` or `multiplier`; say how the boundaries were set in `notes`.
 
 ## Fishing pressure
 
@@ -71,7 +73,7 @@ If you give more than one stock-size series, `applies_to` (in the YAML file) on 
 
 ## Intervals (`_lower`, `_upper`)
 
-Any column except `total_allowable_catch` can have an uncertainty interval.
+Any column except `total_allowable_catch` and `status_score` can have an uncertainty interval.
 Add two columns named after it, e.g. `spawning_stock_lower` and `spawning_stock_upper`.
 
 - Give both bounds or neither, with lower ≤ value ≤ upper.
@@ -88,7 +90,7 @@ The name is the series and the denominator separated by `/`:
 - `spawning_stock/limit_reference`: spawning stock divided by the LRP
 
 The denominator is `b_msy` (for stock size), `f_msy` (for fishing pressure), or a reference point or threshold that applies to the series.
-Any stock-size series or `fishing_pressure` can have a ratio.
+Any stock-size series except `status_score`, or `fishing_pressure`, can have a ratio.
 If the series has an interval, so does the ratio (`spawning_stock/b_msy_lower`, `spawning_stock/b_msy_upper`).
 
 Take the ratio and its interval from the model rather than dividing one column by another.
@@ -169,8 +171,8 @@ Fields a metric entry can have:
 | `age` | `recruitment`, `recruitment_deviation` | Age at recruitment, a whole number. Required for `recruitment`. |
 | `type` | `fishing_pressure` | Required when units are `1/yr`: `average` (over ages), `apical` (fully selected) or `aggregate` (no age structure). |
 | `applies_to` | reference points, thresholds, `fishing_pressure` | The stock-size series it's compared to (or, for a harvest rate, that catch is divided by). Required if there's more than one stock-size series. |
-| `basis` | reference points, thresholds | What it's based on; see the codes below. Required. |
-| `multiplier` | reference points, thresholds | Required. A number, e.g. `0.4` for 0.4 B_MSY or `1` for F_MSY. |
+| `basis` | reference points, thresholds | What it's based on; see the codes below. Required unless `applies_to` is `status_score`. |
+| `multiplier` | reference points, thresholds | A number, e.g. `0.4` for 0.4 B_MSY or `1` for F_MSY. Required unless `applies_to` is `status_score`. |
 | `period` | basis `mean` or `percentile` | First and last year, e.g. `[1985, 2009]`. |
 | `percentile` | basis `percentile` | e.g. `50` for the median. |
 | `spr` | basis `f_spr` | e.g. `40` for F40%. |
@@ -193,6 +195,7 @@ Each column's units go in its `units:` field, using one of these codes:
 | rate | `1/yr` (instantaneous annual rate) |
 | proportion | `proportion` (0 to 1) |
 | index | `kg/tow`, `n/tow`, `kg/km2`, `n/km2`, `kg/trap`, `relative` (scaled to a reference period, e.g. mean = 1) |
+| score | `score` (points on a status scoring scale) |
 
 The rest of the file (`stock:`, `method:`, `meeting:`, `publications:` and so on) is explained in the comments of the YAML template the form downloads.
 To check a file you've edited, load it back into the form with "Load existing YAML file".

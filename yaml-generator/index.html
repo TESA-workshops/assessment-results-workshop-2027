@@ -197,13 +197,16 @@ const METRICS = [
   { id: "index", en: "Index", fr: "Indice", panel: "stock", role: "series", level: "both", dims: ["index"],
     desc_en: "Only for assessments based on an index rather than a population model (e.g. trap CPUE in kg/trap). Leave unticked if a model estimates stock size, even if it's fit to surveys.",
     desc_fr: "Seulement pour les évaluations fondées sur un indice plutôt que sur un modèle de population (p. ex. CPUE au casier en kg/casier). Laissez décoché si un modèle estime la taille du stock, même s'il est ajusté à des relevés." },
-  { id: "limit_reference", en: "LRP", fr: "PRL", panel: "stock", role: "reference", level: "stock", dims: ["mass", "count", "index"],
+  { id: "status_score", en: "Composite status score", fr: "Score d'état composite", panel: "stock", role: "series", level: "stock", dims: ["score"],
+    desc_en: "Only if status is judged from a score that combines several indicators (e.g. a stock health index). Describe the scoring in notes. Tick LRP and USR below for the zone boundaries.",
+    desc_fr: "Seulement si l'état est jugé à partir d'un score qui combine plusieurs indicateurs (p. ex. un indice de santé du stock). Décrivez la notation dans les notes. Cochez PRL et PRS ci-dessous pour les limites des zones." },
+  { id: "limit_reference", en: "LRP", fr: "PRL", panel: "stock", role: "reference", level: "stock", dims: ["mass", "count", "index", "score"],
     desc_en: "Limit reference point.",
     desc_fr: "Point de référence limite." },
-  { id: "upper_stock_reference", en: "USR", fr: "PRS", panel: "stock", role: "reference", level: "stock", dims: ["mass", "count", "index"],
+  { id: "upper_stock_reference", en: "USR", fr: "PRS", panel: "stock", role: "reference", level: "stock", dims: ["mass", "count", "index", "score"],
     desc_en: "Upper stock reference point.",
     desc_fr: "Point de référence supérieur du stock." },
-  { id: "target_reference", en: "TRP", fr: "PRC", panel: "stock", role: "reference", level: "stock", dims: ["mass", "count", "index"],
+  { id: "target_reference", en: "TRP", fr: "PRC", panel: "stock", role: "reference", level: "stock", dims: ["mass", "count", "index", "score"],
     desc_en: "Target reference point.",
     desc_fr: "Point de référence cible." },
   { id: "lower_threshold", en: "Lower threshold", fr: "Seuil inférieur", panel: "stock", role: "reference", level: "component", dims: ["mass", "count", "index"],
@@ -242,7 +245,7 @@ const PANELS = [
   ["recruitment", "Recruitment", "Recrutement"],
 ];
 // Series a reference point (or a harvest rate) can be relative to.
-const STOCK_SERIES = ["spawning_stock", "total_stock", "exploitable_stock", "index"];
+const STOCK_SERIES = ["spawning_stock", "total_stock", "exploitable_stock", "index", "status_score"];
 const PRESSURE_SERIES = ["fishing_pressure"];
 
 // Units, and the kind of quantity (dim) each one measures.
@@ -262,6 +265,7 @@ const UNITS = [
   { id: "n/km2", dim: "index", en: "number/km²", fr: "nombre/km²" },
   { id: "kg/trap", dim: "index", en: "kg/trap", fr: "kg/casier" },
   { id: "relative", dim: "index", en: "relative", fr: "relatif" },
+  { id: "score", dim: "score", en: "score", fr: "score" },
 ];
 const unitsFor = m => UNITS.filter(u => m.dims.includes(u.dim));
 
@@ -371,9 +375,10 @@ const METRIC_FIELDS = {
   total_stock:           { units: "yes", min_age: "no", max_age: "no", notes: "no" },
   exploitable_stock:     { units: "yes", min_age: "no", max_age: "no", notes: "no" },
   index:                 { units: "yes", survey: "yes", min_age: "no", max_age: "no", notes: "no" },
-  limit_reference:       { units: "yes", applies_to: "if", basis: "yes", multiplier: "yes", period: "if", percentile: "if", notes: "no" },
-  upper_stock_reference: { units: "yes", applies_to: "if", basis: "yes", multiplier: "yes", period: "if", percentile: "if", notes: "no" },
-  target_reference:      { units: "yes", applies_to: "if", basis: "yes", multiplier: "yes", period: "if", percentile: "if", notes: "no" },
+  status_score:          { units: "yes", notes: "no" },
+  limit_reference:       { units: "yes", applies_to: "if", basis: "if", multiplier: "if", period: "if", percentile: "if", notes: "no" },
+  upper_stock_reference: { units: "yes", applies_to: "if", basis: "if", multiplier: "if", period: "if", percentile: "if", notes: "no" },
+  target_reference:      { units: "yes", applies_to: "if", basis: "if", multiplier: "if", period: "if", percentile: "if", notes: "no" },
   lower_threshold:       { units: "yes", applies_to: "if", basis: "yes", multiplier: "yes", period: "if", percentile: "if", notes: "no" },
   upper_threshold:       { units: "yes", applies_to: "if", basis: "yes", multiplier: "yes", period: "if", percentile: "if", notes: "no" },
   fishing_pressure:      { units: "yes", type: "if", min_age: "if", max_age: "if", applies_to: "if", notes: "no" },
@@ -421,7 +426,7 @@ const HINTS = {
 // Starting units when a metric is ticked; people change them if needed.
 const DEFAULT_UNITS = {
   catch: "t", spawning_stock: "t", total_stock: "t", exploitable_stock: "t",
-  index: "kg/tow", fishing_pressure: "1/yr", natural_mortality: "1/yr", recruitment: "millions",
+  index: "kg/tow", status_score: "score", fishing_pressure: "1/yr", natural_mortality: "1/yr", recruitment: "millions",
 };
 // interval.level choices: "0.5" to "0.95"
 const LEVELS = [50, 55, 60, 65, 70, 75, 80, 85, 90, 95].map(p => String(p / 100));
@@ -529,20 +534,27 @@ const tickedMetrics = () => METRICS.filter(m => isListed(m) && isTicked(m.id));
 function seriesOptions(id) {
   const m = METRIC_BY_ID[id];
   const pool = m.panel === "fishing_pressure" && m.role === "reference" ? PRESSURE_SERIES : STOCK_SERIES;
-  return pool.filter(isTicked);
+  // A harvest rate is catch / stock size, never a status score; and a component threshold
+  // can't be relative to a stock-only series (the status score).
+  return pool.filter(s => isTicked(s) && !(s === "status_score" && (id === "fishing_pressure" || m.level === "component")));
 }
 // The series it's relative to: the only option, or the one chosen in `applies_to`.
 function targetSeries(id) {
   const options = seriesOptions(id);
   return options.length === 1 ? options[0] : metricState(id).f.applies_to || "";
 }
+// A reference point on the status score is a value on the score's scale, so it has no
+// `basis` or `multiplier` (or the fields a basis needs).
+const isScoreReference = id => !!METRIC_FIELDS[id].basis && targetSeries(id) === "status_score";
+// The status score has no interval and no ratios.
+const NO_RATIOS_OR_BOUNDS = ["status_score"];
 
 // What a series can be a ratio to (as ratio_denominators() in R): the ticked reference
 // points that apply to it, then B_MSY or F_MSY. None for catch or recruitment.
 const MSY_DENOMINATOR = { stock: "b_msy", fishing_pressure: "f_msy" };
 function ratioOptions(id) {
   const m = METRIC_BY_ID[id];
-  if (m.role !== "series" || !MSY_DENOMINATOR[m.panel]) return [];
+  if (m.role !== "series" || !MSY_DENOMINATOR[m.panel] || NO_RATIOS_OR_BOUNDS.includes(id)) return [];
   const refs = tickedMetrics()
     .filter(r => r.panel === m.panel && r.role === "reference" && targetSeries(r.id) === id)
     .map(r => r.id);
@@ -558,7 +570,7 @@ const tickedRatios = id => ratioOptions(id).filter(den => hasRatio(id, den));
 
 // Bounds (_lower/_upper columns): ticked per metric, never for the TAC. Series and MSY
 // start ticked; catch, M, recruitment deviations and reference points start unticked.
-const canHaveBounds = id => id !== "total_allowable_catch";
+const canHaveBounds = id => id !== "total_allowable_catch" && !NO_RATIOS_OR_BOUNDS.includes(id);
 const boundsByDefault = id => METRIC_BY_ID[id].role === "series" || id === "msy";
 function hasBoundsColumns(id) {
   if (state.hasBounds !== "yes" || !canHaveBounds(id)) return false;
@@ -599,9 +611,10 @@ function requiredByMetric(id, f) {
   if (f === "type") return isF(id);
   if (f === "applies_to") return seriesOptions(id).length > 1;
   if (f === "min_age" || f === "max_age") return metricState(id).f.type === "average";
+  if (f === "basis" || f === "multiplier") return !isScoreReference(id);
   return false;
 }
-const requiredByBasis = (id, f) => (BASIS_FIELDS[metricState(id).f.basis] || []).includes(f);
+const requiredByBasis = (id, f) => !isScoreReference(id) && (BASIS_FIELDS[metricState(id).f.basis] || []).includes(f);
 const isRequired = (id, f) => requiredByMetric(id, f) || requiredByBasis(id, f);
 
 // Whether a field is shown in the form (and written to the YAML).
@@ -611,6 +624,7 @@ function isFieldShown(id, f) {
     if (f === "applies_to") return isHarvestRate(id) && seriesOptions(id).length > 1;
   }
   if (f === "applies_to") return seriesOptions(id).length > 1;
+  if (f === "basis" || f === "multiplier") return !isScoreReference(id);
   if (["period", "percentile", "spr"].includes(f)) return requiredByBasis(id, f);
   return true;
 }
@@ -865,12 +879,16 @@ function metricBody(m) {
     extras += `<div class="ticks">${ratioTick(m.id, msyDen)}</div>`;
     if (hasRatio(m.id, msyDen)) extras += intervalHint(m.id);
   }
+  if (isScoreReference(m.id)) {
+    extras += `<div class="hint">${tr("On the composite status score: give the score at the zone boundary (e.g. 2) in the CSV, and say how it was set in notes.",
+      "Sur le score d'état composite : donnez le score à la limite de la zone (p. ex. 2) dans le CSV, et expliquez comment elle a été fixée dans les notes.")}</div>`;
+  }
   if (m.role === "reference") {
     const series = targetSeries(m.id);
     if (series && ratioOptions(series).includes(m.id)) {
       extras += `<div class="ticks">${ratioTick(series, m.id)}</div>`;
       if (hasRatio(series, m.id)) extras += intervalHint(series);
-    } else if (seriesOptions(m.id).length) {
+    } else if (!series && seriesOptions(m.id).length) {
       extras += `<div class="hint">${tr("Choose what it's relative to, to add a ratio time series.",
                                         "Choisissez à quoi il se rapporte pour ajouter une série de rapports.")}</div>`;
     }
@@ -918,7 +936,7 @@ function metricField(m, f) {
     spec.textarea = true;
     if (m.id === "exploitable_stock") spec.placeholder = tr(...HINTS.exploitable_notes);
     if (ms.f.basis === "b_msy_proxy") spec.placeholder = tr("What the proxy is, e.g. mean SSB over 1983–2018.", "Ce qu'est l'approximation, p. ex. BSR moyenne de 1983 à 2018.");
-    if (ms.f.basis === "other") spec.placeholder = tr("Explain the basis.", "Expliquez la base.");
+    if (ms.f.basis === "other" && !isScoreReference(m.id)) spec.placeholder = tr("Explain the basis.", "Expliquez la base.");
   }
   if (f === "percentile") {
     spec.numeric = true;
@@ -1240,6 +1258,8 @@ const IF_TEXT = {
   type: ["units are 1/yr", "les unités sont 1/yr"],
   min_age: ["type is average", "type est average"],
   max_age: ["type is average", "type est average"],
+  basis: ["applies_to isn't status_score", "applies_to n'est pas status_score"],
+  multiplier: ["applies_to isn't status_score", "applies_to n'est pas status_score"],
 };
 const COMMENT_COLUMN = 23; // where inline comments start
 const LINE_WIDTH = 80;
@@ -1423,7 +1443,9 @@ function buildTemplate() {
     if (f === "survey") hint = hintText("survey");
     if (f === "max_age" && m.id !== "fishing_pressure") hint = hintText("max_age");
     if (f === "age" && m.id === "recruitment") hint = lowerFirst(fieldLabel("age"));
-    if (f === "applies_to") hint = hintText(m.id === "fishing_pressure" ? "fp_applies_to" : "applies_to") + colon() + bar(STOCK_SERIES);
+    if (f === "applies_to") hint = m.id === "fishing_pressure"
+      ? hintText("fp_applies_to") + colon() + bar(STOCK_SERIES.filter(s => s !== "status_score"))
+      : hintText("applies_to") + colon() + bar(STOCK_SERIES);
     if (f === "basis") hint = bar(codesOf(VALUES.basis).filter(code => basesFor(m).includes(code)));
     if (f === "multiplier") hint = hintText(m.panel === "fishing_pressure" ? "removal_multiplier" : "multiplier");
     if (f === "period") hint = tr("[first, last], e.g. [1985, 2009]", "[première, dernière], p. ex. [1985, 2009]");
@@ -1446,10 +1468,10 @@ function buildTemplate() {
       key(METRIC, 0, m.id);
       for (const f of Object.keys(METRIC_FIELDS[m.id])) {
         if (f === "notes") { // the CSV columns it has go just before the free text, as in buildYaml()
-          if (m.id !== "total_allowable_catch") {
+          if (canHaveBounds(m.id)) {
             key(METRIC, 1, "bounds", tr(`true if the CSV has ${m.id}_lower and _upper`, `true si le CSV a ${m.id}_lower et _upper`));
           }
-          if (m.role === "series" && MSY_DENOMINATOR[m.panel]) {
+          if (m.role === "series" && MSY_DENOMINATOR[m.panel] && !NO_RATIOS_OR_BOUNDS.includes(m.id)) {
             const msy = MSY_DENOMINATOR[m.panel];
             const dens = [...METRICS.filter(r => r.panel === m.panel && r.role === "reference").map(r => r.id), msy];
             key(METRIC, 1, "ratios", tr(
@@ -1914,7 +1936,7 @@ function codeErrors() {
   for (const m of tickedMetrics()) {
     const f = metricState(m.id).f, p = `metrics.${m.id}.`;
     check(p + "units", f.units, unitsFor(m).map(u => u.id));
-    if (METRIC_FIELDS[m.id].basis) check(p + "basis", f.basis, basesFor(m));
+    if (METRIC_FIELDS[m.id].basis && isFieldShown(m.id, "basis")) check(p + "basis", f.basis, basesFor(m));
     if (METRIC_FIELDS[m.id].type) check(p + "type", f.type, codesOf(VALUES.type));
   }
   return out;

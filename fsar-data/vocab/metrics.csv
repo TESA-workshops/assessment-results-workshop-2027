@@ -6,9 +6,10 @@ spawning_stock,Spawning stock,Stock reproducteur,stock,series,both,mass|count,Sp
 total_stock,Total stock,Stock total,stock,series,both,mass|count,Whole stock above any age cutoff given by `min_age`.
 exploitable_stock,Exploitable stock,Stock exploitable,stock,series,both,mass|count,"Component vulnerable to the fishery (vulnerable or fishable biomass). Say in `notes` what it is vulnerable to."
 index,Index,Indice,stock,series,both,index,"Survey or fishery index of stock size from the source given in `survey`. Only for assessments based on an index rather than a population model."
-limit_reference,LRP,PRL,stock,reference,stock,mass|count|index,Limit reference point.
-upper_stock_reference,USR,PRS,stock,reference,stock,mass|count|index,Upper stock reference point.
-target_reference,TRP,PRC,stock,reference,stock,mass|count|index,Target reference point.
+status_score,Composite status score,Score d'état composite,stock,series,stock,score,"Score combining several indicators into one measure of stock status (e.g. a stock health index). Describe the scoring in `notes`."
+limit_reference,LRP,PRL,stock,reference,stock,mass|count|index|score,Limit reference point.
+upper_stock_reference,USR,PRS,stock,reference,stock,mass|count|index|score,Upper stock reference point.
+target_reference,TRP,PRC,stock,reference,stock,mass|count|index|score,Target reference point.
 lower_threshold,Lower threshold,Seuil inférieur,stock,reference,component,mass|count|index,Lower status threshold for a component (e.g. a salmon CU lower benchmark).
 upper_threshold,Upper threshold,Seuil supérieur,stock,reference,component,mass|count|index,Upper status threshold for a component (e.g. a salmon CU upper benchmark).
 fishing_pressure,Fishing pressure,Pression de pêche,fishing_pressure,series,both,rate|proportion,"In 1/yr this is instantaneous fishing mortality (F), summarized by `type`; as a proportion it is a harvest rate: catch divided by the stock series given in `applies_to`."

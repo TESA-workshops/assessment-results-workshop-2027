@@ -14,3 +14,4 @@ kg/km2,index,1,kg/km²,kg/km²,Kilograms per square kilometre
 n/km2,index,1,number/km²,nombre/km²,Individuals per square kilometre
 kg/trap,index,1,kg/trap,kg/casier,Kilograms per trap haul
 relative,index,1,relative,relatif,Index scaled to a reference period (e.g. mean = 1)
+score,score,1,score,score,Points on a status scoring scale
