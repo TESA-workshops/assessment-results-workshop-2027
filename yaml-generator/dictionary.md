@@ -2,7 +2,7 @@
 
 This page explains the columns in the time series CSV made by the [YAML/CSV generator](https://tesa-workshops.github.io/assessment-results-workshop-2027/yaml-generator/).
 The form tells you which columns your CSV needs and can download a blank copy with the headers filled in.
-Use this page to check what goes in each one, and how each column is described in `assessment.yaml` if you edit that file by hand.
+Use this page to check what goes in each one, and how each column is described in `assessment.yaml`.
 
 Most assessments only need one file, `stock_timeseries.csv`, with one row per year.
 If the stock is also reported by component (e.g. salmon CUs, herring sections or fishing areas), there is a second file; see [Components](#components).
@@ -16,9 +16,9 @@ If the stock is also reported by component (e.g. salmon CUs, herring sections or
 - [Recruitment](#recruitment)
 - [Intervals (`_lower`, `_upper`)](#intervals-_lower-_upper)
 - [Ratios (e.g. B/B_MSY)](#ratios-eg-bb_msy)
-- [Units](#units)
 - [Components](#components)
-- [Editing `assessment.yaml` by hand](#editing-assessmentyaml-by-hand)
+- [`assessment.yaml`](#assessmentyaml)
+  - [Units](#units)
 
 ## General rules
 
@@ -26,8 +26,9 @@ If the stock is also reported by component (e.g. salmon CUs, herring sections or
 - Include only the columns you have. Every metric column is optional, but you need at least one.
 - Cells hold plain numbers: no units, text, symbols or thousands separators.
 - Leave a cell blank if there's no value for that year. Don't use `NA`, `0` or `-`.
-- Units go in `assessment.yaml` (the form asks for them), not in the column name. A column's units also apply to its `_lower` and `_upper` columns.
+- Units go in `assessment.yaml` (the form asks for them; see [Units](#units)), not in the column name. A column's units also apply to its `_lower` and `_upper` columns.
 - Reference points are given every year. If one doesn't change, repeat the same value down the column. If it does, change it in the years it changes.
+- Other names in `code` that aren't columns, such as `basis`, `applies_to` or `min_age`, are fields in `assessment.yaml`. The form asks for them. See [`assessment.yaml`](#assessmentyaml) for the full list.
 
 ## Catch
 
@@ -39,20 +40,19 @@ If the stock is also reported by component (e.g. salmon CUs, herring sections or
 
 ## Stock size
 
-Include every stock-size series the assessment estimates.
-The column name says which part of the stock it is; the units say whether it's biomass or numbers.
+Include the stock-size series the assessment estimates.
 
 | Column | Label | Units | Description |
 |---|---|---|---|
 | `spawning_stock` | Spawning stock | mass, count | Spawning (mature) part of the stock: SSB in mass units, spawner abundance in count units. Ages can go in `min_age` / `max_age`. |
 | `total_stock` | Total stock | mass, count | Whole stock, above any minimum age given in `min_age`. |
-| `exploitable_stock` | Exploitable stock | mass, count | Part of the stock vulnerable to the fishery (e.g. snow crab exploitable biomass). Say in `notes` what it's vulnerable to, such as which fleet and when in the year. |
+| `exploitable_stock` | Exploitable stock | mass, count | Part of the stock vulnerable to the fishery. Say in `notes` what it's vulnerable to, such as which fleet and when in the year. |
 | `index` | Index | index | Survey or fishery index of stock size, from the source named in `survey`. Use this only if status is judged from an index rather than a population model. If a model is fit to the surveys, give its estimated stock size instead. One index per assessment. |
 | `limit_reference` | LRP | same as its series | Limit reference point. `basis` and `multiplier` say what it is (e.g. 0.4 B_MSY). |
 | `upper_stock_reference` | USR | same as its series | Upper stock reference point. |
 | `target_reference` | TRP | same as its series | Target reference point. |
 
-If you give more than one stock-size series, `applies_to` on each reference point says which one it's compared to.
+If you give more than one stock-size series, `applies_to` (in the YAML file) on each reference point says which one it's compared to.
 
 ## Fishing pressure
 
@@ -75,12 +75,12 @@ Any column except `total_allowable_catch` can have an uncertainty interval.
 Add two columns named after it, e.g. `spawning_stock_lower` and `spawning_stock_upper`.
 
 - Give both bounds or neither, with lower ≤ value ≤ upper.
-- All intervals in one assessment have the same level (e.g. 0.95) and type (`confidence` or `credible`), set once under `interval:`.
+- All intervals in one assessment have the same level (e.g. 0.95) and type (`confidence` or `credible`), set once under `interval:` in the YAML.
 - Give the interval itself, not a standard error or CV. If you only have a CV, convert it using the error distribution you assumed. For a lognormal 95% interval: `x * exp(±1.96 * sqrt(log(1 + CV^2)))`.
 
 ## Ratios (e.g. B/B_MSY)
 
-If the model estimates a ratio such as B/B_MSY, F/F_MSY or B/LRP, you can give it as its own column.
+If the model estimates a ratio such as B/B_MSY, F/F_MSY or B/LRP, you should also give it as its own column.
 The name is the series and the denominator separated by `/`:
 
 - `spawning_stock/b_msy`: spawning stock divided by B_MSY (or its proxy)
@@ -88,23 +88,12 @@ The name is the series and the denominator separated by `/`:
 - `spawning_stock/limit_reference`: spawning stock divided by the LRP
 
 The denominator is `b_msy` (for stock size), `f_msy` (for fishing pressure), or a reference point or threshold that applies to the series.
-Any stock-size series or `fishing_pressure` can have a ratio. Catch and recruitment can't.
-Ratios have no units. If the series has an interval, so does the ratio (`spawning_stock/b_msy_lower`, `spawning_stock/b_msy_upper`).
+Any stock-size series or `fishing_pressure` can have a ratio.
+If the series has an interval, so does the ratio (`spawning_stock/b_msy_lower`, `spawning_stock/b_msy_upper`).
 
 Take the ratio and its interval from the model rather than dividing one column by another.
 The series and reference point usually have correlated errors, so dividing their separate intervals makes status look more uncertain than it is.
-
-## Units
-
-Each column's units go in its `units:` field, using one of these codes:
-
-| Type | Codes |
-|---|---|
-| mass | `kg`, `t` (tonnes), `kt` (thousand tonnes) |
-| count | `n` (number), `thousands`, `millions`, `billions` |
-| rate | `1/yr` (instantaneous annual rate) |
-| proportion | `proportion` (0 to 1) |
-| index | `kg/tow`, `n/tow`, `kg/km2`, `n/km2`, `kg/trap`, `relative` (scaled to a reference period, e.g. mean = 1) |
+That's why we ask for the ratios, with their intervals, as separate columns.
 
 ## Components
 
@@ -133,7 +122,7 @@ Components have thresholds instead of reference points:
 
 Thresholds take the same fields as reference points (`basis`, `multiplier` and so on).
 
-## Editing `assessment.yaml` by hand
+## `assessment.yaml`
 
 The form writes `assessment.yaml` for you.
 If you edit it by hand, every metric column needs an entry under `metrics:`, and every entry needs a column.
@@ -185,6 +174,18 @@ Fields a metric entry can have:
 - Removal references and thresholds: `f_msy`, `u_msy`, `f_0.1`, `f_spr`, `other`
 
 For `b_msy_proxy` and `other`, describe it in `notes`.
+
+### Units
+
+Each column's units go in its `units:` field, using one of these codes:
+
+| Type | Codes |
+|---|---|
+| mass | `kg`, `t` (tonnes), `kt` (thousand tonnes) |
+| count | `n` (number), `thousands`, `millions`, `billions` |
+| rate | `1/yr` (instantaneous annual rate) |
+| proportion | `proportion` (0 to 1) |
+| index | `kg/tow`, `n/tow`, `kg/km2`, `n/km2`, `kg/trap`, `relative` (scaled to a reference period, e.g. mean = 1) |
 
 The rest of the file (`stock:`, `method:`, `meeting:`, `publications:` and so on) is explained in the comments of the YAML template the form downloads.
 To check a file you've edited, load it back into the form with "Load existing YAML file".
